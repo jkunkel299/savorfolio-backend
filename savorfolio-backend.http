@@ -1,0 +1,6 @@
+@savorfolio_backend_HostAddress = http://localhost:5188
+
+GET {{savorfolio_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
