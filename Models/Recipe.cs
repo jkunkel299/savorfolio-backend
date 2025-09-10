@@ -19,11 +19,11 @@ public partial class Recipe
 
     public TempUnitsTag Temp_unit { get; set; }
 
-    public virtual ICollection<IngredientList> IngredientLists { get; set; } = new List<IngredientList>();
+    public virtual ICollection<IngredientList> IngredientLists { get; set; } = [];
 
     public virtual Instruction? Instruction { get; set; }
 
-    public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
+    public virtual ICollection<Note> Notes { get; set; } = [];
 
-    public virtual ICollection<RecipeSection> RecipeSections { get; set; } = new List<RecipeSection>();
+    public virtual ICollection<RecipeSection> RecipeSections { get; set; } = [];
 }

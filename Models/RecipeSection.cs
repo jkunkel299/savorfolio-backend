@@ -13,7 +13,7 @@ public partial class RecipeSection
 
     public int SortOrder { get; set; }
 
-    public virtual ICollection<Instruction> Instructions { get; set; } = new List<Instruction>();
+    public virtual ICollection<Instruction> Instructions { get; set; } = [];
 
     public virtual Recipe Recipe { get; set; } = null!;
 }

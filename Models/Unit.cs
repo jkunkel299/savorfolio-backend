@@ -11,5 +11,5 @@ public partial class Unit
 
     public string? Abbreviation { get; set; }
 
-    public virtual ICollection<IngredientList> IngredientLists { get; set; } = new List<IngredientList>();
+    public virtual ICollection<IngredientList> IngredientLists { get; set; } = [];
 }

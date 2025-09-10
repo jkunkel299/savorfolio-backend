@@ -1,60 +1,43 @@
 using Microsoft.EntityFrameworkCore;
 using savorfolio_backend.Data;
 using savorfolio_backend.Models;
+using savorfolio_backend.LogicLayer;
+using savorfolio_backend.DataAccess; // see if this is needed
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("NeonDatabase"),
-        npgsqlOptions => npgsqlOptions.MapEnum<CuisineTag>("cuisine"));
-    options.UseNpgsql(builder.Configuration.GetConnectionString("NeonDatabase"),
-        npgsqlOptions => npgsqlOptions.MapEnum<DietaryTag>("dietary"));
-    options.UseNpgsql(builder.Configuration.GetConnectionString("NeonDatabase"),
-        npgsqlOptions => npgsqlOptions.MapEnum<MealTag>("meal"));
-    options.UseNpgsql(builder.Configuration.GetConnectionString("NeonDatabase"),
-        npgsqlOptions => npgsqlOptions.MapEnum<RecipeTypeTag>("recipe_type"));
-    options.UseNpgsql(builder.Configuration.GetConnectionString("NeonDatabase"),
-        npgsqlOptions => npgsqlOptions.MapEnum<TempUnitsTag>("temp_units"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("NeonDatabase"));
+        // builder.Configuration.GetConnectionString("NeonDatabase"),
+        // npgsqlOptions =>
+        // {
+        //     npgsqlOptions.MapEnum<CuisineTag>("cuisine");
+        //     npgsqlOptions.MapEnum<DietaryTag>("dietary");
+        //     npgsqlOptions.MapEnum<MealTag>("meal");
+        //     npgsqlOptions.MapEnum<RecipeTypeTag>("recipe_type");
+        //     npgsqlOptions.MapEnum<TempUnitsTag>("temp_units");
+        // });
 });
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-//builder.Services.AddOpenApi();
+// Register services
+builder.Services.AddScoped<IngredientService>();
+builder.Services.AddScoped<IngredientRepository>(); // see if this is needed
 
 var app = builder.Build();
-/* 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
-app.UseHttpsRedirection();
-
-var summaries = new[]
+app.MapGet("/api/ingredients/search", async (
+    string term,
+    IngredientService ingredientService) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    if (string.IsNullOrWhiteSpace(term))
+    {
+        return Results.BadRequest("Search term is required.");
+    }
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
- */
+    var results = await ingredientService.SearchIngredientsAsync(term);
+    return Results.Ok(results);
+});
+
 app.Run();
-
-/* record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-} */

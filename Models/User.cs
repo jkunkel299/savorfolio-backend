@@ -11,7 +11,7 @@ public partial class User
 
     public string Email { get; set; } = null!;
 
-    public virtual ICollection<CustomTag> CustomTags { get; set; } = new List<CustomTag>();
+    public virtual ICollection<CustomTag> CustomTags { get; set; } = [];
 
-    public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
+    public virtual ICollection<Note> Notes { get; set; } = [];
 }

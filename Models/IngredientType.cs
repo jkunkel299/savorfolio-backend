@@ -9,5 +9,5 @@ public partial class IngredientType
 
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<IngredientVariant> IngredientVariants { get; set; } = new List<IngredientVariant>();
+    public virtual ICollection<IngredientVariant> IngredientVariants { get; set; } = [];
 }

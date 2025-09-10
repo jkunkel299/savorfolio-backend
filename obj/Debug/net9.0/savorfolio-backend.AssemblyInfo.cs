@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("savorfolio-backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5a1ce3610b464c1b7dbf8d96ce1de27e0ebed644")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5caf42cd41c56c7e83835f210a4d6ab48946b83a")]
 [assembly: System.Reflection.AssemblyProductAttribute("savorfolio-backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("savorfolio-backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

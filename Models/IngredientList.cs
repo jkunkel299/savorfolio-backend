@@ -11,7 +11,7 @@ public partial class IngredientList
 
     public int? SectionId { get; set; }
 
-    public string Quantity { get; set; } = null!;
+    public string? Quantity { get; set; }
 
     public int UnitId { get; set; }
 

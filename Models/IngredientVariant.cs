@@ -11,7 +11,7 @@ public partial class IngredientVariant
 
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<IngredientList> IngredientLists { get; set; } = new List<IngredientList>();
+    public virtual ICollection<IngredientList> IngredientLists { get; set; } = [];
 
     public virtual IngredientType? Type { get; set; }
 }
