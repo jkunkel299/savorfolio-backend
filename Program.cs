@@ -8,18 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseNpgsql(builder.Configuration.GetConnectionString("NeonDatabase"));
-        // builder.Configuration.GetConnectionString("NeonDatabase"),
-        // npgsqlOptions =>
-        // {
-        //     npgsqlOptions.MapEnum<CuisineTag>("cuisine");
-        //     npgsqlOptions.MapEnum<DietaryTag>("dietary");
-        //     npgsqlOptions.MapEnum<MealTag>("meal");
-        //     npgsqlOptions.MapEnum<RecipeTypeTag>("recipe_type");
-        //     npgsqlOptions.MapEnum<TempUnitsTag>("temp_units");
-        // });
-});
+    options.UseNpgsql(//builder.Configuration.GetConnectionString("NeonDatabase"));
+        builder.Configuration.GetConnectionString("NeonDatabase"),
+        npgsqlOptions =>
+        {
+            npgsqlOptions.MapEnum<CuisineTag>("cuisine");
+            npgsqlOptions.MapEnum<DietaryTag>("dietary");
+            npgsqlOptions.MapEnum<MealTag>("meal");
+            npgsqlOptions.MapEnum<RecipeTypeTag>("recipe_type");
+            npgsqlOptions.MapEnum<TempUnitsTag>("temp_units");
+        }));
 
 // Register services
 builder.Services.AddScoped<IngredientService>();

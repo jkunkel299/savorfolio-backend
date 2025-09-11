@@ -40,17 +40,13 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<UserRecipe> UserRecipes { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Name=ConnectionStrings:NeonDatabase");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder
-            .HasPostgresEnum<CuisineTag>("cuisine")
-            .HasPostgresEnum<DietaryTag>("dietary")
-            .HasPostgresEnum<MealTag>("meal")
-            .HasPostgresEnum<RecipeTypeTag>("recipe_type")
-            .HasPostgresEnum<TempUnitsTag>("temp_units");
+        modelBuilder.HasPostgresEnum<CuisineTag>("cuisine");
+        modelBuilder.HasPostgresEnum<DietaryTag>("dietary");
+        modelBuilder.HasPostgresEnum<MealTag>("meal");
+        modelBuilder.HasPostgresEnum<RecipeTypeTag>("recipe_type");
+        modelBuilder.HasPostgresEnum<TempUnitsTag>("temp_units");
 
         modelBuilder.Entity<CustomTag>(entity =>
         {
@@ -204,6 +200,7 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("prep_time");
             entity.Property(e => e.Servings).HasColumnName("servings");
+            entity.Property(e => e.Temp_unit).HasColumnName("temp_unit");
         });
 
         modelBuilder.Entity<RecipeSection>(entity =>
@@ -235,6 +232,10 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.CustomTagId).HasColumnName("custom_tag_id");
             entity.Property(e => e.NoteId).HasColumnName("note_id");
             entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
+            entity.Property(e => e.Meal).HasColumnName("meal_tag");
+            entity.Property(e => e.Recipe_type).HasColumnName("type_tag");
+            entity.Property(e => e.Cuisine).HasColumnName("cuisine_tag");
+            entity.Property(e => e.Dietary).HasColumnName("dietary_tag");
 
             entity.HasOne(d => d.CustomTag).WithMany()
                 .HasForeignKey(d => d.CustomTagId)
