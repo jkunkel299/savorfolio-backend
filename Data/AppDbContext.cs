@@ -42,11 +42,11 @@ public partial class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasPostgresEnum<CuisineTag>("cuisine");
-        modelBuilder.HasPostgresEnum<DietaryTag>("dietary");
-        modelBuilder.HasPostgresEnum<MealTag>("meal");
-        modelBuilder.HasPostgresEnum<RecipeTypeTag>("recipe_type");
-        modelBuilder.HasPostgresEnum<TempUnitsTag>("temp_units");
+        modelBuilder.HasPostgresEnum<CuisineTag>();
+        modelBuilder.HasPostgresEnum<DietaryTag>();
+        modelBuilder.HasPostgresEnum<MealTag>();
+        modelBuilder.HasPostgresEnum<RecipeTypeTag>();
+        modelBuilder.HasPostgresEnum<TempUnitsTag>();
 
         modelBuilder.Entity<CustomTag>(entity =>
         {
@@ -200,7 +200,8 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("prep_time");
             entity.Property(e => e.Servings).HasColumnName("servings");
-            entity.Property(e => e.Temp_unit).HasColumnName("temp_unit");
+            entity.Property(e => e.Temp_unit).HasColumnName("temp_unit")
+                .HasConversion<string>();
         });
 
         modelBuilder.Entity<RecipeSection>(entity =>
@@ -296,10 +297,7 @@ public partial class AppDbContext : DbContext
                 .ToTable("User_Recipes");
 
             entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
-            entity.Property(e => e.UserId)
-                .ValueGeneratedOnAdd()
-                .UseIdentityAlwaysColumn()
-                .HasColumnName("user_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.Recipe).WithMany()
                 .HasForeignKey(d => d.RecipeId)
