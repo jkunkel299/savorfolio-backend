@@ -10,10 +10,12 @@ public class IngredientRepository(AppDbContext context)
 
     public async Task<List<IngredientVariant>> SearchByNameAsync(string searchTerm)
     {
-        return await _context.IngredientVariants
+        var result = await _context.IngredientVariants
             .Where(i => EF.Functions.ILike(i.Name, $"%{searchTerm}%"))
             .OrderBy(i => i.Name)
             .Take(10)
             .ToListAsync();
+
+        return result;
     }
 }

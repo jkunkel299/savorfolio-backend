@@ -10,8 +10,10 @@ public class RecipeRepository(AppDbContext context)
 
     public async Task<List<Recipe>> ReturnAllRecipes()
     {
-        return await _context.Recipes
-            //.OrderBy(i => i.Name)
+        var result = await _context.Recipes
+            .OrderBy(i => i.Name)
             .ToListAsync();
+
+        return result;
     }
 }
