@@ -8,6 +8,16 @@ using savorfolio_backend.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 // Add connection string from environment variables
 Env.Load();
 var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DATABASE_CONNECTION");
@@ -31,9 +41,11 @@ builder.Services.AddScoped<IngredientService>();
 builder.Services.AddScoped<IngredientRepository>();
 // Recipe services 
 builder.Services.AddScoped<RecipeService>();
-builder.Services.AddScoped<RecipeRepository>(); 
+builder.Services.AddScoped<RecipeRepository>();
 
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 app.MapIngredientApi();
 app.MapRecipeApi();
