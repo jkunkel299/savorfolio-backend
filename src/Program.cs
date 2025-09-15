@@ -4,6 +4,7 @@ using savorfolio_backend.Data;
 using savorfolio_backend.Models;
 using savorfolio_backend.LogicLayer;
 using savorfolio_backend.DataAccess;
+using savorfolio_backend.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,33 +28,14 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(
 // ** Register services **
 // Ingredient services
 builder.Services.AddScoped<IngredientService>();
-builder.Services.AddScoped<IngredientRepository>();
+// builder.Services.AddScoped<IngredientRepository>();
 // Recipe services 
 builder.Services.AddScoped<RecipeService>();
-builder.Services.AddScoped<RecipeRepository>(); 
+// builder.Services.AddScoped<RecipeRepository>(); 
 
 var app = builder.Build();
 
-// get ingredients by term
-app.MapGet("/api/ingredients/search", async (
-    string term,
-    IngredientService ingredientService) =>
-{
-    if (string.IsNullOrWhiteSpace(term))
-    {
-        return Results.BadRequest("Search term is required.");
-    }
-
-    var results = await ingredientService.SearchIngredientsAsync(term);
-    return Results.Ok(results);
-});
-
-// get all recipes
-app.MapGet("/api/recipes", async (
-    RecipeService recipeService) =>
-{
-    var results = await recipeService.ReturnRecipesAsync();
-    return Results.Ok(results);
-});
+app.MapIngredientApi();
+app.MapRecipeApi();
 
 app.Run();
