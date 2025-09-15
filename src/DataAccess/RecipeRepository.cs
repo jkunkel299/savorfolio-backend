@@ -16,4 +16,14 @@ public class RecipeRepository(AppDbContext context)
 
         return result;
     }
+
+    // get recipe by ingredient ID
+    public async Task<List<Recipe>> ReturnRecipeByIngredient(int ingredientId)
+    {
+        var result = await _context.Recipes
+            .Where(r => r.IngredientLists.Any(ri => ri.IngredientId == ingredientId))
+            .ToListAsync();
+
+        return result;
+    }
 }

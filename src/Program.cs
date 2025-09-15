@@ -28,14 +28,15 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(
 // ** Register services **
 // Ingredient services
 builder.Services.AddScoped<IngredientService>();
-// builder.Services.AddScoped<IngredientRepository>();
+builder.Services.AddScoped<IngredientRepository>();
 // Recipe services 
 builder.Services.AddScoped<RecipeService>();
-// builder.Services.AddScoped<RecipeRepository>(); 
+builder.Services.AddScoped<RecipeRepository>(); 
 
 var app = builder.Build();
 
 app.MapIngredientApi();
 app.MapRecipeApi();
+app.MapRecipeIncludeIngredient();
 
 app.Run();

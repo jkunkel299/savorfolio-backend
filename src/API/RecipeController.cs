@@ -14,4 +14,16 @@ public static class RecipeEndpoints
             return Results.Ok(results);
         });
     }
+
+    public static void MapRecipeIncludeIngredient(this WebApplication app)
+    {
+        // get recipes by ingredient ID
+        app.MapGet("/api/recipes/includeIngredient", async (
+            int ingredientId,
+            RecipeService recipeService) =>
+        {
+            var results = await recipeService.ReturnRecipeByIngredientAsync(ingredientId);
+            return Results.Ok(results);
+        });
+    }
 }

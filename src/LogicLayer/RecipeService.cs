@@ -11,7 +11,14 @@ public class RecipeService(RecipeRepository recipeRepository)
     {
         // Call the repository method (Data Access Layer)
         var recipes = await _recipeRepository.ReturnAllRecipes();
-        
+
+        return recipes;
+    }
+
+    public async Task<List<Recipe>> ReturnRecipeByIngredientAsync(int ingredientId)
+    {
+        var recipes = await _recipeRepository.ReturnRecipeByIngredient(ingredientId);
+
         return recipes;
     }
 }
