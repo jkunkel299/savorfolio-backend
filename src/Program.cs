@@ -49,6 +49,6 @@ app.UseCors("AllowAll");
 
 app.MapIngredientApi();
 app.MapRecipeApi();
-app.MapRecipeIncludeIngredient();
+app.MapRecipeSearch();
 
 app.Run();

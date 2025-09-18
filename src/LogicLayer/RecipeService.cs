@@ -1,5 +1,6 @@
 using savorfolio_backend.DataAccess;
 using savorfolio_backend.Models;
+using savorfolio_backend.Models.DTOs;
 
 namespace savorfolio_backend.LogicLayer;
 
@@ -15,10 +16,9 @@ public class RecipeService(RecipeRepository recipeRepository)
         return recipes;
     }
 
-    public async Task<List<Recipe>> ReturnRecipeByIngredientAsync(int ingredientId)
+    public async Task<List<RecipeDTO>> SearchRecipesAsync(RecipeFilterRequestDTO filter)
     {
-        var recipes = await _recipeRepository.ReturnRecipeByIngredient(ingredientId);
-
+        var recipes = await _recipeRepository.ReturnRecipesFiltered(filter);
         return recipes;
     }
 }

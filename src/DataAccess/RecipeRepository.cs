@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using savorfolio_backend.Data;
 using savorfolio_backend.Models;
+using savorfolio_backend.Models.DTOs;
+using savorfolio_backend.DataAccess.Filters;
 
 namespace savorfolio_backend.DataAccess;
 
@@ -17,13 +19,43 @@ public class RecipeRepository(AppDbContext context)
         return result;
     }
 
-    // get recipe by ingredient ID
-    public async Task<List<Recipe>> ReturnRecipeByIngredient(int ingredientId)
+    public async Task<List<RecipeDTO>> ReturnRecipesFiltered(RecipeFilterRequestDTO filter)
     {
-        var result = await _context.Recipes
-            .Where(r => r.IngredientLists.Any(ri => ri.IngredientId == ingredientId))
-            .ToListAsync();
+        var query = _context.Recipes.AsQueryable();
 
-        return result;
+        // filter to include ingredients
+        if (filter.IncludeIngredients is { Count: > 0 })
+        {
+            var ingredientIds = filter.IncludeIngredients;
+
+            query = query.Where(r =>
+                ingredientIds.All(ingId =>
+                    r.IngredientLists.Any(ri => ri.IngredientId == ingId)));
+        }
+
+        // Shape into RecipeDTO and IngredientListDTO
+        var result = query
+            .Select(r => new RecipeDTO
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Servings = r.Servings,
+                CookTime = r.CookTime,
+                PrepTime = r.PrepTime,
+                Ingredients = r.IngredientLists
+                    .Select(ri => new IngredientListDTO
+                    {
+                        Id = ri.IngredientId,
+                        RecipeId = ri.RecipeId,
+                        IngredientId = ri.Ingredient.Id,
+                        IngredientName = ri.Ingredient.Name,
+                        Quantity = ri.Quantity,
+                        UnitId = ri.UnitId,
+                        UnitName = ri.Unit.Name,
+                    }).ToList()
+            });
+            
+        return await result.ToListAsync();
+
     }
 }

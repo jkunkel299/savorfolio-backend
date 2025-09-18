@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Mvc;
 using savorfolio_backend.LogicLayer;
+using savorfolio_backend.Models.DTOs;
 
 namespace savorfolio_backend.API;
 
@@ -15,15 +17,15 @@ public static class RecipeEndpoints
         });
     }
 
-    public static void MapRecipeIncludeIngredient(this WebApplication app)
+    public static void MapRecipeSearch(this WebApplication app)
     {
-        // get recipes by ingredient ID
-        app.MapGet("/api/recipes/includeIngredient", async (
-            int ingredientId,
+        // single API for recipe search by optional filters
+        app.MapPost("/api/recipes/search", async (
+            [FromBody] RecipeFilterRequestDTO filter,
             RecipeService recipeService) =>
         {
-            var results = await recipeService.ReturnRecipeByIngredientAsync(ingredientId);
-            return Results.Ok(results);
+            var recipes = await recipeService.SearchRecipesAsync(filter);
+            return Results.Ok(recipes);
         });
     }
 }
