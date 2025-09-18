@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using savorfolio_backend.Data;
 using savorfolio_backend.Models;
 using savorfolio_backend.Models.DTOs;
-using savorfolio_backend.DataAccess.Filters;
 
 namespace savorfolio_backend.DataAccess;
 
@@ -30,6 +29,16 @@ public class RecipeRepository(AppDbContext context)
 
             query = query.Where(r =>
                 ingredientIds.All(ingId =>
+                    r.IngredientLists.Any(ri => ri.IngredientId == ingId)));
+        }
+
+        // filter to exclude ingredients
+        if (filter.ExcludeIngredients is { Count: > 0 })
+        {
+            var ingredientIds = filter.ExcludeIngredients;
+
+            query = query.Where(r =>
+                !ingredientIds.All(ingId =>
                     r.IngredientLists.Any(ri => ri.IngredientId == ingId)));
         }
 
