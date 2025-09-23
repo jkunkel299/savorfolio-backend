@@ -1,4 +1,4 @@
-using savorfolio_backend.LogicLayer;
+using savorfolio_backend.Interfaces;
 
 namespace savorfolio_backend.API;
 
@@ -9,7 +9,7 @@ public static class IngredientEndpoints
         // get ingredients by term
         app.MapGet("/api/ingredients/search", async (
             string term,
-            IngredientService ingredientService) =>
+            IIngredientService ingredientService) =>
         {
             if (string.IsNullOrWhiteSpace(term))
             {

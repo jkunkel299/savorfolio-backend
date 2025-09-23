@@ -1,11 +1,11 @@
-using savorfolio_backend.DataAccess;
 using savorfolio_backend.Models.DTOs;
+using savorfolio_backend.Interfaces;
 
 namespace savorfolio_backend.LogicLayer;
 
-public class IngredientService(IngredientRepository ingredientRepository)
+public class IngredientService(IIngredientRepository ingredientRepository) : IIngredientService//IngredientRepository ingredientRepository
 {
-    private readonly IngredientRepository _ingredientRepository = ingredientRepository;
+    private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
 
     public async Task<List<IngredientVariantDTO>> SearchIngredientsAsync(string searchTerm)
     {

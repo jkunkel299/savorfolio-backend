@@ -13,5 +13,5 @@ public partial class IngredientVariant
 
     public virtual ICollection<IngredientList> IngredientLists { get; set; } = [];
 
-    public virtual required IngredientType Type { get; set; }
+    public virtual IngredientType? Type { get; set; } = null;
 }

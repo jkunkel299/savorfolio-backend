@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using DotNetEnv;
 using savorfolio_backend.Data;
 using savorfolio_backend.Models;
+using savorfolio_backend.Interfaces;
 using savorfolio_backend.LogicLayer;
 using savorfolio_backend.DataAccess;
 using savorfolio_backend.API;
@@ -37,8 +38,8 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(
 
 // ** Register services **
 // Ingredient services
-builder.Services.AddScoped<IngredientService>();
-builder.Services.AddScoped<IngredientRepository>();
+builder.Services.AddScoped<IIngredientService, IngredientService>();
+builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 // Recipe services 
 builder.Services.AddScoped<RecipeService>();
 builder.Services.AddScoped<RecipeRepository>();
