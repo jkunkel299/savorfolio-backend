@@ -17,7 +17,7 @@ public partial class Recipe
 
     public int? BakeTemp { get; set; }
 
-    public TempUnitsTag? Temp_unit { get; set; }
+    public string? Temp_unit { get; set; } // changed - see if this breaks
 
     public virtual ICollection<IngredientList> IngredientLists { get; set; } = [];
 

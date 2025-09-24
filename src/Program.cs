@@ -53,3 +53,5 @@ app.MapRecipeApi();
 app.MapRecipeSearch();
 
 app.Run();
+
+public partial class Program { }

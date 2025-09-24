@@ -227,8 +227,9 @@ public partial class AppDbContext : DbContext
         modelBuilder.Entity<RecipeTag>(entity =>
         {
             entity
-                .HasNoKey()
-                .ToTable("Recipe_Tags");
+                // .HasNoKey()
+                .ToTable("Recipe_Tags")
+                .HasKey(e => new { e.RecipeId, e.Recipe_type });
 
             entity.Property(e => e.CustomTagId).HasColumnName("custom_tag_id");
             entity.Property(e => e.NoteId).HasColumnName("note_id");
