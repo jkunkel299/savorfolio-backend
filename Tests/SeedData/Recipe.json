@@ -1,0 +1,18 @@
+[
+    {
+        "name":"Chicken Ragout",
+        "servings":4,
+        "cook_time":"20 minutes",
+        "prep_time":"10 minutes",
+        "bake_temp":null,
+        "temp_unit":null
+    },
+    {
+        "name":"Fall Spice Chocolate Chip Cookies",
+        "servings":8,
+        "cook_time":"10 minutes",
+        "prep_time":"15 minutes",
+        "bake_temp":400,
+        "temp_unit":"F"
+    }
+]

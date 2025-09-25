@@ -44,7 +44,7 @@ public class InMemoryDbSeeder
         var json = File.ReadAllText(variantFilePath);
         if (string.IsNullOrWhiteSpace(json)) return;
 
-        var variants = JsonSerializer.Deserialize<List<IngredientVariant>>(json, JsonOptions) ?? new List<IngredientVariant>();
+        var variants = JsonSerializer.Deserialize<List<IngredientVariant>>(json, JsonOptions) ?? [];
 
         // Clear existing variants
         var existing = context.IngredientVariants.AsQueryable().ToList();
@@ -71,6 +71,44 @@ public class InMemoryDbSeeder
         }
 
         context.IngredientVariants.AddRange(variants);
+        context.SaveChanges();
+    }
+
+    public static void SeedIngredientListsFromJson(AppDbContext context, string ingListFilePath)
+    {
+        if (!File.Exists(ingListFilePath))
+            throw new FileNotFoundException($"Seed file not found: {ingListFilePath}");
+
+        var json = File.ReadAllText(ingListFilePath);
+        if (string.IsNullOrWhiteSpace(json)) return;
+
+        var ingredientLists = JsonSerializer.Deserialize<List<IngredientList>>(json, JsonOptions) ?? [];
+
+        // Clear existing ingredient list items
+        var existing = context.IngredientLists.AsQueryable().ToList();
+        if (existing.Count != 0)
+        {
+            context.IngredientLists.RemoveRange(existing);
+            context.SaveChanges();
+        }
+
+        // If JSON included nested Recipe objects, resolve them to RecipeId
+        foreach (var i in ingredientLists)
+        {
+            if (i.Recipe != null)
+            {
+                // attempt to find by name first
+                var matchedRecipe = context.Recipes.FirstOrDefault(r => r.Name == i.Recipe.Name);
+                if (matchedRecipe != null)
+                {
+                    i.RecipeId = matchedRecipe.Id;
+                }
+                // // drop the navigation object to avoid EF trying to insert duplicates
+                // i.Recipe = null;
+            }
+        }
+
+        context.IngredientLists.AddRange(ingredientLists);
         context.SaveChanges();
     }
 }

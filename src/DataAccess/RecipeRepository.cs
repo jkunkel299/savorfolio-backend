@@ -9,15 +9,7 @@ public class RecipeRepository(AppDbContext context)
 {
     private readonly AppDbContext _context = context;
 
-    public async Task<List<Recipe>> ReturnAllRecipes()
-    {
-        var result = await _context.Recipes
-            .OrderBy(i => i.Name)
-            .ToListAsync();
-
-        return result;
-    }
-
+    // queries recipe database for recipes, including filtering
     public async Task<List<RecipeDTO>> ReturnRecipesFiltered(RecipeFilterRequestDTO filter)
     {
         var query = _context.Recipes.AsQueryable();
@@ -63,7 +55,7 @@ public class RecipeRepository(AppDbContext context)
                         UnitName = ri.Unit.Name,
                     }).ToList()
             });
-            
+
         return await result.ToListAsync();
 
     }

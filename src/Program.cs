@@ -49,7 +49,6 @@ var app = builder.Build();
 app.UseCors("AllowAll");
 
 app.MapIngredientApi();
-app.MapRecipeApi();
 app.MapRecipeSearch();
 
 app.Run();

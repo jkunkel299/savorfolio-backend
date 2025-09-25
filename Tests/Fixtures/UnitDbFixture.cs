@@ -19,13 +19,19 @@ public class UnitDbFixture : IDisposable
 
         Context.IngredientVariants.RemoveRange(Context.IngredientVariants);
         Context.IngredientTypes.RemoveRange(Context.IngredientTypes);
+        Context.Recipes.RemoveRange(Context.Recipes);
+        Context.IngredientLists.RemoveRange(Context.IngredientLists);
         Context.SaveChanges();
-        
+
         string ingTypeFilePath = TestFileHelper.GetProjectPath("SeedData/Ingredient_Types1.json");
         string ingVariantFilePath = TestFileHelper.GetProjectPath("SeedData/Ingredient_Variants1.json");
+        string recipeFilePath = TestFileHelper.GetProjectPath("SeedData/Recipe.json");
+        string ingListFilePath = TestFileHelper.GetProjectPath("SeedData/Ingredient_Lists.json");
 
         InMemoryDbSeeder.SeedFromJson<IngredientType>(Context, ingTypeFilePath);
         InMemoryDbSeeder.SeedVariantsFromJson(Context, ingVariantFilePath);
+        InMemoryDbSeeder.SeedFromJson<Recipe>(Context, recipeFilePath);
+        InMemoryDbSeeder.SeedIngredientListsFromJson(Context, ingListFilePath);
     }
 
     public void Dispose()

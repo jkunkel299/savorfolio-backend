@@ -22,36 +22,11 @@ public class IngredientRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixt
         // initialize expected result as string, convert to JSON
         string expectedJson = """
         [
-            {
-                "Id": 143,
-                "Name": "chicken",
-                "TypeId": 7,
-                "IngredientCategory": "Protein"
-            },
-            {
-                "Id": 144,
-                "Name": "chicken breast",
-                "TypeId": 7,
-                "IngredientCategory": "Protein"
-            },
-            {
-                "Id": 251,
-                "Name": "chicken broth",
-                "TypeId": 4,
-                "IngredientCategory": "Broth & Stock"
-            },
-            {
-                "Id": 20,
-                "Name": "chicken stock",
-                "TypeId": 4,
-                "IngredientCategory": "Broth & Stock"
-            },
-            {
-                "Id": 145,
-                "Name": "chicken thigh",
-                "TypeId": 7,
-                "IngredientCategory": "Protein"
-            }
+            {"Id": 143,"Name": "chicken","TypeId": 7,"IngredientCategory": "Protein"},
+            {"Id": 144,"Name": "chicken breast","TypeId": 7,"IngredientCategory": "Protein"},
+            {"Id": 251,"Name": "chicken broth","TypeId": 4,"IngredientCategory": "Broth & Stock"},
+            {"Id": 20,"Name": "chicken stock","TypeId": 4,"IngredientCategory": "Broth & Stock"},
+            {"Id": 145,"Name": "chicken thigh","TypeId": 7,"IngredientCategory": "Protein"}
         ]
         """;
         JToken expectedToken = JToken.Parse(expectedJson);
@@ -62,7 +37,7 @@ public class IngredientRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixt
         // Convert Result to JSON
         var actualJson = JsonConvert.SerializeObject(result);
         JToken actualToken = JToken.Parse(actualJson);
-        Console.Write(actualJson);
+
         // Assert Equal
         Assert.True(JToken.DeepEquals(expectedToken, actualToken));
 
