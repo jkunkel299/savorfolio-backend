@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using savorfolio_backend.Data;
-using savorfolio_backend.Models;
+using savorfolio_backend.Interfaces;
 using savorfolio_backend.Models.DTOs;
 
 namespace savorfolio_backend.DataAccess;
 
-public class RecipeRepository(AppDbContext context)
+public class RecipeRepository(AppDbContext context) : IRecipeRepository
 {
     private readonly AppDbContext _context = context;
 
@@ -43,12 +43,16 @@ public class RecipeRepository(AppDbContext context)
                 Servings = r.Servings,
                 CookTime = r.CookTime,
                 PrepTime = r.PrepTime,
+                BakeTemp = r.BakeTemp,
+                Temp_unit = r.Temp_unit,
                 Ingredients = r.IngredientLists
+                    .OrderBy(ri => ri.IngredientOrder)
                     .Select(ri => new IngredientListDTO
                     {
                         Id = ri.IngredientId,
                         RecipeId = ri.RecipeId,
                         IngredientId = ri.Ingredient.Id,
+                        IngredientOrder = ri.IngredientOrder,
                         IngredientName = ri.Ingredient.Name,
                         Quantity = ri.Quantity,
                         UnitId = ri.UnitId,

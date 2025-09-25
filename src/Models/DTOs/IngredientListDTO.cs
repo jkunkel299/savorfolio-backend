@@ -6,7 +6,9 @@ public class IngredientListDTO
 
     public int RecipeId { get; set; }
 
-    // public int? SectionId { get; set; }
+    // public int? SectionId { get; set; }.
+
+    public int IngredientOrder { get; set; }
 
     public int IngredientId { get; set; }
 

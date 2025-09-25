@@ -7,21 +7,17 @@ using savorfolio_backend.Models.DTOs;
 
 namespace Tests.Fixtures;
 
-public class UnitDbFixture : IDisposable
+public class SqliteDbFixture : IDisposable
 {
     public AppDbContext Context { get; }
 
-    public UnitDbFixture()
+    public SqliteDbFixture()
     {
-        // var connection = new SqliteConnection("DataSource=:memory:");
-        // connection.Open();
+        var connection = new SqliteConnection("DataSource=:memory:");
+        connection.Open();
 
-        // var options = new DbContextOptionsBuilder<AppDbContext>()
-        //     .UseSqlite(connection)
-        //     .Options;
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("UnitTestsDb")
-            .EnableSensitiveDataLogging()
+            .UseSqlite(connection)
             .Options;
 
         Context = new AppDbContext(options);

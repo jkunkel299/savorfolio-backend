@@ -12,7 +12,7 @@ public class IngredientServiceTests()
         // initialize search term
         string searchTerm = "chicken";
 
-        // mock mock ingredient repository interface
+        // mock ingredient repository interface
         var mockDependency = new Mock<IIngredientRepository>();
         // mock IngredientService
         var ingredientService = new IngredientService(mockDependency.Object);

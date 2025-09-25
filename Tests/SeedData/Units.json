@@ -1,0 +1,187 @@
+[
+    {
+        "Id": 1,
+        "Name": "Teaspoon",
+        "Abbreviation": "tsp"
+    },
+    {
+        "Id": 2,
+        "Name": "Tablespoon",
+        "Abbreviation": "tbsp"
+    },
+    {
+        "Id": 3,
+        "Name": "Fluid Ounce",
+        "Abbreviation": "fl oz"
+    },
+    {
+        "Id": 4,
+        "Name": "Cup",
+        "Abbreviation": "c"
+    },
+    {
+        "Id": 5,
+        "Name": "Pint",
+        "Abbreviation": "pt"
+    },
+    {
+        "Id": 6,
+        "Name": "Quart",
+        "Abbreviation": "qt"
+    },
+    {
+        "Id": 7,
+        "Name": "Gallon",
+        "Abbreviation": "gal"
+    },
+    {
+        "Id": 8,
+        "Name": "Milliliter",
+        "Abbreviation": "mL"
+    },
+    {
+        "Id": 9,
+        "Name": "Liter",
+        "Abbreviation": "L"
+    },
+    {
+        "Id": 10,
+        "Name": "Deciliter",
+        "Abbreviation": "dL"
+    },
+    {
+        "Id": 11,
+        "Name": "Ounce",
+        "Abbreviation": "oz"
+    },
+    {
+        "Id": 12,
+        "Name": "Pound",
+        "Abbreviation": "lb"
+    },
+    {
+        "Id": 13,
+        "Name": "Gram",
+        "Abbreviation": "g"
+    },
+    {
+        "Id": 14,
+        "Name": "Kilogram",
+        "Abbreviation": "kg"
+    },
+    {
+        "Id": 15,
+        "Name": "Milligram",
+        "Abbreviation": "mg"
+    },
+    {
+        "Id": 16,
+        "Name": "Inch",
+        "Abbreviation": "in"
+    },
+    {
+        "Id": 17,
+        "Name": "Centimeter",
+        "Abbreviation": "cm"
+    },
+    {
+        "Id": 18,
+        "Name": "Pinch",
+        "Abbreviation": "pinch"
+    },
+    {
+        "Id": 19,
+        "Name": "Dash",
+        "Abbreviation": "dash"
+    },
+    {
+        "Id": 20,
+        "Name": "Drop",
+        "Abbreviation": "drop"
+    },
+    {
+        "Id": 21,
+        "Name": "Smidgen",
+        "Abbreviation": "sm"
+    },
+    {
+        "Id": 22,
+        "Name": "Handful",
+        "Abbreviation": "handful"
+    },
+    {
+        "Id": 23,
+        "Name": "Splash",
+        "Abbreviation": "splash"
+    },
+    {
+        "Id": 24,
+        "Name": "Clove",
+        "Abbreviation": "clove"
+    },
+    {
+        "Id": 25,
+        "Name": "Stick",
+        "Abbreviation": "stick"
+    },
+    {
+        "Id": 26,
+        "Name": "Can",
+        "Abbreviation": "can"
+    },
+    {
+        "Id": 27,
+        "Name": "Jar",
+        "Abbreviation": "jar"
+    },
+    {
+        "Id": 28,
+        "Name": "Package",
+        "Abbreviation": "pkg"
+    },
+    {
+        "Id": 29,
+        "Name": "Bunch",
+        "Abbreviation": "bunch"
+    },
+    {
+        "Id": 30,
+        "Name": "Slice",
+        "Abbreviation": "slice"
+    },
+    {
+        "Id": 31,
+        "Name": "Piece",
+        "Abbreviation": "piece"
+    },
+    {
+        "Id": 32,
+        "Name": "Fillet",
+        "Abbreviation": "fillet"
+    },
+    {
+        "Id": 33,
+        "Name": "Sheet",
+        "Abbreviation": "sheet"
+    },
+    {
+        "Id": 34,
+        "Name": "Leaf",
+        "Abbreviation": "leaf"
+    },
+    {
+        "Id": 35,
+        "Name": "Whole",
+        "Abbreviation": "whole"
+    },
+    {
+        "Id": 36,
+        "Name": "Head",
+        "Abbreviation": "head"
+    },
+    {
+        "Id": 37,
+        "Name": "to taste",
+        "Abbreviation": "to taste"
+    }
+]

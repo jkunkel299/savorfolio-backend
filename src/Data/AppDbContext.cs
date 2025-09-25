@@ -82,6 +82,7 @@ public partial class AppDbContext : DbContext
                 .HasColumnName("quantity");
             entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
             entity.Property(e => e.SectionId).HasColumnName("section_id");
+            entity.Property(e => e.IngredientOrder).HasColumnName("ingredient_order");
             entity.Property(e => e.UnitId).HasColumnName("unit_id");
 
             entity.HasOne(d => d.Ingredient).WithMany(p => p.IngredientLists)
@@ -194,7 +195,7 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("cook_time");
             entity.Property(e => e.Name)
-                .HasMaxLength(40)
+                .HasMaxLength(200)
                 .HasColumnName("name");
             entity.Property(e => e.PrepTime)
                 .HasMaxLength(20)

@@ -41,8 +41,8 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(
 builder.Services.AddScoped<IIngredientService, IngredientService>();
 builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 // Recipe services 
-builder.Services.AddScoped<RecipeService>();
-builder.Services.AddScoped<RecipeRepository>();
+builder.Services.AddScoped<IRecipeService, RecipeService>();
+builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 
 var app = builder.Build();
 

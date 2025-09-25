@@ -1,12 +1,11 @@
-using savorfolio_backend.DataAccess;
-using savorfolio_backend.Models;
+using savorfolio_backend.Interfaces;
 using savorfolio_backend.Models.DTOs;
 
 namespace savorfolio_backend.LogicLayer;
 
-public class RecipeService(RecipeRepository recipeRepository)
+public class RecipeService(IRecipeRepository recipeRepository) : IRecipeService
 {
-    private readonly RecipeRepository _recipeRepository = recipeRepository;
+    private readonly IRecipeRepository _recipeRepository = recipeRepository;
 
     public async Task<List<RecipeDTO>> SearchRecipesAsync(RecipeFilterRequestDTO filter)
     {

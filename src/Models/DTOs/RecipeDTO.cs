@@ -14,7 +14,7 @@ public class RecipeDTO
 
     public int? BakeTemp { get; set; }
 
-    public TempUnitsTag? Temp_unit { get; set; }
+    public string? Temp_unit { get; set; }
 
     public List<IngredientListDTO> Ingredients { get; set; } = [];
 

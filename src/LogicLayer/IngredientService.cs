@@ -3,7 +3,7 @@ using savorfolio_backend.Interfaces;
 
 namespace savorfolio_backend.LogicLayer;
 
-public class IngredientService(IIngredientRepository ingredientRepository) : IIngredientService//IngredientRepository ingredientRepository
+public class IngredientService(IIngredientRepository ingredientRepository) : IIngredientService
 {
     private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
 

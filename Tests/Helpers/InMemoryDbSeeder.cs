@@ -1,12 +1,16 @@
 using savorfolio_backend.Data;
 using savorfolio_backend.Models;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Tests.Helpers;
 
 public class InMemoryDbSeeder
 {
-    private static JsonSerializerOptions JsonOptions => new() { PropertyNameCaseInsensitive = true };
+    private static JsonSerializerOptions JsonOptions => new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
 
     // Generic seeder for simple entity lists
     public static void SeedFromJson<T>(AppDbContext context, string filePath) where T : class

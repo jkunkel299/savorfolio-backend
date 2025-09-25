@@ -3,15 +3,23 @@ using Tests.Fixtures;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using savorfolio_backend.Models.DTOs;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
+using Microsoft.VisualBasic;
+using Tests.Helpers;
+using savorfolio_backend.Models;
 
 namespace Tests.DataAccessTests;
 
-[Collection("Unit test database Collection")]
-public class RecipeRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixture<UnitDbFixture>
+[Collection("SQLite test database Collection")]
+public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixture<SqliteDbFixture>
 {
-    private readonly RecipeRepository _repository = new(unitDbFixture.Context);
+    private readonly RecipeRepository _repository = new(sqliteDbFixture.Context);
+    private static readonly List<RecipeDTO> _expectedRecipes;
+
+    static RecipeRepositoryTests()
+    {
+        string recipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/RecipeDTOs.json");
+        _expectedRecipes = [.. JsonToList.JsonFileToList<RecipeDTO>(recipeFilePath).OrderBy(r => r.Id)];
+    }
 
     [Fact]
     public async Task RecipeSearchEmpty()
@@ -20,19 +28,16 @@ public class RecipeRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixture<
         var request = new RecipeFilterRequestDTO();
 
         // initialize expected result as string, convert to JSON
-        string expectedJson = """
-        [
-            {"Name":"Chicken Ragout","Servings":4,"CookTime":"20 minutes","PrepTime":"10 minutes","BakeTemp":null,"Temp_unit":null},
-            {"Name":"Fall Spice Chocolate Chip Cookies","Servings":8,"CookTime":"10 minutes","PrepTime":"15 minutes","BakeTemp":400,"Temp_unit":"F"}
-        ]
-        """;
+        List<RecipeDTO> recipesExpected = _expectedRecipes;
+        string expectedJson = JsonConvert.SerializeObject(recipesExpected);
         JToken expectedToken = JToken.Parse(expectedJson);
 
         // Call ReturnRecipesFiltered with empty search term - should return all recipes
         var result = await _repository.ReturnRecipesFiltered(request);
+        var orderedResult = result.OrderBy(r => r.Id).ToList();
 
         // Convert result to JSON
-        var actualJson = JsonConvert.SerializeObject(result);
+        var actualJson = JsonConvert.SerializeObject(orderedResult);
         JToken actualToken = JToken.Parse(actualJson);
 
         // Assert equal
@@ -43,26 +48,14 @@ public class RecipeRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixture<
 
     [Theory]
     // include chicken
-    [InlineData(new int[] { 143 }, """
-    [
-        {"Name":"Chicken Ragout","Servings":4,"CookTime":"20 minutes","PrepTime":"10 minutes","BakeTemp":null,"Temp_unit":null},
-    ]
-    """)]
+    [InlineData(new int[] { 143 })]
     // include chicken and white cooking wine
-    [InlineData(new int[] { 143, 2 }, """
-    [
-        {"Name":"Chicken Ragout","Servings":4,"CookTime":"20 minutes","PrepTime":"10 minutes","BakeTemp":null,"Temp_unit":null},
-    ]
-    """)]
+    [InlineData(new int[] { 143, 2 })]
     // include semi-sweet chocolate chips
-    [InlineData(new int[] { 38 }, """
-    [
-        {"Name":"Fall Spice Chocolate Chip Cookies","Servings":8,"CookTime":"10 minutes","PrepTime":"15 minutes","BakeTemp":400,"Temp_unit":"F"}
-    ]
-    """)]
+    [InlineData(new int[] { 38 })]
     // include pear (should not return matching recipes)
-    [InlineData(new int[] { 61 }, """[]""")]
-    public async Task RecipeSearchIncludeIngredients(int[] includeIngredients, string expectedJson)
+    [InlineData(new int[] { 61 })]
+    public async Task RecipeSearchIncludeIngredients(int[] includeIngredients)
     {
         // initialize filter to include ingredients in test case
         var request = new RecipeFilterRequestDTO
@@ -70,7 +63,13 @@ public class RecipeRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixture<
             IncludeIngredients = [.. includeIngredients]
         };
 
-        // initialize convert expected result string to JSON
+        // manipulate _expectedRecipes to get appropriate expected
+        var recipesExpected = _expectedRecipes
+            .Where(r => request.IncludeIngredients.All(ingId =>
+                r.Ingredients.Any(ri => ri.IngredientId == ingId)))
+            .OrderBy(r => r.Id)
+            .ToList();
+        string expectedJson = JsonConvert.SerializeObject(recipesExpected);
         JToken expectedToken = JToken.Parse(expectedJson);
 
         // Call ReturnRecipesFiltered with empty search term - should return all recipes
@@ -88,27 +87,16 @@ public class RecipeRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixture<
 
     [Theory]
     // exclude chicken
-    [InlineData(new int[] { 143 }, """
-    [
-        {"Name":"Fall Spice Chocolate Chip Cookies","Servings":8,"CookTime":"10 minutes","PrepTime":"15 minutes","BakeTemp":400,"Temp_unit":"F"}
-    ]
-    """)]
+    [InlineData(new int[] { 143 })]
     // exclude chicken and chocolate chips (should not return any recipes)
-    [InlineData(new int[] { 143, 2 }, """[]""")]
+    [InlineData(new int[] { 143, 38 })]
     // exclude semi-sweet chocolate chips
-    [InlineData(new int[] { 38 }, """
-    [
-        {"Name":"Chicken Ragout","Servings":4,"CookTime":"20 minutes","PrepTime":"10 minutes","BakeTemp":null,"Temp_unit":null}
-    ]
-    """)]
+    [InlineData(new int[] { 38 })]
     // exclude pear (should return both recipes)
-    [InlineData(new int[] { 61 }, """
-    [
-        {"Name":"Chicken Ragout","Servings":4,"CookTime":"20 minutes","PrepTime":"10 minutes","BakeTemp":null,"Temp_unit":null},
-        {"Name":"Fall Spice Chocolate Chip Cookies","Servings":8,"CookTime":"10 minutes","PrepTime":"15 minutes","BakeTemp":400,"Temp_unit":"F"}
-    ]
-    """)]
-    public async Task RecipeSearchExcludeIngredients(int[] excludeIngredients, string expectedJson)
+    [InlineData(new int[] { 61 })]
+    // [MemberData(nameof(RecipeSearchTestCasesExclude))]
+    // [Fact]
+    public async Task RecipeSearchExcludeIngredients(int[] excludeIngredients)
     {
         // initialize filter to include ingredients in test case
         var request = new RecipeFilterRequestDTO
@@ -116,7 +104,14 @@ public class RecipeRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixture<
             IncludeIngredients = [.. excludeIngredients]
         };
 
+        // manipulate _expectedRecipes to get appropriate expected
+        var recipesExpected = _expectedRecipes
+            .Where(r => request.IncludeIngredients.All(ingId =>
+                r.Ingredients.Any(ri => ri.IngredientId == ingId)))
+            .OrderBy(r => r.Id)
+            .ToList();
         // initialize convert expected result string to JSON
+        string expectedJson = JsonConvert.SerializeObject(recipesExpected);
         JToken expectedToken = JToken.Parse(expectedJson);
 
         // Call ReturnRecipesFiltered with empty search term - should return all recipes

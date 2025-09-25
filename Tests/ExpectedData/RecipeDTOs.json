@@ -1,0 +1,284 @@
+[
+    {
+        "id": 1,
+        "name": "Chicken Ragout",
+        "servings": 4,
+        "cookTime": "20 minutes",
+        "prepTime": "10 minutes",
+        "bakeTemp": null,
+        "temp_unit": null,
+        "ingredients": [
+            {
+                "id": 143,
+                "recipeId": 1,
+                "ingredientOrder": 1,
+                "ingredientId": 143,
+                "ingredientName": "chicken",
+                "quantity": "1.5",
+                "unitId": 12,
+                "unitName": "Pound"
+            },
+            {
+                "id": 221,
+                "recipeId": 1,
+                "ingredientOrder": 2,
+                "ingredientId": 221,
+                "ingredientName": "onion",
+                "quantity": "1",
+                "unitId": 35,
+                "unitName": "Whole"
+            },
+            {
+                "id": 24,
+                "recipeId": 1,
+                "ingredientOrder": 3,
+                "ingredientId": 24,
+                "ingredientName": "butter, salted",
+                "quantity": "3 1/3",
+                "unitId": 2,
+                "unitName": "Tablespoon"
+            },
+            {
+                "id": 250,
+                "recipeId": 1,
+                "ingredientOrder": 4,
+                "ingredientId": 250,
+                "ingredientName": "salt",
+                "quantity": null,
+                "unitId": 37,
+                "unitName": "to taste"
+            },
+            {
+                "id": 189,
+                "recipeId": 1,
+                "ingredientOrder": 5,
+                "ingredientId": 189,
+                "ingredientName": "black pepper",
+                "quantity": null,
+                "unitId": 37,
+                "unitName": "to taste"
+            },
+            {
+                "id": 54,
+                "recipeId": 1,
+                "ingredientOrder": 6,
+                "ingredientId": 54,
+                "ingredientName": "all-purpose flour",
+                "quantity": "2",
+                "unitId": 2,
+                "unitName": "Tablespoon"
+            },
+            {
+                "id": 251,
+                "recipeId": 1,
+                "ingredientOrder": 7,
+                "ingredientId": 251,
+                "ingredientName": "chicken broth",
+                "quantity": "1.5",
+                "unitId": 4,
+                "unitName": "Cup"
+            },
+            {
+                "id": 252,
+                "recipeId": 1,
+                "ingredientOrder": 8,
+                "ingredientId": 252,
+                "ingredientName": "lemon juice",
+                "quantity": "2",
+                "unitId": 2,
+                "unitName": "Tablespoon"
+            },
+            {
+                "id": 2,
+                "recipeId": 1,
+                "ingredientOrder": 9,
+                "ingredientId": 2,
+                "ingredientName": "white wine",
+                "quantity": "3",
+                "unitId": 2,
+                "unitName": "Tablespoon"
+            },
+            {
+                "id": 162,
+                "recipeId": 1,
+                "ingredientOrder": 10,
+                "ingredientId": 162,
+                "ingredientName": "egg yolk",
+                "quantity": "1",
+                "unitId": 35,
+                "unitName": "Whole"
+            },
+            {
+                "id": 50,
+                "recipeId": 1,
+                "ingredientOrder": 11,
+                "ingredientId": 50,
+                "ingredientName": "heavy cream",
+                "quantity": "0.5",
+                "unitId": 4,
+                "unitName": "Cup"
+            },
+            {
+                "id": 94,
+                "recipeId": 1,
+                "ingredientOrder": 12,
+                "ingredientId": 94,
+                "ingredientName": "chives",
+                "quantity": null,
+                "unitId": 37,
+                "unitName": "to taste"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Fall Spice Chocolate Chip Cookies",
+        "servings": 8,
+        "cookTime": "10 minutes",
+        "prepTime": "15 minutes",
+        "bakeTemp": 400,
+        "temp_unit": "F",
+        "ingredients": [
+            {
+                "id": 24,
+                "recipeId": 2,
+                "ingredientOrder": 1,
+                "ingredientId": 24,
+                "ingredientName": "butter, salted",
+                "quantity": "12",
+                "unitId": 2,
+                "unitName": "Tablespoon"
+            },
+            {
+                "id": 200,
+                "recipeId": 2,
+                "ingredientOrder": 2,
+                "ingredientId": 200,
+                "ingredientName": "brown sugar",
+                "quantity": "0.5",
+                "unitId": 4,
+                "unitName": "Cup"
+            },
+            {
+                "id": 199,
+                "recipeId": 2,
+                "ingredientOrder": 3,
+                "ingredientId": 199,
+                "ingredientName": "white sugar",
+                "quantity": "0.5",
+                "unitId": 4,
+                "unitName": "Cup"
+            },
+            {
+                "id": 159,
+                "recipeId": 2,
+                "ingredientOrder": 4,
+                "ingredientId": 159,
+                "ingredientName": "egg",
+                "quantity": "1",
+                "unitId": 35,
+                "unitName": "Whole"
+            },
+            {
+                "id": 205,
+                "recipeId": 2,
+                "ingredientOrder": 5,
+                "ingredientId": 205,
+                "ingredientName": "molasses",
+                "quantity": "2",
+                "unitId": 2,
+                "unitName": "Tablespoon"
+            },
+            {
+                "id": 54,
+                "recipeId": 2,
+                "ingredientOrder": 6,
+                "ingredientId": 54,
+                "ingredientName": "all-purpose flour",
+                "quantity": "2",
+                "unitId": 4,
+                "unitName": "Cup"
+            },
+            {
+                "id": 97,
+                "recipeId": 2,
+                "ingredientOrder": 7,
+                "ingredientId": 97,
+                "ingredientName": "baking soda",
+                "quantity": "1",
+                "unitId": 1,
+                "unitName": "Teaspoon"
+            },
+            {
+                "id": 253,
+                "recipeId": 2,
+                "ingredientOrder": 8,
+                "ingredientId": 253,
+                "ingredientName": "corn starch",
+                "quantity": "1",
+                "unitId": 1,
+                "unitName": "Teaspoon"
+            },
+            {
+                "id": 250,
+                "recipeId": 2,
+                "ingredientOrder": 9,
+                "ingredientId": 250,
+                "ingredientName": "salt",
+                "quantity": "0.5",
+                "unitId": 1,
+                "unitName": "Teaspoon"
+            },
+            {
+                "id": 185,
+                "recipeId": 2,
+                "ingredientOrder": 10,
+                "ingredientId": 185,
+                "ingredientName": "cinnamon",
+                "quantity": "1",
+                "unitId": 1,
+                "unitName": "Teaspoon"
+            },
+            {
+                "id": 188,
+                "recipeId": 2,
+                "ingredientOrder": 11,
+                "ingredientId": 188,
+                "ingredientName": "ginger, ground",
+                "quantity": "1.25",
+                "unitId": 1,
+                "unitName": "Teaspoon"
+            },
+            {
+                "id": 186,
+                "recipeId": 2,
+                "ingredientOrder": 12,
+                "ingredientId": 186,
+                "ingredientName": "nutmeg",
+                "quantity": "0.5",
+                "unitId": 1,
+                "unitName": "Teaspoon"
+            },
+            {
+                "id": 187,
+                "recipeId": 2,
+                "ingredientOrder": 13,
+                "ingredientId": 187,
+                "ingredientName": "cloves",
+                "quantity": "1/8",
+                "unitId": 1,
+                "unitName": "Teaspoon"
+            },
+            {
+                "id": 38,
+                "recipeId": 2,
+                "ingredientOrder": 14,
+                "ingredientId": 38,
+                "ingredientName": "semi-sweet chocolate chips",
+                "quantity": "1 1/2",
+                "unitId": 4,
+                "unitName": "Cup"
+            }
+        ]
+    }
+]

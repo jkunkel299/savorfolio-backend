@@ -19,7 +19,7 @@ public class IngredientControllerTests()
         var mockDependency = new Mock<IIngredientService>();
 
         // call endpoint
-        _ = await IngredientEndpointsTestHelper.InvokeSearchEndpoint(searchTerm, mockDependency.Object);
+        _ = await IngredientEndpointsHelper.InvokeSearchEndpoint(searchTerm, mockDependency.Object);
 
         // assert mocked function called once
         mockDependency.Verify(d => d.SearchIngredientsAsync(searchTerm), Times.Once);
@@ -38,7 +38,7 @@ public class IngredientControllerTests()
         var mockDependency = new Mock<IIngredientService>();
 
         // call endpoint
-        IResult result = await IngredientEndpointsTestHelper.InvokeSearchEndpoint(searchTerm, mockDependency.Object);
+        IResult result = await IngredientEndpointsHelper.InvokeSearchEndpoint(searchTerm, mockDependency.Object);
 
         // check result is BadRequest<string>
         Assert.IsType<BadRequest<string>>(result);
