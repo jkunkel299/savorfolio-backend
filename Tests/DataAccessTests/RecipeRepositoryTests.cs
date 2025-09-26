@@ -5,7 +5,6 @@ using Newtonsoft.Json.Linq;
 using savorfolio_backend.Models.DTOs;
 using Microsoft.VisualBasic;
 using Tests.Helpers;
-using savorfolio_backend.Models;
 
 namespace Tests.DataAccessTests;
 

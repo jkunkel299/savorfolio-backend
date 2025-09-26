@@ -5,8 +5,6 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http.Json;
 using savorfolio_backend.Models.DTOs;
 using System.Net;
-using Azure;
-using savorfolio_backend.Models;
 
 namespace IntegrationTests.TestFiles;
 
@@ -69,24 +67,23 @@ public class IngredientSearchIntegrationTests(DatabaseFixture databaseFixture, T
         ]
         """;
         var expected = JsonConvert.DeserializeObject<List<IngredientVariantDTO>>(expectedJson);
+        JToken expectedToken = JToken.Parse(expectedJson);
 
         var response = await _client.GetAsync(url);
-        var actual = await response.Content.ReadFromJsonAsync<List<IngredientVariantDTO>>();
+        var ingredients = await response.Content.ReadFromJsonAsync<List<IngredientVariantDTO>>();
+        var orderedResult = ingredients!.OrderBy(i => i.Name).ToList();
 
-        // assert status code 200
+        // Convert result to JSON token
+        var actualJson = JsonConvert.SerializeObject(orderedResult);
+        JToken actualToken = JToken.Parse(actualJson);
+
+        // Assert status code 200
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         // Assert results not null
-        Assert.NotNull(response.Content);
+        Assert.NotNull(ingredients);
 
-        // assert result expected
-        Assert.Equal(expected!.Count, actual!.Count);
-        for (int i = 0; i < expected.Count; i++)
-        {
-            Assert.Equal(expected[i].Id, actual[i].Id);
-            Assert.Equal(expected[i].Name, actual[i].Name);
-            Assert.Equal(expected[i].TypeId, actual[i].TypeId);
-            Assert.Equal(expected[i].IngredientCategory, actual[i].IngredientCategory);
-        }
+        // Assert equal
+        Assert.True(JToken.DeepEquals(expectedToken, actualToken));
     }
 }

@@ -1,3 +1,4 @@
+
 namespace savorfolio_backend.Models.DTOs;
 
 public class RecipeDTO
@@ -17,6 +18,11 @@ public class RecipeDTO
     public string? Temp_unit { get; set; }
 
     public List<IngredientListDTO> Ingredients { get; set; } = [];
+
+    public static implicit operator List<object>(RecipeDTO v)
+    {
+        throw new NotImplementedException();
+    }
 
     // public virtual Instruction? Instruction { get; set; }
 
