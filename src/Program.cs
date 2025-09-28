@@ -51,6 +51,9 @@ app.UseCors("AllowAll");
 app.MapIngredientApi();
 app.MapRecipeSearch();
 
+// add health endpoint for E2E testing with Playwright
+app.MapGet("/health", () => Results.Ok("healthy"));
+
 app.Run();
 
 public partial class Program { }
