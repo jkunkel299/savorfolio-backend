@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      dotnet: 9
+    commands:
+      - echo Installing...
+  pre_build:
+    commands:
+      - echo Restoring...
+      - dotnet restore
+  build:
+    commands:
+      - echo Publishing...
+      - dotnet publish ./src/savorfolio-backend.csproj -c Release -o ./publish
+artifacts:
+  files:
+    - '**/*'
+  base-directory: publish

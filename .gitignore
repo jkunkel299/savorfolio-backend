@@ -2,3 +2,6 @@ appsettings.Development.json
 bin/
 obj/
 .env
+integrationTests.env
+unitTests.env
+publish/

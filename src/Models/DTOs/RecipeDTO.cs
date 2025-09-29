@@ -18,15 +18,4 @@ public class RecipeDTO
     public string? Temp_unit { get; set; }
 
     public List<IngredientListDTO> Ingredients { get; set; } = [];
-
-    public static implicit operator List<object>(RecipeDTO v)
-    {
-        throw new NotImplementedException();
-    }
-
-    // public virtual Instruction? Instruction { get; set; }
-
-    // public virtual ICollection<Note> Notes { get; set; } = [];
-
-    // public virtual ICollection<RecipeSection> RecipeSections { get; set; } = [];
 }
