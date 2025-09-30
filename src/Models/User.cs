@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace savorfolio_backend.Models;
+﻿namespace savorfolio_backend.Models;
 
 public partial class User
 {

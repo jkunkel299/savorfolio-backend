@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace savorfolio_backend.Models;
+﻿namespace savorfolio_backend.Models;
 
 public partial class Instruction
 {
     public int Id { get; set; }
 
-    public int? RecipeId { get; set; }
+    public int RecipeId { get; set; }
 
     public int? SectionId { get; set; }
 
@@ -15,7 +12,7 @@ public partial class Instruction
 
     public string InstructionText { get; set; } = null!;
 
-    public virtual Recipe? Recipe { get; set; }
+    public virtual Recipe Recipe { get; set; } = null!;
 
     public virtual RecipeSection? Section { get; set; }
 }

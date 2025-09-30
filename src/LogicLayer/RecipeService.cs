@@ -1,3 +1,5 @@
+/* Business logic layer for existing recipes */
+
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.Models.DTOs;
 

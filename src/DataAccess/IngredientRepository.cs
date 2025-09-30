@@ -1,3 +1,5 @@
+/* Data access layer to Ingredient_Variants entity */
+
 using Microsoft.EntityFrameworkCore;
 using savorfolio_backend.Data;
 using savorfolio_backend.Interfaces;
@@ -20,15 +22,6 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
                 TypeId = i.TypeId,
                 IngredientCategory = t.Name
             };
-        // var query = _context.IngredientVariants
-        //     .Include(t => t.Type)
-        //     .Select(i => new IngredientVariantDTO
-        //     {
-        //         Id = i.Id,
-        //         Name = i.Name,
-        //         TypeId = i.TypeId,
-        //         IngredientCategory = i.Type.Name
-        //     });
 
         if (_context.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
         {

@@ -1,7 +1,10 @@
+/* Data access layer to Recipe entity */
+
 using Microsoft.EntityFrameworkCore;
 using savorfolio_backend.Data;
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.Models.DTOs;
+using savorfolio_backend.Models;
 
 namespace savorfolio_backend.DataAccess;
 
@@ -61,6 +64,26 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
             });
 
         return await result.ToListAsync();
+    }
 
+    // Add new recipe to database, needs to return at least the recipe ID
+    public async Task<int> AddNewRecipe(RecipeDTO recipeData)
+    {
+        // generate new recipe record to be input into Recipe table
+        var newRecipe = new Recipe
+        {
+            Name = recipeData.Name,
+            Servings = recipeData.Servings,
+            CookTime = recipeData.CookTime,
+            PrepTime = recipeData.PrepTime,
+            BakeTemp = recipeData.BakeTemp,
+            Temp_unit = recipeData.Temp_unit
+        };
+
+        // add new recipe to Recipe table and save changes
+        _context.Recipes.Add(newRecipe);
+        await _context.SaveChangesAsync();
+
+        return newRecipe.Id;
     }
 }

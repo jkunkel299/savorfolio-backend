@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace savorfolio_backend.Models;
+﻿namespace savorfolio_backend.Models;
 
 public partial class Recipe
 {
@@ -21,7 +18,7 @@ public partial class Recipe
 
     public virtual ICollection<IngredientList> IngredientLists { get; set; } = [];
 
-    public virtual Instruction? Instruction { get; set; }
+    public virtual ICollection<Instruction> Instructions { get; set; } = [];
 
     public virtual ICollection<Note> Notes { get; set; } = [];
 

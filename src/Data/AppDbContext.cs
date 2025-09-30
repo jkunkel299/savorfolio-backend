@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using savorfolio_backend.Models;
+using savorfolio_backend.Models.enums;
 
 namespace savorfolio_backend.Data;
 
@@ -17,6 +19,8 @@ public partial class AppDbContext : DbContext
     }
 
     public virtual DbSet<CustomTag> CustomTags { get; set; }
+
+    public virtual DbSet<CustomTagRecipe> CustomTagRecipes { get; set; }
 
     public virtual DbSet<IngredientList> IngredientLists { get; set; }
 
@@ -67,6 +71,28 @@ public partial class AppDbContext : DbContext
                 .HasConstraintName("user_fk");
         });
 
+        // modelBuilder.Ignore<CustomTagRecipe>();
+
+        modelBuilder.Entity<CustomTagRecipe>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Custom_Tag_Recipes");
+
+            entity.Property(e => e.CustomTagId).HasColumnName("custom_tag_id");
+            entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
+
+            entity.HasOne(d => d.CustomTag).WithMany() //p => p.CustomTagRecipes
+                .HasForeignKey(d => d.CustomTagId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("custom_tag_fk");
+
+            entity.HasOne(d => d.Recipe).WithMany()
+                .HasForeignKey(d => d.RecipeId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("recipe_fk");
+        });
+
         modelBuilder.Entity<IngredientList>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("Ingredient_Lists_pkey");
@@ -84,6 +110,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.SectionId).HasColumnName("section_id");
             entity.Property(e => e.IngredientOrder).HasColumnName("ingredient_order");
             entity.Property(e => e.UnitId).HasColumnName("unit_id");
+            entity.Property(e => e.Qualifier).HasColumnName("qualifier");
 
             entity.HasOne(d => d.Ingredient).WithMany(p => p.IngredientLists)
                 .HasForeignKey(d => d.IngredientId)
@@ -140,8 +167,6 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("Instructions_pkey");
 
-            entity.HasIndex(e => e.RecipeId, "Instructions_recipe_id_key").IsUnique();
-
             entity.Property(e => e.Id)
                 .UseIdentityAlwaysColumn()
                 .HasColumnName("id");
@@ -150,9 +175,8 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.SectionId).HasColumnName("section_id");
             entity.Property(e => e.StepNumber).HasColumnName("step_number");
 
-            entity.HasOne(d => d.Recipe).WithOne(p => p.Instruction)
-                .HasForeignKey<Instruction>(d => d.RecipeId)
-                .OnDelete(DeleteBehavior.Cascade)
+            entity.HasOne(d => d.Recipe).WithMany(p => p.Instructions)
+                .HasForeignKey(d => d.RecipeId)
                 .HasConstraintName("recipe_fk");
 
             entity.HasOne(d => d.Section).WithMany(p => p.Instructions)
@@ -232,23 +256,15 @@ public partial class AppDbContext : DbContext
                 .ToTable("Recipe_Tags")
                 .HasKey(e => new { e.RecipeId, e.Recipe_type });
 
-            entity.Property(e => e.CustomTagId).HasColumnName("custom_tag_id");
-            entity.Property(e => e.NoteId).HasColumnName("note_id");
             entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
-            entity.Property(e => e.Meal).HasColumnName("meal_tag");
-            entity.Property(e => e.Recipe_type).HasColumnName("type_tag");
-            entity.Property(e => e.Cuisine).HasColumnName("cuisine_tag");
-            entity.Property(e => e.Dietary).HasColumnName("dietary_tag");
-
-            entity.HasOne(d => d.CustomTag).WithMany()
-                .HasForeignKey(d => d.CustomTagId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("custom_tag_fk");
-
-            entity.HasOne(d => d.Note).WithMany()
-                .HasForeignKey(d => d.NoteId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("note_fk");
+            entity.Property(e => e.Meal).HasColumnName("meal_tag")
+                .HasConversion<string>();
+            entity.Property(e => e.Recipe_type).HasColumnName("type_tag")
+                .HasConversion<string>();
+            entity.Property(e => e.Cuisine).HasColumnName("cuisine_tag")
+                .HasConversion<string>();
+            entity.Property(e => e.Dietary).HasColumnName("dietary_tag")
+                .HasColumnType("text[]");
 
             entity.HasOne(d => d.Recipe).WithMany()
                 .HasForeignKey(d => d.RecipeId)

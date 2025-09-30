@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace savorfolio_backend.Models;
+﻿namespace savorfolio_backend.Models;
 
 public partial class IngredientList
 {
@@ -18,6 +15,8 @@ public partial class IngredientList
     public int UnitId { get; set; }
 
     public int IngredientId { get; set; }
+
+    public string? Qualifier { get; set; } = "";
 
     public virtual IngredientVariant Ingredient { get; set; } = null!;
 

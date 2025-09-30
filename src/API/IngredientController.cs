@@ -1,3 +1,5 @@
+/* API layer for ingredient variant-related functionality, e.g., search for ingredients */
+
 using savorfolio_backend.Interfaces;
 
 namespace savorfolio_backend.API;

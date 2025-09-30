@@ -1,3 +1,5 @@
+/* API Layer for recipe-related functionality */
+
 using Microsoft.AspNetCore.Mvc;
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.Models.DTOs;

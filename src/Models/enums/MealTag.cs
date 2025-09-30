@@ -1,4 +1,4 @@
-namespace savorfolio_backend.Models;
+namespace savorfolio_backend.Models.enums;
 
 public enum MealTag
 {

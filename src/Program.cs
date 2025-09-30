@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using DotNetEnv;
 using savorfolio_backend.Data;
-using savorfolio_backend.Models;
 using savorfolio_backend.Interfaces;
+using savorfolio_backend.Models.enums;
 using savorfolio_backend.LogicLayer;
 using savorfolio_backend.DataAccess;
 using savorfolio_backend.API;
@@ -43,6 +43,10 @@ builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 // Recipe services 
 builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
+builder.Services.AddScoped<IIngListRepository, IngListRepository>();
+builder.Services.AddScoped<IInstructionsRepository, InstructionsRepository>();
+builder.Services.AddScoped<ITagsRepository, TagsRepository>();
+builder.Services.AddScoped<IAddRecipeService, AddRecipeService>();
 
 var app = builder.Build();
 
@@ -50,6 +54,7 @@ app.UseCors("AllowAll");
 
 app.MapIngredientApi();
 app.MapRecipeSearch();
+app.MapManualRecipe();
 
 // add health endpoint for E2E testing with Playwright
 app.MapGet("/health", () => Results.Ok("healthy"));
