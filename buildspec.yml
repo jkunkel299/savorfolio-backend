@@ -14,6 +14,11 @@ phases:
     commands:
       - echo Publishing...
       - dotnet publish ./src/savorfolio-backend.csproj -c Release -o ./publish
+  post_build:
+    commands:
+      - echo Deploying to Elastic Beanstalk...
+      - eb init my-backend --platform "64bit-amazon-linux-2023-v3.5.5-running-.net-9" --region us-east-1
+      - eb deploy Savorfolio-backend-env
 artifacts:
   files:
     - '**/*'
