@@ -13,4 +13,14 @@ public static class EnumExtensions
         var enumMemberAttr = member.GetCustomAttribute<EnumMemberAttribute>();
         return enumMemberAttr?.Value ?? enumValue.ToString();
     }
+
+    public static List<string> GetEnumList<TEnum>() where TEnum : Enum
+    {
+        return [.. typeof(TEnum)
+            .GetFields()
+            .Where(f => f.IsLiteral)
+            .Select(f => f.GetCustomAttributes(typeof(EnumMemberAttribute), false)
+            .Cast<EnumMemberAttribute>()
+            .FirstOrDefault()?.Value ?? f.Name)];
+    }
 }

@@ -7,8 +7,6 @@ require the recipeID. Then can call other repositories. */
 
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.Models.DTOs;
-using savorfolio_backend.Models.enums;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace savorfolio_backend.LogicLayer;
@@ -27,10 +25,6 @@ public class AddRecipeService(
 
     public async Task<OperationResult<int>> AddRecipeManually(JObject newRecipeContent) // modify this to return the full recipe to view?
     {
-        // convert string to JSON
-        // string recipeContentJson = JsonConvert.SerializeObject(newRecipeContent);
-        // JObject parsedRecipeContent = JObject.Parse(recipeContentJson);
-
         // extract recipe information: name, servings, cook time, prep time, bake temp, temp unit
         var newRecipe = (newRecipeContent["RecipeSummary"]?.ToObject<RecipeDTO>()) ?? throw new InvalidOperationException("RecipeSummary section missing or invalid"); // was parsedRecipeContent
 

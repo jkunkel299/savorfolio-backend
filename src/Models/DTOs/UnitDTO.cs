@@ -6,6 +6,6 @@ public class UnitDTO
 
     public string Name { get; set; } = null!;
 
-    public string? Abbreviation { get; set; }
+    public string Abbreviation { get; set; } = null!;
 
 }

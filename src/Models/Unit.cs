@@ -6,7 +6,7 @@ public partial class Unit
 
     public string Name { get; set; } = null!;
 
-    public string? Abbreviation { get; set; }
+    public string Abbreviation { get; set; } = null!;
 
     public virtual ICollection<IngredientList> IngredientLists { get; set; } = [];
 }

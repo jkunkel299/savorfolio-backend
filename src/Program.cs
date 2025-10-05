@@ -40,6 +40,9 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(
 // Ingredient services
 builder.Services.AddScoped<IIngredientService, IngredientService>();
 builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
+// Unit Services
+builder.Services.AddScoped<IUnitsService, UnitsService>();
+builder.Services.AddScoped<IUnitsRepository, UnitsRepository>();
 // Recipe services 
 builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
@@ -55,6 +58,11 @@ app.UseCors("AllowAll");
 app.MapIngredientApi();
 app.MapRecipeSearch();
 app.MapManualRecipe();
+app.MapUnitApi();
+app.GetMealTags();
+app.GetRecipeTypeTags();
+app.GetCuisineTags();
+app.GetDietaryTags();
 
 // add health endpoint for E2E testing with Playwright
 app.MapGet("/health", () => Results.Ok("healthy"));
