@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Runtime.Serialization;
+using Npgsql.Internal.Postgres;
 
 namespace savorfolio_backend.Utils;
 
@@ -22,5 +23,20 @@ public static class EnumExtensions
             .Select(f => f.GetCustomAttributes(typeof(EnumMemberAttribute), false)
             .Cast<EnumMemberAttribute>()
             .FirstOrDefault()?.Value ?? f.Name)];
+    }
+
+    public static TEnum? ParseEnumMember<TEnum>(string value) where TEnum : struct, Enum
+    {
+        if (Enum.TryParse<TEnum>(value, true, out var result))
+            return result;
+
+        foreach (var field in typeof(TEnum).GetFields(BindingFlags.Public | BindingFlags.Static))
+        {
+            var attr = field.GetCustomAttribute<EnumMemberAttribute>();
+            if (attr != null && string.Equals(attr.Value, value, StringComparison.OrdinalIgnoreCase))
+                return (TEnum)field.GetValue(null)!;
+        }
+
+        return null;
     }
 }

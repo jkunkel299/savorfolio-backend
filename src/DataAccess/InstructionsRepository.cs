@@ -11,7 +11,7 @@ namespace savorfolio_backend.DataAccess;
 public class InstructionsRepository(AppDbContext context) : IInstructionsRepository
 {
     private readonly AppDbContext _context = context;
-    
+
     public int AddNewRecipeIns(List<InstructionDTO> instructionsData, int recipeId)
     {
         // for each instruction in the list, create a new row in the Instructions table
@@ -30,6 +30,23 @@ public class InstructionsRepository(AppDbContext context) : IInstructionsReposit
         }
 
         var result = _context.SaveChanges();
+        return result;
+    }
+
+    public Task<List<InstructionDTO>> GetInstructionsByRecipeAsync(int recipeId)
+    {
+        var result = _context.Instructions
+            .Where(i => i.RecipeId == recipeId)
+            .Select(e => new InstructionDTO
+            {
+                Id = e.Id,
+                RecipeId = e.RecipeId,
+                StepNumber = e.StepNumber,
+                InstructionText = e.InstructionText
+            })
+            .OrderBy(e => e.StepNumber)
+            .ToListAsync();
+
         return result;
     }
 }

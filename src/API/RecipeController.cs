@@ -19,4 +19,15 @@ public static class RecipeEndpoints
             return Results.Ok(recipes);
         });
     }
+
+    public static void MapRecipeById(this WebApplication app)
+    {
+        app.MapGet("/api/recipes/view", async (
+            int recipeId,
+            IViewRecipeService viewRecipeService) =>
+        {
+            var recipe = await viewRecipeService.CompileRecipeAsync(recipeId);
+            return Results.Ok(recipe);
+        });
+    }
 }

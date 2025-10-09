@@ -15,7 +15,7 @@ public partial class RecipeTag
     public CuisineTag? Cuisine { get; set; }
 
     // [JsonConverter(typeof(StringEnumConverter))]
-    public List<string> Dietary { get; set; } = [];
+    public /* List<string> */ string[] Dietary { get; set; } = [];
 
     public virtual Recipe? Recipe { get; set; }
 }

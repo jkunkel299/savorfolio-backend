@@ -34,4 +34,26 @@ public class IngListRepository(AppDbContext context) : IIngListRepository
         var result = _context.SaveChanges();
         return result;
     }
+
+    public Task<List<IngredientListDTO>> GetIngredientsByRecipeAsync(int recipeId)
+    {
+        var result = _context.IngredientLists
+            .Where(i => i.RecipeId == recipeId)
+            .Select(e => new IngredientListDTO
+            {
+                Id = e.Id,
+                RecipeId = e.RecipeId,
+                IngredientOrder = e.IngredientOrder,
+                IngredientId = e.IngredientId,
+                IngredientName = e.Ingredient.Name,
+                Quantity = e.Quantity,
+                UnitId = e.UnitId,
+                UnitName = e.Unit.Name,
+                Qualifier = e.Qualifier,
+            })
+            .OrderBy(e => e.IngredientOrder)
+            .ToListAsync();
+
+        return result;
+    }
 }

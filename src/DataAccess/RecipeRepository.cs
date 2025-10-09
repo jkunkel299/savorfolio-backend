@@ -12,6 +12,25 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
 {
     private readonly AppDbContext _context = context;
 
+    // queries recipe database for recipe by ID
+    public async Task<RecipeDTO> ReturnRecipeByIdAsync(int recipeId)
+    {
+        var result = await _context.Recipes
+            .Where(r => r.Id == recipeId)
+            .Select(r => new RecipeDTO
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Servings = r.Servings,
+                CookTime = r.CookTime,
+                PrepTime = r.PrepTime,
+                BakeTemp = r.BakeTemp,
+                Temp_unit = r.Temp_unit,
+            }).SingleOrDefaultAsync();
+
+        return result!;
+    }
+
     // queries recipe database for recipes, including filtering
     public async Task<List<RecipeDTO>> ReturnRecipesFiltered(RecipeFilterRequestDTO filter)
     {
@@ -48,19 +67,19 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
                 PrepTime = r.PrepTime,
                 BakeTemp = r.BakeTemp,
                 Temp_unit = r.Temp_unit,
-                Ingredients = r.IngredientLists
-                    .OrderBy(ri => ri.IngredientOrder)
-                    .Select(ri => new IngredientListDTO
-                    {
-                        Id = ri.IngredientId,
-                        RecipeId = ri.RecipeId,
-                        IngredientId = ri.Ingredient.Id,
-                        IngredientOrder = ri.IngredientOrder,
-                        IngredientName = ri.Ingredient.Name,
-                        Quantity = ri.Quantity,
-                        UnitId = ri.UnitId,
-                        UnitName = ri.Unit.Name,
-                    }).ToList()
+                // Ingredients = r.IngredientLists
+                //     .OrderBy(ri => ri.IngredientOrder)
+                //     .Select(ri => new IngredientListDTO
+                //     {
+                //         Id = ri.IngredientId,
+                //         RecipeId = ri.RecipeId,
+                //         IngredientId = ri.Ingredient.Id,
+                //         IngredientOrder = ri.IngredientOrder,
+                //         IngredientName = ri.Ingredient.Name,
+                //         Quantity = ri.Quantity,
+                //         UnitId = ri.UnitId,
+                //         UnitName = ri.Unit.Name,
+                //     }).ToList()
             });
 
         return await result.ToListAsync();

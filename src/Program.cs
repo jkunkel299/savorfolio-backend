@@ -37,32 +37,48 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(
 ));
 
 // ** Register services **
-// Ingredient services
+// Ingredient Services
 builder.Services.AddScoped<IIngredientService, IngredientService>();
 builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
-// Unit Services
+// Unit ServiceS
 builder.Services.AddScoped<IUnitsService, UnitsService>();
 builder.Services.AddScoped<IUnitsRepository, UnitsRepository>();
-// Recipe services 
+// Recipe Services 
 builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
-builder.Services.AddScoped<IIngListRepository, IngListRepository>();
-builder.Services.AddScoped<IInstructionsRepository, InstructionsRepository>();
-builder.Services.AddScoped<ITagsRepository, TagsRepository>();
 builder.Services.AddScoped<IAddRecipeService, AddRecipeService>();
+builder.Services.AddScoped<IViewRecipeService, ViewRecipeService>();
+// Ingredient List Services
+builder.Services.AddScoped<IIngListRepository, IngListRepository>();
+// Instructions Services
+builder.Services.AddScoped<IInstructionsRepository, InstructionsRepository>();
+//Tags Services
+builder.Services.AddScoped<ITagsRepository, TagsRepository>();
+
 
 var app = builder.Build();
 
 app.UseCors("AllowAll");
 
+// search for ingredients
 app.MapIngredientApi();
-app.MapRecipeSearch();
-app.MapManualRecipe();
+// search for units
 app.MapUnitApi();
+// return recipe tag enumerators
 app.GetMealTags();
 app.GetRecipeTypeTags();
 app.GetCuisineTags();
 app.GetDietaryTags();
+// view a recipe
+app.MapRecipeById();
+// search for a recipe by filters
+app.MapRecipeSearch();
+// add a new recipe manually
+app.MapManualRecipe();
+
+
+
+
 
 // add health endpoint for E2E testing with Playwright
 app.MapGet("/health", () => Results.Ok("healthy"));
