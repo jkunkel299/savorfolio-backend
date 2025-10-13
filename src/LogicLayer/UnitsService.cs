@@ -10,7 +10,7 @@ public class UnitsService(IUnitsRepository unitsRepository) : IUnitsService
     public async Task<List<UnitDTO>> SearchUnitsAsync(string searchTerm)
     {
         // Call the repository method (Data Access Layer)
-        var units = await _unitsRepository.SearchUnitAsync(searchTerm);
+        var units = await _unitsRepository.SearchUnitTableAsync(searchTerm);
 
         return units;
     }

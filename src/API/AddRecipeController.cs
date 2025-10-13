@@ -1,6 +1,5 @@
 /* API layer to add recipe manually, may also include adding recipe via scraping */
 
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using savorfolio_backend.Interfaces;
@@ -13,7 +12,6 @@ public static class AddRecipeEndpoints
     public static void MapManualRecipe(this WebApplication app)
     {
         app.MapPost("/api/recipes/add/manual", async (
-            // [FromBody] string newRecipe,
             HttpRequest request,
             IAddRecipeService addRecipeService) =>
         {

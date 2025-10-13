@@ -20,7 +20,10 @@ builder.Services.AddCors(options =>
 });
 
 // Add connection string from environment variables
-Env.Load();
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
+Env.Load($".env.{environment.ToLower()}", new LoadOptions(setEnvVars: true, clobberExistingVars: true, onlyExactPath: true));
+// default to .env if not testing
+Env.Load(".env", new LoadOptions(setEnvVars: true, clobberExistingVars: false, onlyExactPath: true));
 var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DATABASE_CONNECTION");
 
 // Add DbContext

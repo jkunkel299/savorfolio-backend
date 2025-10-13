@@ -11,7 +11,7 @@ public class UnitsRepository(AppDbContext context) : IUnitsRepository
 {
     private readonly AppDbContext _context = context;
 
-    public async Task<List<UnitDTO>> SearchUnitAsync(string searchTerm)
+    public async Task<List<UnitDTO>> SearchUnitTableAsync(string searchTerm)
     {
         var query = from u in _context.Units
                     select new UnitDTO
