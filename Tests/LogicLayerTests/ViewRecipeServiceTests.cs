@@ -43,7 +43,7 @@ public class ViewRecipeServiceTests()
             mockTagsRepo.Object
         );
 
-        // call CompileRecipeAsync from mocked RecipeService
+        // call CompileRecipeAsync from mocked ViewRecipeService
         _ = await viewRecipeService.CompileRecipeAsync(recipeId);
 
         // assert mocked recipe repo function called once
@@ -59,7 +59,7 @@ public class ViewRecipeServiceTests()
 
 
     [Fact]
-    public async Task CompileRecipesAsync_CreatesDTO()
+    public async Task CompileRecipesAsyncCreatesDTO()
     {
         // initialize test recipe ID
         int recipeId = 2;
@@ -111,9 +111,9 @@ public class ViewRecipeServiceTests()
         JToken expectedFullRecipe = JToken.Parse(expectedJson);
 
         // call CompileRecipesAsync with the test recipe ID
-        var result = viewRecipeService.CompileRecipeAsync(recipeId);
+        var result = await viewRecipeService.CompileRecipeAsync(recipeId);
         // convert to JSON
-        var actualJson = JsonConvert.SerializeObject(result?.Result);
+        var actualJson = JsonConvert.SerializeObject(result);
         JToken actualToken = JToken.Parse(actualJson);
 
         // Assert equal

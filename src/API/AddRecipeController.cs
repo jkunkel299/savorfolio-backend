@@ -3,7 +3,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using savorfolio_backend.Interfaces;
-using savorfolio_backend.LogicLayer;
 using savorfolio_backend.Models.DTOs;
 
 namespace savorfolio_backend.API;
@@ -32,7 +31,7 @@ public static class AddRecipeEndpoints
             OperationResult<int> result = await addRecipeService.AddRecipeManually(newRecipe);
             if (result.Success)
             {
-                return Results.Ok($"Recipe ID {result} added successfully");
+                return Results.Ok($"Recipe ID {result.Data} added successfully");
             }
             else
             {

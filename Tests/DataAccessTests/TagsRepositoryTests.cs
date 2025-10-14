@@ -12,12 +12,17 @@ namespace Tests.DataAccessTests;
 public class TagsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixture<SqliteDbFixture>
 {
     private readonly TagsRepository _repository = new(sqliteDbFixture.Context);
+    private readonly RecipeRepository _recipeRepository = new(sqliteDbFixture.Context);
     private static readonly JObject _expectedViewRecipe;
+    private static readonly JObject _expectedAddRecipe;
 
     static TagsRepositoryTests()
     {
         string viewRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeDTO.json");
+        string addRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipe.json");
+
         _expectedViewRecipe = JObject.Parse(File.ReadAllText(viewRecipeFilePath));
+        _expectedAddRecipe = JObject.Parse(File.ReadAllText(addRecipeFilePath));
     }
 
 
@@ -46,8 +51,22 @@ public class TagsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixtur
 
 
     [Fact]
-    public void AddTagsTest()
+    public async Task AddTagsTest()
     {
-        
+        // initialize the recipe DTO to add to the database
+        var addRecipeDTO = _expectedAddRecipe["RecipeSummary"]?.ToObject<RecipeDTO>();
+        // initialize the list of ingredient DTOs to add to the table
+        var tags = _expectedAddRecipe["RecipeTags"]?.ToObject<RecipeTagDTO>();
+
+        // initialize the number of records expected to be added to the table: 1
+        int expectedRecordCount = 1;
+
+        // call AddNewRecipe with the DTO -- this is necessary to avoid foreign key violations
+        var recipeId = await _recipeRepository.AddNewRecipe(addRecipeDTO!);
+        // call AddNewRecipeIng with the ingredient list and recipe ID
+        int records = _repository.AddNewRecipeTags(tags!, recipeId);
+
+        // assert the expected record count is equal to the actual record count
+        Assert.Equal(expectedRecordCount, records);
     }
 }

@@ -26,7 +26,7 @@ public class AddRecipeService(
     public async Task<OperationResult<int>> AddRecipeManually(JObject newRecipeContent) // modify this to return the full recipe to view?
     {
         // extract recipe information: name, servings, cook time, prep time, bake temp, temp unit
-        var newRecipe = (newRecipeContent["RecipeSummary"]?.ToObject<RecipeDTO>()) ?? throw new InvalidOperationException("RecipeSummary section missing or invalid"); // was parsedRecipeContent
+        var newRecipe = (newRecipeContent["RecipeSummary"]?.ToObject<RecipeDTO>()) ?? throw new InvalidOperationException("RecipeSummary section missing or invalid");
 
         // call recipeRepository.AddNewRecipe with the new recipe DTO (await)
         var newRecipeId = await _recipeRepository.AddNewRecipe(newRecipe);

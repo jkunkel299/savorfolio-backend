@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using savorfolio_backend.Models.DTOs;
 using Microsoft.VisualBasic;
 using Tests.Helpers;
+using System.Threading.Tasks;
 
 namespace Tests.DataAccessTests;
 
@@ -14,14 +15,17 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
     private readonly RecipeRepository _repository = new(sqliteDbFixture.Context);
     private static readonly List<RecipeDTO> _expectedFilteredRecipes;
     private static readonly JObject _expectedViewRecipe;
+    private static readonly JObject _expectedAddRecipe;
 
     static RecipeRepositoryTests()
     {
         string recipeFilteringFilePath = TestFileHelper.GetProjectPath("ExpectedData/RecipeDTOs.json");
         string viewRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeDTO.json");
+        string addRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipe.json");
 
         _expectedFilteredRecipes = [.. JsonToList.JsonFileToList<RecipeDTO>(recipeFilteringFilePath).OrderBy(r => r.Id)];
         _expectedViewRecipe = JObject.Parse(File.ReadAllText(viewRecipeFilePath));
+        _expectedAddRecipe = JObject.Parse(File.ReadAllText(addRecipeFilePath));
     }
 
 
@@ -156,8 +160,18 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
 
 
     [Fact]
-    public void AddNewRecipeTest()
+    public async Task AddNewRecipeTest()
     {
-        
+        // initialize expected recipe ID
+        int expectedRecipeId = 3;
+
+        // initialize the recipe DTO to add to the database
+        var addRecipeDTO = _expectedAddRecipe["RecipeSummary"]?.ToObject<RecipeDTO>();
+
+        // call AddNewRecipe with the DTO
+        var resultId = await _repository.AddNewRecipe(addRecipeDTO!);
+
+        // assert the expected recipe ID is equal to the added recipe ID
+        Assert.Equal(expectedRecipeId, resultId);
     }
 }
