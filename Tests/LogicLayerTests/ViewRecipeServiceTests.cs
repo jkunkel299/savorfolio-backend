@@ -81,19 +81,19 @@ public class ViewRecipeServiceTests()
         );
 
         // set up expected DTO return from recipe repository
-        var mockRecipeSummary = _expectedViewRecipe["recipeSummary"]?.ToObject<RecipeDTO>() ?? new RecipeDTO();
+        var mockRecipeSummary = _expectedViewRecipe["RecipeSummary"]?.ToObject<RecipeDTO>() ?? new RecipeDTO();
         mockRecipeRepo.Setup(d => d.ReturnRecipeByIdAsync(recipeId))
                         .ReturnsAsync(mockRecipeSummary);
         // set up expected DTO return from ingredient list repository
-        var mockIngList = _expectedViewRecipe["ingredients"]?.ToObject<List<IngredientListDTO>>() ?? [];
+        var mockIngList = _expectedViewRecipe["Ingredients"]?.ToObject<List<IngredientListDTO>>() ?? [];
         mockIngListRepo.Setup(d => d.GetIngredientsByRecipeAsync(recipeId))
                         .ReturnsAsync(mockIngList);
         // set up expected DTO return from instructions repository
-        var mockInsList = _expectedViewRecipe["instructions"]?.ToObject<List<InstructionDTO>>() ?? [];
+        var mockInsList = _expectedViewRecipe["Instructions"]?.ToObject<List<InstructionDTO>>() ?? [];
         mockInstructionsRepo.Setup(d => d.GetInstructionsByRecipeAsync(recipeId))
                         .ReturnsAsync(mockInsList);
         // set up expected DTO return from tags repository
-        var mockTags = _expectedViewRecipe["recipeTags"]?.ToObject<TagStringsDTO>() ?? new TagStringsDTO();
+        var mockTags = _expectedViewRecipe["RecipeTags"]?.ToObject<TagStringsDTO>() ?? new TagStringsDTO();
         mockTagsRepo.Setup(d => d.GetTagsByRecipe(recipeId))
                         .Returns(mockTags);
 

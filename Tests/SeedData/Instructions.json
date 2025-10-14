@@ -1,89 +1,104 @@
 [
     {
+        "Id": 27,
         "RecipeId": 1,
         "SectionId": null,
         "StepNumber": 1,
         "InstructionText": "Fry chicken in butter in at least two portions. Season with salt and pepper. Remove after approx. 3 minutes, once the chicken has a dark golden color"
     },
     {
+        "Id": 28,
         "RecipeId": 1,
         "SectionId": null,
         "StepNumber": 2,
         "InstructionText": "Saute the onions in the same skillet until soft (translucent)"
     },
     {
+        "Id": 29,
         "RecipeId": 1,
         "SectionId": null,
         "StepNumber": 3,
         "InstructionText": "Powder flour over the onions and cook 1-2 minutes"
     },
     {
+        "Id": 30,
         "RecipeId": 1,
         "SectionId": null,
         "StepNumber": 4,
         "InstructionText": "Slowly add chicken broth, stirring until smooth."
     },
     {
+        "Id": 31,
         "RecipeId": 1,
         "SectionId": null,
         "StepNumber": 5,
         "InstructionText": "Spice the gravy with lemon juice, white wine, salt, and pepper. Simmer 5 mintues."
     },
     {
+        "Id": 32,
         "RecipeId": 1,
         "SectionId": null,
         "StepNumber": 6,
         "InstructionText": "Add chicken and cook to 165°F. Remove from heat."
     },
     {
+        "Id": 33,
         "RecipeId": 1,
         "SectionId": null,
         "StepNumber": 7,
         "InstructionText": "Mix egg yolk and heavy cream in a separate bowl. Add to the chicken and gravy and mix well."
     },
     {
+        "Id": 34,
         "RecipeId": 1,
         "SectionId": null,
         "StepNumber": 8,
         "InstructionText": "(Optional) Top with chives."
     },
     {
+        "Id": 35,
         "RecipeId": 1,
         "SectionId": null,
         "StepNumber": 9,
         "InstructionText": "Serve with rice."
     },
     {
+        "Id": 36,
         "RecipeId": 2,
         "SectionId": null,
         "StepNumber": 1,
         "InstructionText": "Preheat oven to 400°F"
     },
     {
+        "Id": 37,
         "RecipeId": 2,
         "SectionId": null,
         "StepNumber": 2,
         "InstructionText": "In a large mixing bowl, beat butter, brown sugar, and sugar for 4 minutes until light and fluffy."
     },
     {
+        "Id": 38,
         "RecipeId": 2,
         "SectionId": null,
         "StepNumber": 3,
         "InstructionText": "Add molasses and egg and mix for 1 minute longer."
     },
     {
+        "Id": 39,
         "RecipeId": 2,
         "SectionId": null,
         "StepNumber": 4,
         "InstructionText": "Fold in flour, baking soda, corn starch, salt, cinnamon, ginger, nutmeg, cloves, and chocolate chips."
     },
     {
+        "Id": 40,
         "RecipeId": 2,
         "SectionId": null,
         "StepNumber": 5,
         "InstructionText": "Roll into 4-ounce, 5-ounce, or 6-ounce balls. Place on a parchment paper-lined baking sheet. I prefer to use light-colored baking sheets."
     },
     {
+        "Id": 41,
         "RecipeId": 2,
         "SectionId": null,
         "StepNumber": 6,

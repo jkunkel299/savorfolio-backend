@@ -1,216 +1,216 @@
 {
-    "recipeId": 2,
-    "recipeSummary": {
-        "id": 2,
-        "name": "Fall Spice Chocolate Chip Cookies",
-        "servings": 8,
-        "cookTime": "10 minutes",
-        "prepTime": "15 minutes",
-        "bakeTemp": 400,
-        "temp_unit": "F",
-        "ingredients": []
+    "RecipeId": 2,
+    "RecipeSummary": {
+        "Id": 2,
+        "Name": "Fall Spice Chocolate Chip Cookies",
+        "Servings": 8,
+        "CookTime": "10 minutes",
+        "PrepTime": "15 minutes",
+        "BakeTemp": 400,
+        "Temp_unit": "F",
+        "Ingredients": []
     },
-    "recipeTags": {
-        "recipeId": 2,
-        "meal": "Dessert",
-        "recipe_type": "Dessert",
-        "cuisine": null,
-        "dietary": [
+    "RecipeTags": {
+        "RecipeId": 2,
+        "Meal": "Dessert",
+        "Recipe_type": "Dessert",
+        "Cuisine": null,
+        "Dietary": [
             "Nut-Free"
         ]
     },
-    "ingredients": [
+    "Ingredients": [
         {
-            "id": 26,
-            "recipeId": 2,
-            "ingredientOrder": 1,
-            "ingredientId": 24,
-            "ingredientName": "butter, salted",
-            "quantity": "12",
-            "unitId": 2,
-            "unitName": "Tablespoon",
-            "qualifier": "cold, cut into cubes"
+            "Id": 26,
+            "RecipeId": 2,
+            "IngredientOrder": 1,
+            "IngredientId": 24,
+            "IngredientName": "butter, salted",
+            "Quantity": "12",
+            "UnitId": 2,
+            "UnitName": "Tablespoon",
+            "Qualifier": "cold, cut into cubes"
         },
         {
-            "id": 27,
-            "recipeId": 2,
-            "ingredientOrder": 2,
-            "ingredientId": 200,
-            "ingredientName": "brown sugar",
-            "quantity": "0.5",
-            "unitId": 4,
-            "unitName": "Cup",
-            "qualifier": null
+            "Id": 27,
+            "RecipeId": 2,
+            "IngredientOrder": 2,
+            "IngredientId": 200,
+            "IngredientName": "brown sugar",
+            "Quantity": "0.5",
+            "UnitId": 4,
+            "UnitName": "Cup",
+            "Qualifier": null
         },
         {
-            "id": 28,
-            "recipeId": 2,
-            "ingredientOrder": 3,
-            "ingredientId": 199,
-            "ingredientName": "white sugar",
-            "quantity": "0.5",
-            "unitId": 4,
-            "unitName": "Cup",
-            "qualifier": null
+            "Id": 28,
+            "RecipeId": 2,
+            "IngredientOrder": 3,
+            "IngredientId": 199,
+            "IngredientName": "white sugar",
+            "Quantity": "0.5",
+            "UnitId": 4,
+            "UnitName": "Cup",
+            "Qualifier": null
         },
         {
-            "id": 29,
-            "recipeId": 2,
-            "ingredientOrder": 4,
-            "ingredientId": 159,
-            "ingredientName": "egg",
-            "quantity": "1",
-            "unitId": 35,
-            "unitName": "Whole",
-            "qualifier": null
+            "Id": 29,
+            "RecipeId": 2,
+            "IngredientOrder": 4,
+            "IngredientId": 159,
+            "IngredientName": "egg",
+            "Quantity": "1",
+            "UnitId": 35,
+            "UnitName": "Whole",
+            "Qualifier": null
         },
         {
-            "id": 30,
-            "recipeId": 2,
-            "ingredientOrder": 5,
-            "ingredientId": 205,
-            "ingredientName": "molasses",
-            "quantity": "2",
-            "unitId": 2,
-            "unitName": "Tablespoon",
-            "qualifier": null
+            "Id": 30,
+            "RecipeId": 2,
+            "IngredientOrder": 5,
+            "IngredientId": 205,
+            "IngredientName": "molasses",
+            "Quantity": "2",
+            "UnitId": 2,
+            "UnitName": "Tablespoon",
+            "Qualifier": null
         },
         {
-            "id": 31,
-            "recipeId": 2,
-            "ingredientOrder": 6,
-            "ingredientId": 54,
-            "ingredientName": "all-purpose flour",
-            "quantity": "2",
-            "unitId": 4,
-            "unitName": "Cup",
-            "qualifier": null
+            "Id": 31,
+            "RecipeId": 2,
+            "IngredientOrder": 6,
+            "IngredientId": 54,
+            "IngredientName": "all-purpose flour",
+            "Quantity": "2",
+            "UnitId": 4,
+            "UnitName": "Cup",
+            "Qualifier": null
         },
         {
-            "id": 32,
-            "recipeId": 2,
-            "ingredientOrder": 7,
-            "ingredientId": 97,
-            "ingredientName": "baking soda",
-            "quantity": "1",
-            "unitId": 1,
-            "unitName": "Teaspoon",
-            "qualifier": null
+            "Id": 32,
+            "RecipeId": 2,
+            "IngredientOrder": 7,
+            "IngredientId": 97,
+            "IngredientName": "baking soda",
+            "Quantity": "1",
+            "UnitId": 1,
+            "UnitName": "Teaspoon",
+            "Qualifier": null
         },
         {
-            "id": 33,
-            "recipeId": 2,
-            "ingredientOrder": 8,
-            "ingredientId": 253,
-            "ingredientName": "corn starch",
-            "quantity": "1",
-            "unitId": 1,
-            "unitName": "Teaspoon",
-            "qualifier": null
+            "Id": 33,
+            "RecipeId": 2,
+            "IngredientOrder": 8,
+            "IngredientId": 253,
+            "IngredientName": "corn starch",
+            "Quantity": "1",
+            "UnitId": 1,
+            "UnitName": "Teaspoon",
+            "Qualifier": null
         },
         {
-            "id": 34,
-            "recipeId": 2,
-            "ingredientOrder": 9,
-            "ingredientId": 250,
-            "ingredientName": "salt",
-            "quantity": "0.5",
-            "unitId": 1,
-            "unitName": "Teaspoon",
-            "qualifier": null
+            "Id": 34,
+            "RecipeId": 2,
+            "IngredientOrder": 9,
+            "IngredientId": 250,
+            "IngredientName": "salt",
+            "Quantity": "0.5",
+            "UnitId": 1,
+            "UnitName": "Teaspoon",
+            "Qualifier": null
         },
         {
-            "id": 35,
-            "recipeId": 2,
-            "ingredientOrder": 10,
-            "ingredientId": 185,
-            "ingredientName": "cinnamon",
-            "quantity": "1",
-            "unitId": 1,
-            "unitName": "Teaspoon",
-            "qualifier": null
+            "Id": 35,
+            "RecipeId": 2,
+            "IngredientOrder": 10,
+            "IngredientId": 185,
+            "IngredientName": "cinnamon",
+            "Quantity": "1",
+            "UnitId": 1,
+            "UnitName": "Teaspoon",
+            "Qualifier": null
         },
         {
-            "id": 36,
-            "recipeId": 2,
-            "ingredientOrder": 11,
-            "ingredientId": 188,
-            "ingredientName": "ginger, ground",
-            "quantity": "1.25",
-            "unitId": 1,
-            "unitName": "Teaspoon",
-            "qualifier": null
+            "Id": 36,
+            "RecipeId": 2,
+            "IngredientOrder": 11,
+            "IngredientId": 188,
+            "IngredientName": "ginger, ground",
+            "Quantity": "1.25",
+            "UnitId": 1,
+            "UnitName": "Teaspoon",
+            "Qualifier": null
         },
         {
-            "id": 37,
-            "recipeId": 2,
-            "ingredientOrder": 12,
-            "ingredientId": 186,
-            "ingredientName": "nutmeg",
-            "quantity": "0.5",
-            "unitId": 1,
-            "unitName": "Teaspoon",
-            "qualifier": null
+            "Id": 37,
+            "RecipeId": 2,
+            "IngredientOrder": 12,
+            "IngredientId": 186,
+            "IngredientName": "nutmeg",
+            "Quantity": "0.5",
+            "UnitId": 1,
+            "UnitName": "Teaspoon",
+            "Qualifier": null
         },
         {
-            "id": 38,
-            "recipeId": 2,
-            "ingredientOrder": 13,
-            "ingredientId": 187,
-            "ingredientName": "cloves",
-            "quantity": "1/8",
-            "unitId": 1,
-            "unitName": "Teaspoon",
-            "qualifier": null
+            "Id": 38,
+            "RecipeId": 2,
+            "IngredientOrder": 13,
+            "IngredientId": 187,
+            "IngredientName": "cloves",
+            "Quantity": "1/8",
+            "UnitId": 1,
+            "UnitName": "Teaspoon",
+            "Qualifier": null
         },
         {
-            "id": 39,
-            "recipeId": 2,
-            "ingredientOrder": 14,
-            "ingredientId": 38,
-            "ingredientName": "semi-sweet chocolate chips",
-            "quantity": "1 1/2",
-            "unitId": 4,
-            "unitName": "Cup",
-            "qualifier": null
+            "Id": 39,
+            "RecipeId": 2,
+            "IngredientOrder": 14,
+            "IngredientId": 38,
+            "IngredientName": "semi-sweet chocolate chips",
+            "Quantity": "1 1/2",
+            "UnitId": 4,
+            "UnitName": "Cup",
+            "Qualifier": null
         }
     ],
-    "instructions": [
+    "Instructions": [
         {
-            "id": 10,
-            "recipeId": 2,
-            "stepNumber": 1,
-            "instructionText": "Preheat oven to 400°F"
+            "Id": 36,
+            "RecipeId": 2,
+            "StepNumber": 1,
+            "InstructionText": "Preheat oven to 400°F"
         },
         {
-            "id": 11,
-            "recipeId": 2,
-            "stepNumber": 2,
-            "instructionText": "In a large mixing bowl, beat butter, brown sugar, and sugar for 4 minutes until light and fluffy."
+            "Id": 37,
+            "RecipeId": 2,
+            "StepNumber": 2,
+            "InstructionText": "In a large mixing bowl, beat butter, brown sugar, and sugar for 4 minutes until light and fluffy."
         },
         {
-            "id": 12,
-            "recipeId": 2,
-            "stepNumber": 3,
-            "instructionText": "Add molasses and egg and mix for 1 minute longer."
+            "Id": 38,
+            "RecipeId": 2,
+            "StepNumber": 3,
+            "InstructionText": "Add molasses and egg and mix for 1 minute longer."
         },
         {
-            "id": 13,
-            "recipeId": 2,
-            "stepNumber": 4,
-            "instructionText": "Fold in flour, baking soda, corn starch, salt, cinnamon, ginger, nutmeg, cloves, and chocolate chips."
+            "Id": 39,
+            "RecipeId": 2,
+            "StepNumber": 4,
+            "InstructionText": "Fold in flour, baking soda, corn starch, salt, cinnamon, ginger, nutmeg, cloves, and chocolate chips."
         },
         {
-            "id": 14,
-            "recipeId": 2,
-            "stepNumber": 5,
-            "instructionText": "Roll into 4-ounce, 5-ounce, or 6-ounce balls. Place on a parchment paper-lined baking sheet. I prefer to use light-colored baking sheets."
+            "Id": 40,
+            "RecipeId": 2,
+            "StepNumber": 5,
+            "InstructionText": "Roll into 4-ounce, 5-ounce, or 6-ounce balls. Place on a parchment paper-lined baking sheet. I prefer to use light-colored baking sheets."
         },
         {
-            "id": 15,
-            "recipeId": 2,
-            "stepNumber": 6,
-            "instructionText": "Bake for 8-10 minutes. The cookies will be slightly underdone when you remove them from the oven. Let the cookies sit for 10-15 minutes before moving them from the baking sheet to a wire cooling rack."
+            "Id": 41,
+            "RecipeId": 2,
+            "StepNumber": 6,
+            "InstructionText": "Bake for 8-10 minutes. The cookies will be slightly underdone when you remove them from the oven. Let the cookies sit for 10-15 minutes before moving them from the baking sheet to a wire cooling rack."
         }
     ]
 }

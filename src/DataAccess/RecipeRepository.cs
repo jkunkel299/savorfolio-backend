@@ -71,12 +71,13 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
                     .OrderBy(ri => ri.IngredientOrder)
                     .Select(ri => new IngredientListDTO
                     {
-                        Id = ri.IngredientId,
+                        Id = ri.Id,
                         RecipeId = ri.RecipeId,
                         IngredientId = ri.Ingredient.Id,
                         IngredientOrder = ri.IngredientOrder,
                         IngredientName = ri.Ingredient.Name,
                         Quantity = ri.Quantity,
+                        Qualifier = ri.Qualifier,
                         UnitId = ri.UnitId,
                         UnitName = ri.Unit.Name,
                     }).ToList()

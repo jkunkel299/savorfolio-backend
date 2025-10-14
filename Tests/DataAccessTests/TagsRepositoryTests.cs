@@ -28,7 +28,7 @@ public class TagsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixtur
         // initialize test recipe ID
         int recipeId = 2;
         // initialize expected tags as a TagStringDTO for case matching
-        var expectedTagsDTO = _expectedViewRecipe["recipeTags"]?.ToObject<TagStringsDTO>();
+        var expectedTagsDTO = _expectedViewRecipe["RecipeTags"]?.ToObject<TagStringsDTO>();
         // convert to JSON
         var expectedJson = JsonConvert.SerializeObject(expectedTagsDTO);
         JToken expectedTags = JToken.Parse(expectedJson);

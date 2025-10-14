@@ -28,7 +28,7 @@ public class IngredientListRepositoryTests(SqliteDbFixture sqliteDbFixture) : IC
         // initialize test recipe ID
         int recipeId = 2;
         // initialize expected ingredient list as DTOs for case matching
-        var expectedIngListDTO = _expectedViewRecipe["ingredients"]?.ToObject<List<IngredientListDTO>>();
+        var expectedIngListDTO = _expectedViewRecipe["Ingredients"]?.ToObject<List<IngredientListDTO>>();
         // convert to JSON
         var expectedJson = JsonConvert.SerializeObject(expectedIngListDTO);
         JToken expectedIngList = JToken.Parse(expectedJson);

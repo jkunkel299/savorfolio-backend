@@ -15,8 +15,8 @@ public class TestServerFixture : IDisposable
     public TestServerFixture()
     {
         Env.Load();
-        ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings__TESTING_DATABASE_CONNECTION")
-            ?? throw new InvalidOperationException("ConnectionStrings__TESTING_DATABASE_CONNECTION not found in .env");
+        ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DATABASE_CONNECTION")
+            ?? throw new InvalidOperationException("ConnectionStrings__DATABASE_CONNECTION not found in .env");
 
         _factory = new WebApplicationFactory<Program>()
             .WithWebHostBuilder(builder =>
@@ -31,9 +31,7 @@ public class TestServerFixture : IDisposable
                         services.Remove(descriptor);
                     }
 
-                    // Register a test database (choose one)
                     services.AddDbContext<AppDbContext>(options => options.UseNpgsql(ConnectionString));
-                    // OR options.UseInMemoryDatabase("TestDb"));
                 });
             });
         HttpClient = _factory.CreateClient();

@@ -99,8 +99,6 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
     [InlineData(new int[] { 38 })]
     // exclude pear (should return both recipes)
     [InlineData(new int[] { 61 })]
-    // [MemberData(nameof(RecipeSearchTestCasesExclude))]
-    // [Fact]
     public async Task RecipeSearchExcludeIngredients(int[] excludeIngredients)
     {
         // initialize filter to include ingredients in test case
@@ -140,7 +138,7 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
         // initialize test recipe Id
         int recipeId = 2;
         // initialize expected result as "RecipeSummary" portion of JSON object _expectedViewRecipe
-        var expectedRecipeDTO = _expectedViewRecipe["recipeSummary"]?.ToObject<RecipeDTO>(); // converted to DTO for case sensitivity
+        var expectedRecipeDTO = _expectedViewRecipe["RecipeSummary"]?.ToObject<RecipeDTO>(); // converted to DTO for case sensitivity
         // convert to JSON Token
         var expectedJson = JsonConvert.SerializeObject(expectedRecipeDTO);
         JToken expectedRecipe = JToken.Parse(expectedJson);

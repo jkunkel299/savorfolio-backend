@@ -28,7 +28,7 @@ public class IntructionsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClas
         // initialize test recipe ID
         int recipeId = 2;
         // initialize expected instructions as a list of DTOs for case matching
-        var expectedInsDTO = _expectedViewRecipe["instructions"]?.ToObject<List<InstructionDTO>>();
+        var expectedInsDTO = _expectedViewRecipe["Instructions"]?.ToObject<List<InstructionDTO>>();
         // convert to JSON
         var expectedJson = JsonConvert.SerializeObject(expectedInsDTO);
         JToken expectedInsList = JToken.Parse(expectedJson);
