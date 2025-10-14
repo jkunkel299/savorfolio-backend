@@ -12,4 +12,11 @@ public static class RecipeEndpointsHelper
         var results = await service.SearchRecipesAsync(filter);
         return Results.Ok(results);
     }   
+
+    // replicates the API endpoint defined in RecipeEndpoints.MapRecipeById
+    public static async Task<IResult> InvokeRecipeViewEndpoint(int recipeId, IViewRecipeService service)
+    {
+        var recipe = await service.CompileRecipeAsync(recipeId);
+        return Results.Ok(recipe);
+    }   
 }

@@ -12,13 +12,19 @@ namespace Tests.DataAccessTests;
 public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixture<SqliteDbFixture>
 {
     private readonly RecipeRepository _repository = new(sqliteDbFixture.Context);
-    private static readonly List<RecipeDTO> _expectedRecipes;
+    private static readonly List<RecipeDTO> _expectedFilteredRecipes;
+    private static readonly JObject _expectedViewRecipe;
 
     static RecipeRepositoryTests()
     {
-        string recipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/RecipeDTOs.json");
-        _expectedRecipes = [.. JsonToList.JsonFileToList<RecipeDTO>(recipeFilePath).OrderBy(r => r.Id)];
+        string recipeFilteringFilePath = TestFileHelper.GetProjectPath("ExpectedData/RecipeDTOs.json");
+        string viewRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeDTO.json");
+
+        _expectedFilteredRecipes = [.. JsonToList.JsonFileToList<RecipeDTO>(recipeFilteringFilePath).OrderBy(r => r.Id)];
+        _expectedViewRecipe = JObject.Parse(File.ReadAllText(viewRecipeFilePath));
     }
+
+
 
     [Fact]
     public async Task RecipeSearchEmpty()
@@ -27,7 +33,7 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
         var request = new RecipeFilterRequestDTO();
 
         // initialize expected result as string, convert to JSON
-        List<RecipeDTO> recipesExpected = _expectedRecipes;
+        List<RecipeDTO> recipesExpected = _expectedFilteredRecipes;
         string expectedJson = JsonConvert.SerializeObject(recipesExpected);
         JToken expectedToken = JToken.Parse(expectedJson);
 
@@ -63,7 +69,7 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
         };
 
         // manipulate _expectedRecipes to get appropriate expected
-        var recipesExpected = _expectedRecipes
+        var recipesExpected = _expectedFilteredRecipes
             .Where(r => request.IncludeIngredients.All(ingId =>
                 r.Ingredients.Any(ri => ri.IngredientId == ingId)))
             .OrderBy(r => r.Id)
@@ -100,12 +106,14 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
         // initialize filter to include ingredients in test case
         var request = new RecipeFilterRequestDTO
         {
-            IncludeIngredients = [.. excludeIngredients]
+            ExcludeIngredients = [.. excludeIngredients]
         };
 
+        var ingredientIds = request.ExcludeIngredients;
+
         // manipulate _expectedRecipes to get appropriate expected
-        var recipesExpected = _expectedRecipes
-            .Where(r => request.IncludeIngredients.All(ingId =>
+        var recipesExpected = _expectedFilteredRecipes
+            .Where(r => !ingredientIds.All(ingId =>
                 r.Ingredients.Any(ri => ri.IngredientId == ingId)))
             .OrderBy(r => r.Id)
             .ToList();
@@ -122,5 +130,36 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
 
         // Assert equal
         Assert.True(JToken.DeepEquals(expectedToken, actualToken));
+    }
+
+
+
+    [Fact]
+    public async Task ReturnRecipeById()
+    {
+        // initialize test recipe Id
+        int recipeId = 2;
+        // initialize expected result as "RecipeSummary" portion of JSON object _expectedViewRecipe
+        var expectedRecipeDTO = _expectedViewRecipe["recipeSummary"]?.ToObject<RecipeDTO>(); // converted to DTO for case sensitivity
+        // convert to JSON Token
+        var expectedJson = JsonConvert.SerializeObject(expectedRecipeDTO);
+        JToken expectedRecipe = JToken.Parse(expectedJson);
+
+        // Call ReturnRecipeByIdAsync with the expected recipe Id - should return Fall Spice Choc. Chip
+        var result = await _repository.ReturnRecipeByIdAsync(recipeId);
+        // Convert result to JSON Token
+        var actualJson = JsonConvert.SerializeObject(result);
+        JToken actualToken = JToken.Parse(actualJson);
+
+        // Assert equal
+        Assert.True(JToken.DeepEquals(expectedRecipe, actualToken));
+    }
+
+
+
+    [Fact]
+    public void AddNewRecipeTest()
+    {
+        
     }
 }

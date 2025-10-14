@@ -1,4 +1,6 @@
 using Moq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.Models.DTOs;
 using Tests.Helpers;
@@ -7,7 +9,7 @@ namespace Tests.ApiTests;
 
 public class RecipeControllerTests()
 {
-    // test for controller function without filter body
+    // test for MapRecipeSearch controller function without filter body
     [Fact]
     public async Task RecipeControllerTestEmpty()
     {
@@ -24,7 +26,9 @@ public class RecipeControllerTests()
         mockDependency.Verify(d => d.SearchRecipesAsync(request), Times.Once);
     }
 
-    // test for controller function with filter to include ingredients
+
+
+    // test for MapRecipeSearch controller function with filter to include ingredients
     [Fact]
     public async Task RecipeControllerTestIncludeIngredients()
     {
@@ -44,7 +48,9 @@ public class RecipeControllerTests()
         mockDependency.Verify(d => d.SearchRecipesAsync(request), Times.Once);
     }
 
-    // test for controller function with filter to include ingredients
+
+
+    // test for MapRecipeSearch controller function with filter to include ingredients
     [Fact]
     public async Task RecipeControllerTestExcludeIngredients()
     {
@@ -62,5 +68,24 @@ public class RecipeControllerTests()
 
         // assert mocked function called once
         mockDependency.Verify(d => d.SearchRecipesAsync(request), Times.Once);
+    }
+
+
+
+    // test MapRecipeById controller function
+    [Fact] 
+    public async Task RecipeControllerGetRecipeById()
+    {
+        // initialize test recipe ID
+        int recipeId = 2;
+
+        // mock view recipe service interface
+        var mockViewRecipeService = new Mock<IViewRecipeService>();
+
+        // call endpoint
+        _ = await RecipeEndpointsHelper.InvokeRecipeViewEndpoint(recipeId, mockViewRecipeService.Object);
+
+        // assert mocked function called once
+        mockViewRecipeService.Verify(d => d.CompileRecipeAsync(recipeId), Times.Once);
     }
 }

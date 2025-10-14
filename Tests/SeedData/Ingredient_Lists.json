@@ -6,7 +6,8 @@
         "Quantity": "1.5",
         "UnitId": 12,
         "IngredientId": 143,
-        "IngredientOrder": 1
+        "IngredientOrder": 1,
+        "Qualifier": "cut into bite-sized pieces"
     },
     {
         "Id": 15,
@@ -15,7 +16,8 @@
         "Quantity": "1",
         "UnitId": 35,
         "IngredientId": 221,
-        "IngredientOrder": 2
+        "IngredientOrder": 2,
+        "Qualifier": "chopped fine"
     },
     {
         "Id": 16,
@@ -24,7 +26,8 @@
         "Quantity": "3 1/3",
         "UnitId": 2,
         "IngredientId": 24,
-        "IngredientOrder": 3
+        "IngredientOrder": 3,
+        "Qualifier": null
     },
     {
         "Id": 17,
@@ -33,7 +36,8 @@
         "Quantity": null,
         "UnitId": 37,
         "IngredientId": 250,
-        "IngredientOrder": 4
+        "IngredientOrder": 4,
+        "Qualifier": null
     },
     {
         "Id": 18,
@@ -42,7 +46,8 @@
         "Quantity": null,
         "UnitId": 37,
         "IngredientId": 189,
-        "IngredientOrder": 5
+        "IngredientOrder": 5,
+        "Qualifier": null
     },
     {
         "Id": 19,
@@ -51,7 +56,8 @@
         "Quantity": "2",
         "UnitId": 2,
         "IngredientId": 54,
-        "IngredientOrder": 6
+        "IngredientOrder": 6,
+        "Qualifier": null
     },
     {
         "Id": 20,
@@ -60,7 +66,8 @@
         "Quantity": "1.5",
         "UnitId": 4,
         "IngredientId": 251,
-        "IngredientOrder": 7
+        "IngredientOrder": 7,
+        "Qualifier": null
     },
     {
         "Id": 21,
@@ -69,7 +76,8 @@
         "Quantity": "2",
         "UnitId": 2,
         "IngredientId": 252,
-        "IngredientOrder": 8
+        "IngredientOrder": 8,
+        "Qualifier": null
     },
     {
         "Id": 22,
@@ -78,7 +86,8 @@
         "Quantity": "3",
         "UnitId": 2,
         "IngredientId": 2,
-        "IngredientOrder": 9
+        "IngredientOrder": 9,
+        "Qualifier": null
     },
     {
         "Id": 23,
@@ -87,7 +96,8 @@
         "Quantity": "1",
         "UnitId": 35,
         "IngredientId": 162,
-        "IngredientOrder": 10
+        "IngredientOrder": 10,
+        "Qualifier": null
     },
     {
         "Id": 24,
@@ -96,7 +106,8 @@
         "Quantity": "0.5",
         "UnitId": 4,
         "IngredientId": 50,
-        "IngredientOrder": 11
+        "IngredientOrder": 11,
+        "Qualifier": null
     },
     {
         "Id": 25,
@@ -105,7 +116,8 @@
         "Quantity": null,
         "UnitId": 37,
         "IngredientId": 94,
-        "IngredientOrder": 12
+        "IngredientOrder": 12,
+        "Qualifier": "chopped"
     },
     {
         "Id": 26,
@@ -114,7 +126,8 @@
         "Quantity": "12",
         "UnitId": 2,
         "IngredientId": 24,
-        "IngredientOrder": 1
+        "IngredientOrder": 1,
+        "Qualifier": "cold, cut into cubes"
     },
     {
         "Id": 27,
@@ -123,7 +136,8 @@
         "Quantity": "0.5",
         "UnitId": 4,
         "IngredientId": 200,
-        "IngredientOrder": 2
+        "IngredientOrder": 2,
+        "Qualifier": null
     },
     {
         "Id": 28,
@@ -132,7 +146,8 @@
         "Quantity": "0.5",
         "UnitId": 4,
         "IngredientId": 199,
-        "IngredientOrder": 3
+        "IngredientOrder": 3,
+        "Qualifier": null
     },
     {
         "Id": 29,
@@ -141,7 +156,8 @@
         "Quantity": "1",
         "UnitId": 35,
         "IngredientId": 159,
-        "IngredientOrder": 4
+        "IngredientOrder": 4,
+        "Qualifier": null
     },
     {
         "Id": 30,
@@ -150,7 +166,8 @@
         "Quantity": "2",
         "UnitId": 2,
         "IngredientId": 205,
-        "IngredientOrder": 5
+        "IngredientOrder": 5,
+        "Qualifier": null
     },
     {
         "Id": 31,
@@ -159,7 +176,8 @@
         "Quantity": "2",
         "UnitId": 4,
         "IngredientId": 54,
-        "IngredientOrder": 6
+        "IngredientOrder": 6,
+        "Qualifier": null
     },
     {
         "Id": 32,
@@ -168,7 +186,8 @@
         "Quantity": "1",
         "UnitId": 1,
         "IngredientId": 97,
-        "IngredientOrder": 7
+        "IngredientOrder": 7,
+        "Qualifier": null
     },
     {
         "Id": 33,
@@ -177,7 +196,8 @@
         "Quantity": "1",
         "UnitId": 1,
         "IngredientId": 253,
-        "IngredientOrder": 8
+        "IngredientOrder": 8,
+        "Qualifier": null
     },
     {
         "Id": 34,
@@ -186,7 +206,8 @@
         "Quantity": "0.5",
         "UnitId": 1,
         "IngredientId": 250,
-        "IngredientOrder": 9
+        "IngredientOrder": 9,
+        "Qualifier": null
     },
     {
         "Id": 35,
@@ -195,7 +216,8 @@
         "Quantity": "1",
         "UnitId": 1,
         "IngredientId": 185,
-        "IngredientOrder": 10
+        "IngredientOrder": 10,
+        "Qualifier": null
     },
     {
         "Id": 36,
@@ -204,7 +226,8 @@
         "Quantity": "1.25",
         "UnitId": 1,
         "IngredientId": 188,
-        "IngredientOrder": 11
+        "IngredientOrder": 11,
+        "Qualifier": null
     },
     {
         "Id": 37,
@@ -213,7 +236,8 @@
         "Quantity": "0.5",
         "UnitId": 1,
         "IngredientId": 186,
-        "IngredientOrder": 12
+        "IngredientOrder": 12,
+        "Qualifier": null
     },
     {
         "Id": 38,
@@ -222,7 +246,8 @@
         "Quantity": "1/8",
         "UnitId": 1,
         "IngredientId": 187,
-        "IngredientOrder": 13
+        "IngredientOrder": 13,
+        "Qualifier": null
     },
     {
         "Id": 39,
@@ -231,6 +256,7 @@
         "Quantity": "1 1/2",
         "UnitId": 4,
         "IngredientId": 38,
-        "IngredientOrder": 14
+        "IngredientOrder": 14,
+        "Qualifier": null
     }
 ]

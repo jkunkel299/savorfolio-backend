@@ -1,5 +1,6 @@
 using savorfolio_backend.Data;
 using savorfolio_backend.Models;
+using savorfolio_backend.Models.DTOs;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -9,7 +10,8 @@ public class InMemoryDbSeeder
 {
     private static JsonSerializerOptions JsonOptions => new()
     {
-        PropertyNameCaseInsensitive = true
+        PropertyNameCaseInsensitive = true,
+        Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false) }
     };
 
     // Generic seeder for simple entity lists
@@ -78,6 +80,7 @@ public class InMemoryDbSeeder
         context.SaveChanges();
     }
 
+    // specialized variant seeder for ingredient lists
     public static void SeedIngredientListsFromJson(AppDbContext context, string ingListFilePath)
     {
         if (!File.Exists(ingListFilePath))
@@ -113,6 +116,80 @@ public class InMemoryDbSeeder
         }
 
         context.IngredientLists.AddRange(ingredientLists);
+        context.SaveChanges();
+    }
+
+    // specialized variant seeder for instruction lists
+    public static void SeedInstructionsFromJson(AppDbContext context, string insListFilePath)
+    {
+        if (!File.Exists(insListFilePath))
+            throw new FileNotFoundException($"Seed file not found: {insListFilePath}");
+
+        var json = File.ReadAllText(insListFilePath);
+        if (string.IsNullOrWhiteSpace(json)) return;
+
+        var intructionLists = JsonSerializer.Deserialize<List<Instruction>>(json, JsonOptions) ?? [];
+
+        // Clear existing intruction list items
+        var existing = context.Instructions.AsQueryable().ToList();
+        if (existing.Count != 0)
+        {
+            context.Instructions.RemoveRange(existing);
+            context.SaveChanges();
+        }
+
+        // If JSON included nested Recipe objects, resolve them to RecipeId
+        foreach (var i in intructionLists)
+        {
+            if (i.Recipe != null)
+            {
+                // attempt to find by name first
+                var matchedRecipe = context.Recipes.FirstOrDefault(r => r.Name == i.Recipe.Name);
+                if (matchedRecipe != null)
+                {
+                    i.RecipeId = matchedRecipe.Id;
+                }
+                // // drop the navigation object to avoid EF trying to insert duplicates
+                // i.Recipe = null;
+            }
+        }
+
+        context.Instructions.AddRange(intructionLists);
+        context.SaveChanges();
+    }
+
+    public static void SeedTagsFromJson(AppDbContext context, string tagsFilePath)
+    {
+        if (!File.Exists(tagsFilePath))
+            throw new FileNotFoundException($"Seed file not found: {tagsFilePath}");
+
+        var json = File.ReadAllText(tagsFilePath);
+        if (string.IsNullOrWhiteSpace(json))
+            return;
+
+        var items = JsonSerializer.Deserialize<List<RecipeTag>>(json, JsonOptions);
+        if (items == null || items.Count == 0)
+            return;
+
+        // Convert DietaryTags strings into EnumMember-mapped enum names (optional normalization)
+        foreach (var item in items)
+        {
+            if (item.Dietary != null && item.Dietary.Length > 0)
+            {
+                // Normalize tags: remove whitespace and ensure consistent EnumMember formatting
+                item.Dietary = [.. item.Dietary.Select(t => t.Trim())];
+            }
+        }
+        
+        // Remove existing rows
+        var existing = context.RecipeTags.AsQueryable().ToList();
+        if (existing.Count != 0)
+        {
+            context.RecipeTags.RemoveRange(existing);
+            context.SaveChanges();
+        }
+
+        context.RecipeTags.AddRange(items);
         context.SaveChanges();
     }
 }

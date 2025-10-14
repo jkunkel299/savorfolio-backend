@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using savorfolio_backend.Data;
 using savorfolio_backend.Models;
+using savorfolio_backend.Models.enums;
 
 namespace IntegrationTests.Fixtures;
 
@@ -119,7 +120,7 @@ public class DatabaseFixture : IDisposable
 
         Context.RecipeTags.AddRange(
             new RecipeTag { RecipeId = 1, Recipe_type = RecipeTypeTag.Main, Meal = MealTag.Dinner, Cuisine = CuisineTag.Bavarian },
-            new RecipeTag { RecipeId = 2, Recipe_type = RecipeTypeTag.Dessert, Meal = MealTag.Dinner, Dietary = DietaryTag.NutFree }
+            new RecipeTag { RecipeId = 2, Recipe_type = RecipeTypeTag.Dessert, Meal = MealTag.Dinner, Dietary = ["Nut-Free"] }
         );
 
         await Context.SaveChangesAsync();

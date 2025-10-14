@@ -67,19 +67,19 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
                 PrepTime = r.PrepTime,
                 BakeTemp = r.BakeTemp,
                 Temp_unit = r.Temp_unit,
-                // Ingredients = r.IngredientLists
-                //     .OrderBy(ri => ri.IngredientOrder)
-                //     .Select(ri => new IngredientListDTO
-                //     {
-                //         Id = ri.IngredientId,
-                //         RecipeId = ri.RecipeId,
-                //         IngredientId = ri.Ingredient.Id,
-                //         IngredientOrder = ri.IngredientOrder,
-                //         IngredientName = ri.Ingredient.Name,
-                //         Quantity = ri.Quantity,
-                //         UnitId = ri.UnitId,
-                //         UnitName = ri.Unit.Name,
-                //     }).ToList()
+                Ingredients = r.IngredientLists
+                    .OrderBy(ri => ri.IngredientOrder)
+                    .Select(ri => new IngredientListDTO
+                    {
+                        Id = ri.IngredientId,
+                        RecipeId = ri.RecipeId,
+                        IngredientId = ri.Ingredient.Id,
+                        IngredientOrder = ri.IngredientOrder,
+                        IngredientName = ri.Ingredient.Name,
+                        Quantity = ri.Quantity,
+                        UnitId = ri.UnitId,
+                        UnitName = ri.Unit.Name,
+                    }).ToList()
             });
 
         return await result.ToListAsync();

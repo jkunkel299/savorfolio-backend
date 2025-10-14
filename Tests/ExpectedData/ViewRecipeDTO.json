@@ -1,0 +1,216 @@
+{
+    "recipeId": 2,
+    "recipeSummary": {
+        "id": 2,
+        "name": "Fall Spice Chocolate Chip Cookies",
+        "servings": 8,
+        "cookTime": "10 minutes",
+        "prepTime": "15 minutes",
+        "bakeTemp": 400,
+        "temp_unit": "F",
+        "ingredients": []
+    },
+    "recipeTags": {
+        "recipeId": 2,
+        "meal": "Dessert",
+        "recipe_type": "Dessert",
+        "cuisine": null,
+        "dietary": [
+            "Nut-Free"
+        ]
+    },
+    "ingredients": [
+        {
+            "id": 26,
+            "recipeId": 2,
+            "ingredientOrder": 1,
+            "ingredientId": 24,
+            "ingredientName": "butter, salted",
+            "quantity": "12",
+            "unitId": 2,
+            "unitName": "Tablespoon",
+            "qualifier": "cold, cut into cubes"
+        },
+        {
+            "id": 27,
+            "recipeId": 2,
+            "ingredientOrder": 2,
+            "ingredientId": 200,
+            "ingredientName": "brown sugar",
+            "quantity": "0.5",
+            "unitId": 4,
+            "unitName": "Cup",
+            "qualifier": null
+        },
+        {
+            "id": 28,
+            "recipeId": 2,
+            "ingredientOrder": 3,
+            "ingredientId": 199,
+            "ingredientName": "white sugar",
+            "quantity": "0.5",
+            "unitId": 4,
+            "unitName": "Cup",
+            "qualifier": null
+        },
+        {
+            "id": 29,
+            "recipeId": 2,
+            "ingredientOrder": 4,
+            "ingredientId": 159,
+            "ingredientName": "egg",
+            "quantity": "1",
+            "unitId": 35,
+            "unitName": "Whole",
+            "qualifier": null
+        },
+        {
+            "id": 30,
+            "recipeId": 2,
+            "ingredientOrder": 5,
+            "ingredientId": 205,
+            "ingredientName": "molasses",
+            "quantity": "2",
+            "unitId": 2,
+            "unitName": "Tablespoon",
+            "qualifier": null
+        },
+        {
+            "id": 31,
+            "recipeId": 2,
+            "ingredientOrder": 6,
+            "ingredientId": 54,
+            "ingredientName": "all-purpose flour",
+            "quantity": "2",
+            "unitId": 4,
+            "unitName": "Cup",
+            "qualifier": null
+        },
+        {
+            "id": 32,
+            "recipeId": 2,
+            "ingredientOrder": 7,
+            "ingredientId": 97,
+            "ingredientName": "baking soda",
+            "quantity": "1",
+            "unitId": 1,
+            "unitName": "Teaspoon",
+            "qualifier": null
+        },
+        {
+            "id": 33,
+            "recipeId": 2,
+            "ingredientOrder": 8,
+            "ingredientId": 253,
+            "ingredientName": "corn starch",
+            "quantity": "1",
+            "unitId": 1,
+            "unitName": "Teaspoon",
+            "qualifier": null
+        },
+        {
+            "id": 34,
+            "recipeId": 2,
+            "ingredientOrder": 9,
+            "ingredientId": 250,
+            "ingredientName": "salt",
+            "quantity": "0.5",
+            "unitId": 1,
+            "unitName": "Teaspoon",
+            "qualifier": null
+        },
+        {
+            "id": 35,
+            "recipeId": 2,
+            "ingredientOrder": 10,
+            "ingredientId": 185,
+            "ingredientName": "cinnamon",
+            "quantity": "1",
+            "unitId": 1,
+            "unitName": "Teaspoon",
+            "qualifier": null
+        },
+        {
+            "id": 36,
+            "recipeId": 2,
+            "ingredientOrder": 11,
+            "ingredientId": 188,
+            "ingredientName": "ginger, ground",
+            "quantity": "1.25",
+            "unitId": 1,
+            "unitName": "Teaspoon",
+            "qualifier": null
+        },
+        {
+            "id": 37,
+            "recipeId": 2,
+            "ingredientOrder": 12,
+            "ingredientId": 186,
+            "ingredientName": "nutmeg",
+            "quantity": "0.5",
+            "unitId": 1,
+            "unitName": "Teaspoon",
+            "qualifier": null
+        },
+        {
+            "id": 38,
+            "recipeId": 2,
+            "ingredientOrder": 13,
+            "ingredientId": 187,
+            "ingredientName": "cloves",
+            "quantity": "1/8",
+            "unitId": 1,
+            "unitName": "Teaspoon",
+            "qualifier": null
+        },
+        {
+            "id": 39,
+            "recipeId": 2,
+            "ingredientOrder": 14,
+            "ingredientId": 38,
+            "ingredientName": "semi-sweet chocolate chips",
+            "quantity": "1 1/2",
+            "unitId": 4,
+            "unitName": "Cup",
+            "qualifier": null
+        }
+    ],
+    "instructions": [
+        {
+            "id": 10,
+            "recipeId": 2,
+            "stepNumber": 1,
+            "instructionText": "Preheat oven to 400°F"
+        },
+        {
+            "id": 11,
+            "recipeId": 2,
+            "stepNumber": 2,
+            "instructionText": "In a large mixing bowl, beat butter, brown sugar, and sugar for 4 minutes until light and fluffy."
+        },
+        {
+            "id": 12,
+            "recipeId": 2,
+            "stepNumber": 3,
+            "instructionText": "Add molasses and egg and mix for 1 minute longer."
+        },
+        {
+            "id": 13,
+            "recipeId": 2,
+            "stepNumber": 4,
+            "instructionText": "Fold in flour, baking soda, corn starch, salt, cinnamon, ginger, nutmeg, cloves, and chocolate chips."
+        },
+        {
+            "id": 14,
+            "recipeId": 2,
+            "stepNumber": 5,
+            "instructionText": "Roll into 4-ounce, 5-ounce, or 6-ounce balls. Place on a parchment paper-lined baking sheet. I prefer to use light-colored baking sheets."
+        },
+        {
+            "id": 15,
+            "recipeId": 2,
+            "stepNumber": 6,
+            "instructionText": "Bake for 8-10 minutes. The cookies will be slightly underdone when you remove them from the oven. Let the cookies sit for 10-15 minutes before moving them from the baking sheet to a wire cooling rack."
+        }
+    ]
+}

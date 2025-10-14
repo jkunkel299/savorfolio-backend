@@ -3,6 +3,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using savorfolio_backend.Interfaces;
+using savorfolio_backend.LogicLayer;
 using savorfolio_backend.Models.DTOs;
 
 namespace savorfolio_backend.API;
@@ -18,7 +19,7 @@ public static class AddRecipeEndpoints
             using var reader = new StreamReader(request.Body);
             var requestBody = await reader.ReadToEndAsync();
 
-            JObject newRecipe;
+            JObject newRecipe/*  = await JsonParseService.ParseJson(request) */;
             try
             {
                 newRecipe = JObject.Parse(requestBody);
@@ -27,7 +28,6 @@ public static class AddRecipeEndpoints
             {
                 return Results.BadRequest($"Invalid JSON format: {ex.Message}");
             }
-
             
             OperationResult<int> result = await addRecipeService.AddRecipeManually(newRecipe);
             if (result.Success)

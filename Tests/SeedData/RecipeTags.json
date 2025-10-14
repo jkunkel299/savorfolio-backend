@@ -1,0 +1,18 @@
+[
+    {
+        "RecipeId": 1,
+        "Recipe_type": "Main",
+        "Meal": "Dinner",
+        "Cuisine": "Bavarian",
+        "Dietary": []
+    },
+    {
+        "RecipeId": 2,
+        "Recipe_type": "Dessert",
+        "Meal": "Dessert",
+        "Cuisine": null,
+        "Dietary": [
+            "Nut-Free"
+        ]
+    }
+]

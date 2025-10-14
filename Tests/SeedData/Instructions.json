@@ -1,19 +1,92 @@
 [
-    {"RecipeId":1,"SectionId":null,"StepNumber":1,"InstructionText":"Chop the onion fine."},
-    {"RecipeId":1,"SectionId":null,"StepNumber":2,"InstructionText":"Cut the chicken (breast or thigh) into small pieces"},
-    {"RecipeId":1,"SectionId":null,"StepNumber":3,"InstructionText":"Fry chicken in butter in at least two portions. Season with salt and pepper. Remove after approx. 3 minutes, once the chicken has a dark golden color"},
-    {"RecipeId":1,"SectionId":null,"StepNumber":4,"InstructionText":"Saute the onions in the same skillet until soft (translucent)"},
-    {"RecipeId":1,"SectionId":null,"StepNumber":5,"InstructionText":"Powder flour over the onions and cook 1-2 minutes"},
-    {"RecipeId":1,"SectionId":null,"StepNumber":6,"InstructionText":"Slowly add chicken broth, stirring until smooth."},
-    {"RecipeId":1,"SectionId":null,"StepNumber":7,"InstructionText":"Spice the gravy with lemon juice, white wine, salt, and pepper. Simmer 5 mintues."},
-    {"RecipeId":1,"SectionId":null,"StepNumber":8,"InstructionText":"Add chicken and cook to 165°F. Remove from heat."},
-    {"RecipeId":1,"SectionId":null,"StepNumber":9,"InstructionText":"Mix egg yolk and heavy cream in a separate bowl. Add to the chicken and gravy and mix well."},
-    {"RecipeId":1,"SectionId":null,"StepNumber":10,"InstructionText":"(Optional) Top with chives."},
-    {"RecipeId":1,"SectionId":null,"StepNumber":11,"InstructionText":"Serve with rice."},
-    {"RecipeId":2,"SectionId":null,"StepNumber":1,"InstructionText":"Preheat oven to 400°F"},
-    {"RecipeId":2,"SectionId":null,"StepNumber":2,"InstructionText":"In a large mixing bowl, beat butter, brown sugar, and sugar for 4 minutes until light and fluffy."},
-    {"RecipeId":2,"SectionId":null,"StepNumber":3,"InstructionText":"Add molasses and egg and mix for 1 minute longer."},
-    {"RecipeId":2,"SectionId":null,"StepNumber":4,"InstructionText":"Fold in flour, baking soda, corn starch, salt, cinnamon, ginger, nutmeg, cloves, and chocolate chips."},
-    {"RecipeId":2,"SectionId":null,"StepNumber":5,"InstructionText":"Roll into 4-ounce, 5-ounce, or 6-ounce balls. Place on a parchment paper-lined baking sheet. I prefer to use light-colored baking sheets."},
-    {"RecipeId":2,"SectionId":null,"StepNumber":6,"InstructionText":"Bake for 8-10 minutes. The cookies will be slightly underdone when you remove them from the oven. Let the cookies sit for 10-15 minutes before moving them from the baking sheet to a wire cooling rack."}
+    {
+        "RecipeId": 1,
+        "SectionId": null,
+        "StepNumber": 1,
+        "InstructionText": "Fry chicken in butter in at least two portions. Season with salt and pepper. Remove after approx. 3 minutes, once the chicken has a dark golden color"
+    },
+    {
+        "RecipeId": 1,
+        "SectionId": null,
+        "StepNumber": 2,
+        "InstructionText": "Saute the onions in the same skillet until soft (translucent)"
+    },
+    {
+        "RecipeId": 1,
+        "SectionId": null,
+        "StepNumber": 3,
+        "InstructionText": "Powder flour over the onions and cook 1-2 minutes"
+    },
+    {
+        "RecipeId": 1,
+        "SectionId": null,
+        "StepNumber": 4,
+        "InstructionText": "Slowly add chicken broth, stirring until smooth."
+    },
+    {
+        "RecipeId": 1,
+        "SectionId": null,
+        "StepNumber": 5,
+        "InstructionText": "Spice the gravy with lemon juice, white wine, salt, and pepper. Simmer 5 mintues."
+    },
+    {
+        "RecipeId": 1,
+        "SectionId": null,
+        "StepNumber": 6,
+        "InstructionText": "Add chicken and cook to 165°F. Remove from heat."
+    },
+    {
+        "RecipeId": 1,
+        "SectionId": null,
+        "StepNumber": 7,
+        "InstructionText": "Mix egg yolk and heavy cream in a separate bowl. Add to the chicken and gravy and mix well."
+    },
+    {
+        "RecipeId": 1,
+        "SectionId": null,
+        "StepNumber": 8,
+        "InstructionText": "(Optional) Top with chives."
+    },
+    {
+        "RecipeId": 1,
+        "SectionId": null,
+        "StepNumber": 9,
+        "InstructionText": "Serve with rice."
+    },
+    {
+        "RecipeId": 2,
+        "SectionId": null,
+        "StepNumber": 1,
+        "InstructionText": "Preheat oven to 400°F"
+    },
+    {
+        "RecipeId": 2,
+        "SectionId": null,
+        "StepNumber": 2,
+        "InstructionText": "In a large mixing bowl, beat butter, brown sugar, and sugar for 4 minutes until light and fluffy."
+    },
+    {
+        "RecipeId": 2,
+        "SectionId": null,
+        "StepNumber": 3,
+        "InstructionText": "Add molasses and egg and mix for 1 minute longer."
+    },
+    {
+        "RecipeId": 2,
+        "SectionId": null,
+        "StepNumber": 4,
+        "InstructionText": "Fold in flour, baking soda, corn starch, salt, cinnamon, ginger, nutmeg, cloves, and chocolate chips."
+    },
+    {
+        "RecipeId": 2,
+        "SectionId": null,
+        "StepNumber": 5,
+        "InstructionText": "Roll into 4-ounce, 5-ounce, or 6-ounce balls. Place on a parchment paper-lined baking sheet. I prefer to use light-colored baking sheets."
+    },
+    {
+        "RecipeId": 2,
+        "SectionId": null,
+        "StepNumber": 6,
+        "InstructionText": "Bake for 8-10 minutes. The cookies will be slightly underdone when you remove them from the oven. Let the cookies sit for 10-15 minutes before moving them from the baking sheet to a wire cooling rack."
+    }
 ]

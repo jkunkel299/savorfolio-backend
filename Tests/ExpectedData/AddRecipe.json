@@ -1,0 +1,124 @@
+{
+    "RecipeSummary":{
+        "Name": "Bistro Chicken Twist",
+        "Servings": 8,
+        "CookTime": "30-32 minutes",
+        "PrepTime": "20 minutes",
+        "BakeTemp": 375,
+        "Temp_unit": "F"
+    },
+    "Ingredients":[
+        {
+            "IngredientOrder": 1,
+            "IngredientId": 143,
+            "IngredientName": "chicken",
+            "Quantity": "1",
+            "UnitId": 4,
+            "UnitName": "Cup",
+            "Qualifier": "cooked, chopped"
+        },
+        {
+            "IngredientOrder": 2,
+            "IngredientId": 232,
+            "IngredientName": "red bell pepper",
+            "Quantity": "1/2",
+            "UnitId": 4,
+            "UnitName": "cup",
+            "Qualifier": "diced"
+        },
+        {
+            "IngredientOrder": 3,
+            "IngredientId": 85,
+            "IngredientName": "fresh basil",
+            "Quantity": "1/4",
+            "UnitId": 4,
+            "UnitName": "Cup",
+            "Qualifier": "snipped"
+        },
+        {
+            "IngredientOrder": 4,
+            "IngredientId": 31,
+            "IngredientName": "parmesan cheese",
+            "Quantity": "6",
+            "UnitId": 2,
+            "UnitName": "Tablespoon",
+            "Qualifier": "divided"
+        },
+        {
+            "IngredientOrder": 5,
+            "IngredientId": 29,
+            "IngredientName": "mozzarella cheese",
+            "Quantity": "1/2",
+            "UnitId": 4,
+            "UnitName": "Cup",
+            "Qualifier": "shredded"
+        },
+        {
+            "IngredientOrder": 6,
+            "IngredientId": 41,
+            "IngredientName": "mayonnaise",
+            "Quantity": "1/4",
+            "UnitId": 4,
+            "UnitName": "Cup"
+        },
+        {
+            "IngredientOrder": 7,
+            "IngredientId": 225,
+            "IngredientName": "garlic",
+            "Quantity": "1",
+            "UnitId": 24,
+            "UnitName": "Clove",
+            "Qualifier": "pressed"
+        },
+        {
+            "IngredientOrder": 8,
+            "IngredientId": 255,
+            "IngredientName": "11 oz French bread dough",
+            "Quantity": "2",
+            "UnitId": 28,
+            "UnitName": "Package",
+            "Qualifier": "refrigerated"
+        },
+        {
+            "IngredientOrder": 9,
+            "IngredientId": 161,
+            "IngredientName": "egg white",
+            "Quantity": "1",
+            "UnitId": 35,
+            "UnitName": "Whole",
+            "Qualifier": "lightly beaten"
+        },
+        {
+            "IngredientOrder": 10,
+            "IngredientId": 256,
+            "IngredientName": "Italian seasoning mix",
+            "Quantity": "1",
+            "UnitId": 1,
+            "UnitName": "Teaspoon"
+        }
+    ],
+    "Instructions": [
+        {
+            "StepNumber": 1,
+            "InstructionText": "Preheat oven to 375°F. Chop chicken using Food Chopper. Dice bell pepper using Chef's Knife. Snip basil using Kitchen Shears. In Classic Batter Bowl, combine chicken, bell pepper, basil, 1/4 cup (4 tablespoons) of the Parmesan cheese, mayonnaise, and garlic pressed with Garlic Press; mix well."
+        },
+        {
+            "StepNumber": 2,
+            "InstructionText": "Place bread dough, seam sides up, on smooth side of Large Grooved Cutting Board. Using Serrated Bread Knife, slice each loaf lengthwise, end to end, cutting halfway through to the centre of the loaf; spread out flat. Lightly sprinkle flour evenly over dough. Using Baker's Roller, roll dough crosswise to a 4-inch width, creating a well down the center of each loaf."
+        },
+        {
+            "StepNumber": 3,
+            "InstructionText": "Spoon half of the chicken mixture down the center of each loaf. Gather up edges over filling, pinching firmly to seal. Place loaves, seam sides down, in an 'X' pattern on rectangle Stone. Crosscross ends of dough to form a large figure '8', keeping ends of dough 1 inch from edge of stone and leaving two 1 1/2 inch openings in center of twist."
+        },
+        {
+            "StepNumber": 4,
+            "InstructionText": "Combine egg white and seasoning mix; lightly brush over dough. Cut a 3-inch slit in each of the top sections of the twist to reveal filling. Springle remaining 2 tablespoons Parmesan cheese over loaf. Bake 30-32 minutes or until deep golden brown. Remove from oven; cool 10 minutes."
+        }
+    ],
+    "RecipeTags":{
+        "Meal": "Dinner",
+        "Recipe_type": "Main",
+        "Cuisine": "Italian",
+        "Dietary": ["Nut-Free", "Soy-Free"]
+    }
+}
