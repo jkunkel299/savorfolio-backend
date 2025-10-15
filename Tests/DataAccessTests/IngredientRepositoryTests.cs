@@ -12,7 +12,7 @@ public class IngredientRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixt
     
 
     [Fact]
-    public async Task IngredientSearchTest1() // Test ID: T-1
+    public async Task IngredientSearchTest() // Test ID: T-1
     {
         // initialize search term
         string searchTerm = "chicken";

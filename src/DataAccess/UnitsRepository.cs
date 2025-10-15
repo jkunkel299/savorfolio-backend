@@ -27,18 +27,23 @@ public class UnitsRepository(AppDbContext context) : IUnitsRepository
             query = query.Where(u =>
                 u.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
                 u.Abbreviation.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
-            );
+            )
+            .OrderByDescending(u => 
+                u.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+            .ThenByDescending(u => 
+                u.Abbreviation.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
         }
         else
         {
             query = query.Where(u =>
                 EF.Functions.ILike(u.Name, $"%{searchTerm}%") ||
                 EF.Functions.ILike(u.Abbreviation, $"%{searchTerm}%")
-            );
+            )
+                .OrderByDescending(e => EF.Functions.ILike(e.Name, $"%{searchTerm}%"))
+                .ThenByDescending(e => EF.Functions.ILike(e.Abbreviation, $"%{searchTerm}%"));
         };
 
         return await query
-            .OrderBy(i => i.Name)
             .Take(10)
             .ToListAsync();
     }
