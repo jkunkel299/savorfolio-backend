@@ -109,7 +109,7 @@ public class ViewRecipeDbTests(DatabaseFixture databaseFixture) : IClassFixture<
 
 
     [Fact]
-    public async Task DbGetTagsById()
+    public void DbGetTagsById()
     {
         // Ensure connection to the Database
         Assert.False(string.IsNullOrEmpty(_databaseFixture.ConnectionString));

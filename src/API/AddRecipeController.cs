@@ -1,5 +1,7 @@
 /* API layer to add recipe manually, may also include adding recipe via scraping */
 
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using savorfolio_backend.Interfaces;
@@ -12,21 +14,10 @@ public static class AddRecipeEndpoints
     public static void MapManualRecipe(this WebApplication app)
     {
         app.MapPost("/api/recipes/add/manual", async (
-            HttpRequest request,
+            [FromBody] JsonDocument newRecipeBody,
             IAddRecipeService addRecipeService) =>
         {
-            using var reader = new StreamReader(request.Body);
-            var requestBody = await reader.ReadToEndAsync();
-
-            JObject newRecipe/*  = await JsonParseService.ParseJson(request) */;
-            try
-            {
-                newRecipe = JObject.Parse(requestBody);
-            }
-            catch (JsonReaderException ex)
-            {
-                return Results.BadRequest($"Invalid JSON format: {ex.Message}");
-            }
+            var newRecipe = JObject.Parse(newRecipeBody.RootElement.GetRawText());
             
             OperationResult<int> result = await addRecipeService.AddRecipeManually(newRecipe);
             if (result.Success)

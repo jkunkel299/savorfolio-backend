@@ -49,22 +49,19 @@ public class AddRecipeService(
         // call tagsRepository.AddNewRecipeTags with the new tags DTO
         int tagsAdded = _tagsRepository.AddNewRecipeTags(recipeTags, newRecipeId);
 
+        var result = new OperationResult<int>();
+
         // check if all entries were added successfully
         if (ingAdded > 0 & insAdded > 0 & tagsAdded > 0)
         {
-            return new OperationResult<int>
-            {
-                Success = true,
-                Data = newRecipe.Id,
-                Message = "Recipe added successfully"
-            };
-        }
-
-        // remove added records - TODO
-        return new OperationResult<int>
+            result.Success = true;
+            result.Data = newRecipeId;
+            result.Message = "Recipe added successfully";
+        } else
         {
-            Success = false,
-            Message = "Failed to add recipe"
-        };
+            result.Success = false;
+            result.Message = "Failed to add recipe";
+        }
+        return result;
     }
 }

@@ -1,39 +1,15 @@
-using DotNetEnv;
-using Microsoft.EntityFrameworkCore;
-using Npgsql;
-using savorfolio_backend.Data;
-using Tests.Helpers;
 using System.Text.Json;
+using Npgsql;
+using NpgsqlTypes;
+using Tests.Helpers;
 
-namespace IntegrationTests.Fixtures;
+namespace IntegrationTests.Helpers;
 
-public class DatabaseFixture : IDisposable
+public static class DatabaseSeeder
 {
-    public string ConnectionString { get; }
-    public AppDbContext Context { get; }
-
-    public DatabaseFixture()
+    public static async Task ResetAndSeedAsync(string connectionString)
     {
-        // Add connection string from environment variables
-        Env.Load();
-        ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DATABASE_CONNECTION")
-            ?? throw new InvalidOperationException("ConnectionStrings__DATABASE_CONNECTION not found in .env");
-
-        // Configure TestDbContext
-        var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseNpgsql(ConnectionString)
-            .Options;
-
-        Context = new AppDbContext(options);
-
-        // Reset and seed database when fixture is created 
-        ResetDatabase().Wait();
-        SeedDatabase().Wait();
-    }
-
-    private async Task ResetDatabase()
-    {
-        await using var conn = new NpgsqlConnection(ConnectionString);
+        await using var conn = new NpgsqlConnection(connectionString);
         await conn.OpenAsync();
 
         // truncate recipes, ingredients, instructions, and tags tables
@@ -44,12 +20,6 @@ public class DatabaseFixture : IDisposable
             TRUNCATE TABLE ""Recipe_Tags"" RESTART IDENTITY CASCADE;
         ", conn);
         await cmd.ExecuteNonQueryAsync();
-    }
-
-    private async Task SeedDatabase()
-    {
-        await using var conn = new NpgsqlConnection(ConnectionString);
-        await conn.OpenAsync();
 
         // load and insert recipe data
         string recipeFilePath = TestFileHelper.GetProjectPath("SeedData/Recipe.json");
@@ -57,13 +27,11 @@ public class DatabaseFixture : IDisposable
         string insListFilePath = TestFileHelper.GetProjectPath("SeedData/Instructions.json");
         string tagsFilePath = TestFileHelper.GetProjectPath("SeedData/RecipeTags.json");
 
-        // read data from files
         string recipesJson = await File.ReadAllTextAsync(recipeFilePath);
         string ingListJson = await File.ReadAllTextAsync(ingListFilePath);
         string instructJson = await File.ReadAllTextAsync(insListFilePath);
         string recipeTagsJson = await File.ReadAllTextAsync(tagsFilePath);
 
-        // convert to seed data objects
         var recipes = JsonSerializer.Deserialize<List<RecipeSeed>>(recipesJson)!;
         var ingList = JsonSerializer.Deserialize<List<IngredientListSeed>>(ingListJson)!;
         var instructions = JsonSerializer.Deserialize<List<InstructionSeed>>(instructJson)!;
@@ -130,11 +98,6 @@ public class DatabaseFixture : IDisposable
             insertCmd.Parameters.AddWithValue("@dietary", tag.Dietary);
             await insertCmd.ExecuteNonQueryAsync();
         }
-    }
-
-    public void Dispose() //async ValueTask DisposeAsync
-    {
-        GC.SuppressFinalize(this);
     }
 
     private class RecipeSeed
