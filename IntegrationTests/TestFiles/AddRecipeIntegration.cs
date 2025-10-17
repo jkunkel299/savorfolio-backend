@@ -32,6 +32,7 @@ public class AddRecipeFullTests(DatabaseFixture databaseFixture, TestServerFixtu
 
         // initialize expected recipe ID
         int expectedId = 3;
+        // initialize the expected response message
         string expectedMessage = $"\"Recipe ID {expectedId} added successfully\"";
 
         // initialize JSON body
@@ -41,8 +42,8 @@ public class AddRecipeFullTests(DatabaseFixture databaseFixture, TestServerFixtu
         var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
         // Call MapManualRecipe API with the recipe to add
-        // var response = await _client.PostAsJsonAsync("/api/recipes/add/manual", jsonBody);
         var response = await _client.PostAsync("/api/recipes/add/manual", content);
+        // get the response content/message
         var actualMessage = await response.Content.ReadAsStringAsync();
 
         // Assert status code 200

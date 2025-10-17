@@ -62,6 +62,7 @@ public class UnitSearchIntegrationTests(DatabaseFixture databaseFixture, TestSer
     {
         // initialize search term
         string searchTerm = "ta";
+        // initialize the API endpoint URL using the search term
         string url = $"/api/units?term={searchTerm}";
 
         // initialize expected result as string, convert to JSON
@@ -83,7 +84,6 @@ public class UnitSearchIntegrationTests(DatabaseFixture databaseFixture, TestSer
 
         var response = await _client.GetAsync(url);
         var units = await response.Content.ReadFromJsonAsync<List<UnitDTO>>();
-        // var orderedResult = ingredients!.OrderBy(i => i.Name).ToList();
 
         // Convert result to JSON token
         var actualJson = JsonConvert.SerializeObject(units);

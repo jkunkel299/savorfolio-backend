@@ -25,6 +25,8 @@ public class AddRecipeControllerTests()
         int recipeId = 3;
         // initialize JSON body
         var jsonBody = _expectedAddRecipe.ToString();
+        // initialize expected HTTP response message
+        string expectedMessage = $"Recipe ID {recipeId} added successfully";
 
         // mock AddRecipeService
         var mockAddRecipeService = new Mock<IAddRecipeService>();
@@ -47,7 +49,7 @@ public class AddRecipeControllerTests()
         // assert result.Ok type
         var okResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.Ok<string>>(result);
         // assert result.Ok message
-        Assert.Equal($"Recipe ID {recipeId} added successfully", okResult.Value);
+        Assert.Equal(expectedMessage, okResult.Value);
     }
 
     // test for MapManualRecipe failure
@@ -56,6 +58,8 @@ public class AddRecipeControllerTests()
     {
         // initialize JSON body
         var jsonBody = _expectedAddRecipe.ToString();
+        // initialize the expected HTTP response message
+        string expectedMessage = "Recipe not added successfully";
 
         // mock AddRecipeService
         var mockAddRecipeService = new Mock<IAddRecipeService>();
@@ -77,6 +81,6 @@ public class AddRecipeControllerTests()
         // assert result.Problem type
         var badResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult>(result);
         // assert result.Problem message
-        Assert.Equal("Recipe not added successfully", badResult.ProblemDetails.Detail);
+        Assert.Equal(expectedMessage, badResult.ProblemDetails.Detail);
     }
 }

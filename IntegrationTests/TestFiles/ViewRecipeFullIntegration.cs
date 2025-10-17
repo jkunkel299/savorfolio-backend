@@ -36,7 +36,7 @@ public class ViewRecipeFullTests(DatabaseFixture databaseFixture, TestServerFixt
         string expectedJson = JsonConvert.SerializeObject(expectedRecipeDTO);
         JToken expectedToken = JToken.Parse(expectedJson);
 
-        // Call MapRecipeSearch API with empty search filter - should return all recipes
+        // Call MapRecipeById API with the recipe ID - should return Fall Spice Chocolate Chip Cookies.
         var response = await _client.GetAsync($"/api/recipes/view?recipeId={recipeId}");
         // get response content
         var recipe = await response.Content.ReadFromJsonAsync<FullRecipeDTO>();

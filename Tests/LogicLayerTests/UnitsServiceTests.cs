@@ -17,7 +17,7 @@ public class UnitsServiceTests()
         // mock UnitsService
         var unitsService = new UnitsService(mockUnitsRepo.Object);
 
-        // call SearchIngredientsAsync from mocked IngredientService
+        // call SearchUnitsAsync from mocked UnitsService
         _ = await unitsService.SearchUnitsAsync(searchTerm);
 
         // assert mocked function called once
