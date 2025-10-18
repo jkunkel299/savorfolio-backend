@@ -35,6 +35,7 @@ public class TagsControllerTests()
 
         // assert result.ok type
         var okResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.Ok<string[]>>(result);
+        // get content/value from HTTP result
         var actualValues = okResult.Value;
 
         // assert result.ok value is expected
@@ -52,6 +53,7 @@ public class TagsControllerTests()
 
         // assert result.ok type
         var okResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.Ok<string[]>>(result);
+        // get content/value from HTTP result
         var actualValues = okResult.Value;
 
         // assert result.ok value is expected
@@ -69,6 +71,7 @@ public class TagsControllerTests()
 
         // assert result.ok type
         var okResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.Ok<string[]>>(result);
+        // get content/value from HTTP result
         var actualValues = okResult.Value;
 
         // assert result.ok value is expected
@@ -86,6 +89,7 @@ public class TagsControllerTests()
 
         // assert result.ok type
         var okResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.Ok<List<string>>>(result);
+        // get content/value from HTTP result
         var actualValues = okResult.Value;
 
         // assert result.ok value is expected

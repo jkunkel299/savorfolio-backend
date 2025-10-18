@@ -8,6 +8,7 @@ namespace savorfolio_backend.API;
 
 public static class RecipeEndpoints
 {
+    // search for recipe using filters
     public static void MapRecipeSearch(this WebApplication app)
     {
         // single API for recipe search by optional filters
@@ -20,6 +21,7 @@ public static class RecipeEndpoints
         });
     }
 
+    // get recipe by ID
     public static void MapRecipeById(this WebApplication app)
     {
         app.MapGet("/api/recipes/view", async (

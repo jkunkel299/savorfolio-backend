@@ -110,8 +110,6 @@ public class InMemoryDbSeeder
                 {
                     i.RecipeId = matchedRecipe.Id;
                 }
-                // // drop the navigation object to avoid EF trying to insert duplicates
-                // i.Recipe = null;
             }
         }
 
@@ -149,8 +147,6 @@ public class InMemoryDbSeeder
                 {
                     i.RecipeId = matchedRecipe.Id;
                 }
-                // // drop the navigation object to avoid EF trying to insert duplicates
-                // i.Recipe = null;
             }
         }
 

@@ -134,6 +134,8 @@ public class DatabaseFixture : IDisposable
 
     public void Dispose() //async ValueTask DisposeAsync
     {
+        ResetDatabase().Wait();
+        SeedDatabase().Wait();
         GC.SuppressFinalize(this);
     }
 

@@ -110,6 +110,7 @@ public class AddRecipeServiceTests()
         // call AddRecipeManually from mocked AddRecipeService
         var result = await addRecipeService.AddRecipeManually(newRecipeContent);
 
+        // assert result.success is true
         Assert.True(result.Success);
     }
 
@@ -157,6 +158,7 @@ public class AddRecipeServiceTests()
         // call AddRecipeManually from mocked AddRecipeService
         var result = await addRecipeService.AddRecipeManually(newRecipeContent);
 
+        // assert result.success is false
         Assert.False(result.Success);
     }
 

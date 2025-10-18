@@ -45,6 +45,7 @@ public class UnitsControllerTests()
 
         // cast result to BadRequest<string> to access the Value property
         var badResultValue = (BadRequest<string>)result;
+        // get content/value from HTTP result
         string? content = badResultValue.Value;
 
         // cast result to IStatusCodeHttpResult to access the StatusCode property

@@ -8,7 +8,6 @@ using System.Net;
 
 namespace IntegrationTests.TestFiles;
 
-// [Collection("Database Collection")]
 [Collection("Integration Test Server")]
 public class IngredientSearchIntegrationTests(DatabaseFixture databaseFixture, TestServerFixture testServerFixture) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
 {

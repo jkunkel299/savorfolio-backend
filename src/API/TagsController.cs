@@ -6,6 +6,7 @@ namespace savorfolio_backend.API;
 
 public static class TagsEndpoints
 {    
+    // get meal tag enums
     public static void GetMealTags(this WebApplication app)
     {
         app.MapGet("api/enum/meal-type", () =>
@@ -16,6 +17,7 @@ public static class TagsEndpoints
 
     }
 
+    // get recipe type tag enums
     public static void GetRecipeTypeTags(this WebApplication app)
     {
         app.MapGet("api/enum/recipe-type", () =>
@@ -26,6 +28,7 @@ public static class TagsEndpoints
 
     }
 
+    // get cuisine type tag enums
     public static void GetCuisineTags(this WebApplication app)
     {
         app.MapGet("api/enum/cuisine-type", () =>
@@ -36,6 +39,7 @@ public static class TagsEndpoints
 
     }
 
+    // get dietary tag enums
     public static void GetDietaryTags(this WebApplication app)
     {
         app.MapGet("api/enum/dietary-type", () =>

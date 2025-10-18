@@ -3,7 +3,6 @@ using savorfolio_backend.Models.DTOs;
 using Tests.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using savorfolio_backend.DataAccess;
 using System.Net;
 using System.Net.Http.Json;
 

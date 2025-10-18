@@ -8,7 +8,6 @@ namespace Tests.DataAccessTests;
 [Collection("Unit test database Collection")]
 public class UnitRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixture<UnitDbFixture>
 {
-    // private readonly UnitDbFixture _unitDbFixture = unitDbFixture;
     private readonly UnitsRepository _repository = new(unitDbFixture.Context);
     
 

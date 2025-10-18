@@ -1,11 +1,7 @@
 using IntegrationTests.Fixtures;
-using savorfolio_backend.Models.DTOs;
 using Tests.Helpers;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net;
-using System.Net.Http.Json;
-using Microsoft.AspNetCore.Http;
 using System.Text;
 
 namespace IntegrationTests.TestFiles;

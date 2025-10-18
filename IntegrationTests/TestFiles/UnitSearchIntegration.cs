@@ -8,7 +8,6 @@ using System.Net;
 
 namespace IntegrationTests.TestFiles;
 
-// [Collection("Database Collection")]
 [Collection("Integration Test Server")]
 public class UnitSearchIntegrationTests(DatabaseFixture databaseFixture, TestServerFixture testServerFixture) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
 {
@@ -82,7 +81,9 @@ public class UnitSearchIntegrationTests(DatabaseFixture databaseFixture, TestSer
         """;
         JToken expectedToken = JToken.Parse(expectedJson);
 
+        // invoke API endpoint
         var response = await _client.GetAsync(url);
+        // get content from response
         var units = await response.Content.ReadFromJsonAsync<List<UnitDTO>>();
 
         // Convert result to JSON token
