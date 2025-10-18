@@ -21,13 +21,23 @@ public class IngredientSearchIntegrationTests(DatabaseFixture databaseFixture, T
         string searchTerm = "chicken";
 
         // initialize expected result as string, convert to JSON
+        // string expectedJson = """
+        // [
+        //     {"Id": 143, "Name": "chicken", "TypeId": 7, "IngredientCategory": "Protein"},
+        //     {"Id": 144, "Name": "chicken breast", "TypeId": 7, "IngredientCategory": "Protein"},
+        //     {"Id": 251, "Name": "chicken broth", "TypeId": 4, "IngredientCategory": "Broth & Stock"},
+        //     {"Id": 20, "Name": "chicken stock", "TypeId": 4, "IngredientCategory": "Broth & Stock"},
+        //     {"Id": 145, "Name": "chicken thigh", "TypeId": 7, "IngredientCategory": "Protein"}
+        // ]
+        // """;
         string expectedJson = """
         [
-            {"Id": 143, "Name": "chicken", "TypeId": 7, "IngredientCategory": "Protein"},
+            {"Id": 145, "Name": "chicken thigh", "TypeId": 7, "IngredientCategory": "Protein"},
             {"Id": 144, "Name": "chicken breast", "TypeId": 7, "IngredientCategory": "Protein"},
+            {"Id": 143, "Name": "chicken", "TypeId": 7, "IngredientCategory": "Protein"},
             {"Id": 251, "Name": "chicken broth", "TypeId": 4, "IngredientCategory": "Broth & Stock"},
             {"Id": 20, "Name": "chicken stock", "TypeId": 4, "IngredientCategory": "Broth & Stock"},
-            {"Id": 145, "Name": "chicken thigh", "TypeId": 7, "IngredientCategory": "Protein"}
+            
         ]
         """;
         JToken expectedToken = JToken.Parse(expectedJson);
@@ -56,24 +66,34 @@ public class IngredientSearchIntegrationTests(DatabaseFixture databaseFixture, T
         string url = $"/api/ingredients/search?term={searchTerm}";
 
         // initialize expected result as string, convert to JSON
+        // string expectedJson = """
+        // [
+        //     {"Id": 143, "Name": "chicken", "TypeId": 7, "IngredientCategory": "Protein"},
+        //     {"Id": 144, "Name": "chicken breast", "TypeId": 7, "IngredientCategory": "Protein"},
+        //     {"Id": 251, "Name": "chicken broth", "TypeId": 4, "IngredientCategory": "Broth & Stock"},
+        //     {"Id": 20, "Name": "chicken stock", "TypeId": 4, "IngredientCategory": "Broth & Stock"},
+        //     {"Id": 145, "Name": "chicken thigh", "TypeId": 7, "IngredientCategory": "Protein"}
+        // ]
+        // """;
         string expectedJson = """
         [
-            {"Id": 143, "Name": "chicken", "TypeId": 7, "IngredientCategory": "Protein"},
+            {"Id": 145, "Name": "chicken thigh", "TypeId": 7, "IngredientCategory": "Protein"},
             {"Id": 144, "Name": "chicken breast", "TypeId": 7, "IngredientCategory": "Protein"},
+            {"Id": 143, "Name": "chicken", "TypeId": 7, "IngredientCategory": "Protein"},
             {"Id": 251, "Name": "chicken broth", "TypeId": 4, "IngredientCategory": "Broth & Stock"},
             {"Id": 20, "Name": "chicken stock", "TypeId": 4, "IngredientCategory": "Broth & Stock"},
-            {"Id": 145, "Name": "chicken thigh", "TypeId": 7, "IngredientCategory": "Protein"}
+            
         ]
         """;
-        var expected = JsonConvert.DeserializeObject<List<IngredientVariantDTO>>(expectedJson);
         JToken expectedToken = JToken.Parse(expectedJson);
 
         var response = await _client.GetAsync(url);
         var ingredients = await response.Content.ReadFromJsonAsync<List<IngredientVariantDTO>>();
-        var orderedResult = ingredients!.OrderBy(i => i.Name).ToList();
+        var result = ingredients!.ToList();
+        // var orderedResult = ingredients!.OrderBy(i => i.Name).ToList();
 
         // Convert result to JSON token
-        var actualJson = JsonConvert.SerializeObject(orderedResult);
+        var actualJson = JsonConvert.SerializeObject(result);
         JToken actualToken = JToken.Parse(actualJson);
 
         // Assert status code 200

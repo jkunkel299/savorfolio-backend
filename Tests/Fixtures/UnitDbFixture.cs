@@ -13,12 +13,6 @@ public class UnitDbFixture : IDisposable
 
     public UnitDbFixture()
     {
-        // var connection = new SqliteConnection("DataSource=:memory:");
-        // connection.Open();
-
-        // var options = new DbContextOptionsBuilder<AppDbContext>()
-        //     .UseSqlite(connection)
-        //     .Options;
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase("UnitTestsDb")
             .EnableSensitiveDataLogging()
@@ -33,6 +27,8 @@ public class UnitDbFixture : IDisposable
         Context.Units.RemoveRange(Context.Units);
         Context.Recipes.RemoveRange(Context.Recipes);
         Context.IngredientLists.RemoveRange(Context.IngredientLists);
+        Context.Instructions.RemoveRange(Context.Instructions);
+        Context.RecipeTags.RemoveRange(Context.RecipeTags);
         Context.SaveChanges();
 
         string ingTypeFilePath = TestFileHelper.GetProjectPath("SeedData/Ingredient_Types1.json");
@@ -40,12 +36,16 @@ public class UnitDbFixture : IDisposable
         string unitsFilePath = TestFileHelper.GetProjectPath("SeedData/Units.json");
         string recipeFilePath = TestFileHelper.GetProjectPath("SeedData/Recipe.json");
         string ingListFilePath = TestFileHelper.GetProjectPath("SeedData/Ingredient_Lists.json");
+        string insListFilePath = TestFileHelper.GetProjectPath("SeedData/Instructions.json");
+        string tagsFilePath = TestFileHelper.GetProjectPath("SeedData/RecipeTags.json");
 
         InMemoryDbSeeder.SeedFromJson<IngredientType>(Context, ingTypeFilePath);
         InMemoryDbSeeder.SeedVariantsFromJson(Context, ingVariantFilePath);
         InMemoryDbSeeder.SeedFromJson<Unit>(Context, unitsFilePath);
         InMemoryDbSeeder.SeedFromJson<Recipe>(Context, recipeFilePath);
         InMemoryDbSeeder.SeedIngredientListsFromJson(Context, ingListFilePath);
+        InMemoryDbSeeder.SeedInstructionsFromJson(Context, insListFilePath);
+        InMemoryDbSeeder.SeedTagsFromJson(Context, tagsFilePath);
     }
 
     public void Dispose()

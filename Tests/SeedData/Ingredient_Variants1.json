@@ -1026,5 +1026,13 @@
     {
         "TypeId": 10,
         "Name": "green bell pepper"
+    },
+    {
+        "TypeId": 2,
+        "Name": "half & half"
+    },
+    {
+        "TypeId": 2,
+        "Name": "milk"
     }
 ]

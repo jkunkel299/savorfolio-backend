@@ -26,16 +26,17 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
         if (_context.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
         {
             // fallback for testing
-            query = query.Where(i => i.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+            query = query.Where(i => i.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(u => 
+                u.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
         }
         else
         {
-            query = query.Where(i => EF.Functions.ILike(i.Name, $"%{searchTerm}%"));
-        }
-        ;  
+            query = query.Where(i => EF.Functions.ILike(i.Name, $"%{searchTerm}%"))
+                .OrderBy(e => EF.Functions.ILike(e.Name, $"%{searchTerm}%"));
+        };  
 
         return await query
-            .OrderBy(i => i.Name)
             .Take(10)
             .ToListAsync();
     }
