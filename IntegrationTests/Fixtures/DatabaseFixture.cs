@@ -73,8 +73,8 @@ public class DatabaseFixture : IDisposable
         foreach (var recipe in recipes)
         {
             using var insertCmd = new NpgsqlCommand(@"
-                INSERT INTO ""Recipe"" (name, servings, cook_time, prep_time, bake_temp, temp_unit) 
-                VALUES (@name, @servings, @cook_time, @prep_time, @bake_temp, @temp_unit)",
+                INSERT INTO ""Recipe"" (name, servings, cook_time, prep_time, bake_temp, temp_unit, description) 
+                VALUES (@name, @servings, @cook_time, @prep_time, @bake_temp, @temp_unit, @description)",
             conn);
             insertCmd.Parameters.AddWithValue("@name", recipe.Name);
             insertCmd.Parameters.AddWithValue("@servings", recipe.Servings ?? (object)DBNull.Value);
@@ -82,6 +82,7 @@ public class DatabaseFixture : IDisposable
             insertCmd.Parameters.AddWithValue("@prep_time", recipe.PrepTime ?? (object)DBNull.Value);
             insertCmd.Parameters.AddWithValue("@bake_temp", recipe.BakeTemp ?? (object)DBNull.Value);
             insertCmd.Parameters.AddWithValue("@temp_unit", recipe.Temp_unit ?? (object)DBNull.Value);
+            insertCmd.Parameters.AddWithValue("@description", recipe.Description ?? (object)DBNull.Value);
             await insertCmd.ExecuteNonQueryAsync();
         }
 
@@ -148,6 +149,7 @@ public class DatabaseFixture : IDisposable
         public string? PrepTime { get; set; }
         public int? BakeTemp { get; set; }
         public string? Temp_unit { get; set; }
+        public string? Description { get; set; }
     }
 
     private class IngredientListSeed

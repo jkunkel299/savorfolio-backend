@@ -17,5 +17,7 @@ public class RecipeDTO
 
     public string? Temp_unit { get; set; }
 
+    public string? Description { get; set; }
+
     public List<IngredientListDTO> Ingredients { get; set; } = [];
 }

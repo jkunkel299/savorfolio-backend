@@ -5,7 +5,8 @@
         "CookTime":"20 minutes",
         "PrepTime":"10 minutes",
         "BakeTemp":null,
-        "Temp_unit":null
+        "Temp_unit":null,
+        "Description":null
     },
     {
         "Name":"Fall Spice Chocolate Chip Cookies",
@@ -13,6 +14,7 @@
         "CookTime":"10 minutes",
         "PrepTime":"15 minutes",
         "BakeTemp":400,
-        "Temp_unit":"F"
+        "Temp_unit":"F",
+        "Description":"Soft, chewy Fall cookie with dark brown sugar, molasses, cinnamon, ginger, cloves, nutmeg, and chocolate chips for the perfect Autumn cookie. This is the perfect Fall spiced chocolate chip cookie recipe!"
     }
 ]

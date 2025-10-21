@@ -26,6 +26,7 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
                 PrepTime = r.PrepTime,
                 BakeTemp = r.BakeTemp,
                 Temp_unit = r.Temp_unit,
+                Description = r.Description
             }).SingleOrDefaultAsync();
 
         return result!;
@@ -67,6 +68,7 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
                 PrepTime = r.PrepTime,
                 BakeTemp = r.BakeTemp,
                 Temp_unit = r.Temp_unit,
+                Description = r.Description,
                 Ingredients = r.IngredientLists
                     .OrderBy(ri => ri.IngredientOrder)
                     .Select(ri => new IngredientListDTO
@@ -97,7 +99,8 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
             CookTime = recipeData.CookTime,
             PrepTime = recipeData.PrepTime,
             BakeTemp = recipeData.BakeTemp,
-            Temp_unit = recipeData.Temp_unit
+            Temp_unit = recipeData.Temp_unit,
+            Description = recipeData.Description
         };
 
         // add new recipe to Recipe table and save changes

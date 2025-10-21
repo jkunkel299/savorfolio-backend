@@ -5,7 +5,8 @@
         "CookTime": "30-32 minutes",
         "PrepTime": "20 minutes",
         "BakeTemp": 375,
-        "Temp_unit": "F"
+        "Temp_unit": "F",
+        "Description": "Fresh basil accents this delightful stuffed bread. Serve it for lunch with a salad of mixed greens."
     },
     "Ingredients":[
         {
@@ -14,7 +15,7 @@
             "IngredientName": "chicken",
             "Quantity": "1",
             "UnitId": 4,
-            "UnitName": "Cup",
+            "UnitName": "cup",
             "Qualifier": "cooked, chopped"
         },
         {
@@ -32,7 +33,7 @@
             "IngredientName": "fresh basil",
             "Quantity": "1/4",
             "UnitId": 4,
-            "UnitName": "Cup",
+            "UnitName": "cup",
             "Qualifier": "snipped"
         },
         {
@@ -41,7 +42,7 @@
             "IngredientName": "parmesan cheese",
             "Quantity": "6",
             "UnitId": 2,
-            "UnitName": "Tablespoon",
+            "UnitName": "tablespoon",
             "Qualifier": "divided"
         },
         {
@@ -50,7 +51,7 @@
             "IngredientName": "mozzarella cheese",
             "Quantity": "1/2",
             "UnitId": 4,
-            "UnitName": "Cup",
+            "UnitName": "cup",
             "Qualifier": "shredded"
         },
         {
@@ -59,7 +60,7 @@
             "IngredientName": "mayonnaise",
             "Quantity": "1/4",
             "UnitId": 4,
-            "UnitName": "Cup"
+            "UnitName": "cup"
         },
         {
             "IngredientOrder": 7,
@@ -67,7 +68,7 @@
             "IngredientName": "garlic",
             "Quantity": "1",
             "UnitId": 24,
-            "UnitName": "Clove",
+            "UnitName": "clove",
             "Qualifier": "pressed"
         },
         {
@@ -76,7 +77,7 @@
             "IngredientName": "11 oz French bread dough",
             "Quantity": "2",
             "UnitId": 28,
-            "UnitName": "Package",
+            "UnitName": "package",
             "Qualifier": "refrigerated"
         },
         {
@@ -85,7 +86,7 @@
             "IngredientName": "egg white",
             "Quantity": "1",
             "UnitId": 35,
-            "UnitName": "Whole",
+            "UnitName": "whole",
             "Qualifier": "lightly beaten"
         },
         {
@@ -94,7 +95,7 @@
             "IngredientName": "Italian seasoning mix",
             "Quantity": "1",
             "UnitId": 1,
-            "UnitName": "Teaspoon"
+            "UnitName": "teaspoon"
         }
     ],
     "Instructions": [
@@ -116,7 +117,7 @@
         }
     ],
     "RecipeTags":{
-        "Meal": "Dinner",
+        "Meal": "Lunch",
         "Recipe_type": "Main",
         "Cuisine": "Italian",
         "Dietary": ["Nut-Free", "Soy-Free"]

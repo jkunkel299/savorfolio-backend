@@ -20,7 +20,8 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
                 Id = i.Id,
                 Name = i.Name,
                 TypeId = i.TypeId,
-                IngredientCategory = t.Name
+                IngredientCategory = t.Name,
+                PluralName = i.PluralName!
             };
 
         if (_context.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")

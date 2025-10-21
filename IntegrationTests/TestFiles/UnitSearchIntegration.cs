@@ -29,12 +29,14 @@ public class UnitSearchIntegrationTests(DatabaseFixture databaseFixture, TestSer
             {
                 "Id": 37,
                 "Name": "to taste",
-                "Abbreviation": "to taste"
+                "Abbreviation": "to taste",
+                "PluralName": "to taste"
             },
             {
                 "Id": 2,
-                "Name": "Tablespoon",
-                "Abbreviation": "tbsp"
+                "Name": "tablespoon",
+                "Abbreviation": "tbsp",
+                "PluralName": "tablespoons"
             }
         ]
         """;
@@ -70,12 +72,14 @@ public class UnitSearchIntegrationTests(DatabaseFixture databaseFixture, TestSer
             {
                 "Id": 37,
                 "Name": "to taste",
-                "Abbreviation": "to taste"
+                "Abbreviation": "to taste",
+                "PluralName": "to taste"
             },
             {
                 "Id": 2,
-                "Name": "Tablespoon",
-                "Abbreviation": "tbsp"
+                "Name": "tablespoon",
+                "Abbreviation": "tbsp",
+                "PluralName": "tablespoons"
             }
         ]
         """;

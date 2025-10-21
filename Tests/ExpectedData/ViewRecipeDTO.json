@@ -8,6 +8,7 @@
         "PrepTime": "15 minutes",
         "BakeTemp": 400,
         "Temp_unit": "F",
+        "Description":"Soft, chewy Fall cookie with dark brown sugar, molasses, cinnamon, ginger, cloves, nutmeg, and chocolate chips for the perfect Autumn cookie. This is the perfect Fall spiced chocolate chip cookie recipe!",
         "Ingredients": []
     },
     "RecipeTags": {
@@ -28,7 +29,7 @@
             "IngredientName": "butter, salted",
             "Quantity": "12",
             "UnitId": 2,
-            "UnitName": "Tablespoon",
+            "UnitName": "tablespoon",
             "Qualifier": "cold, cut into cubes"
         },
         {
@@ -39,7 +40,7 @@
             "IngredientName": "brown sugar",
             "Quantity": "0.5",
             "UnitId": 4,
-            "UnitName": "Cup",
+            "UnitName": "cup",
             "Qualifier": null
         },
         {
@@ -50,7 +51,7 @@
             "IngredientName": "white sugar",
             "Quantity": "0.5",
             "UnitId": 4,
-            "UnitName": "Cup",
+            "UnitName": "cup",
             "Qualifier": null
         },
         {
@@ -61,7 +62,7 @@
             "IngredientName": "egg",
             "Quantity": "1",
             "UnitId": 35,
-            "UnitName": "Whole",
+            "UnitName": "whole",
             "Qualifier": null
         },
         {
@@ -72,7 +73,7 @@
             "IngredientName": "molasses",
             "Quantity": "2",
             "UnitId": 2,
-            "UnitName": "Tablespoon",
+            "UnitName": "tablespoon",
             "Qualifier": null
         },
         {
@@ -83,7 +84,7 @@
             "IngredientName": "all-purpose flour",
             "Quantity": "2",
             "UnitId": 4,
-            "UnitName": "Cup",
+            "UnitName": "cup",
             "Qualifier": null
         },
         {
@@ -94,7 +95,7 @@
             "IngredientName": "baking soda",
             "Quantity": "1",
             "UnitId": 1,
-            "UnitName": "Teaspoon",
+            "UnitName": "teaspoon",
             "Qualifier": null
         },
         {
@@ -105,7 +106,7 @@
             "IngredientName": "corn starch",
             "Quantity": "1",
             "UnitId": 1,
-            "UnitName": "Teaspoon",
+            "UnitName": "teaspoon",
             "Qualifier": null
         },
         {
@@ -116,7 +117,7 @@
             "IngredientName": "salt",
             "Quantity": "0.5",
             "UnitId": 1,
-            "UnitName": "Teaspoon",
+            "UnitName": "teaspoon",
             "Qualifier": null
         },
         {
@@ -127,7 +128,7 @@
             "IngredientName": "cinnamon",
             "Quantity": "1",
             "UnitId": 1,
-            "UnitName": "Teaspoon",
+            "UnitName": "teaspoon",
             "Qualifier": null
         },
         {
@@ -138,7 +139,7 @@
             "IngredientName": "ginger, ground",
             "Quantity": "1.25",
             "UnitId": 1,
-            "UnitName": "Teaspoon",
+            "UnitName": "teaspoon",
             "Qualifier": null
         },
         {
@@ -149,7 +150,7 @@
             "IngredientName": "nutmeg",
             "Quantity": "0.5",
             "UnitId": 1,
-            "UnitName": "Teaspoon",
+            "UnitName": "teaspoon",
             "Qualifier": null
         },
         {
@@ -160,7 +161,7 @@
             "IngredientName": "cloves",
             "Quantity": "1/8",
             "UnitId": 1,
-            "UnitName": "Teaspoon",
+            "UnitName": "teaspoon",
             "Qualifier": null
         },
         {
@@ -171,7 +172,7 @@
             "IngredientName": "semi-sweet chocolate chips",
             "Quantity": "1 1/2",
             "UnitId": 4,
-            "UnitName": "Cup",
+            "UnitName": "cup",
             "Qualifier": null
         }
     ],
