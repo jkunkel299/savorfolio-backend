@@ -19,7 +19,7 @@ public class UnitsRepository(AppDbContext context) : IUnitsRepository
                         Id = u.Id,
                         Name = u.Name,
                         Abbreviation = u.Abbreviation,
-                        PluralName = u.PluralName
+                        PluralName = u.PluralName!
                     };
 
         if (_context.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")

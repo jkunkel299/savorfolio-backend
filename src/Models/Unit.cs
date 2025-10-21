@@ -8,7 +8,7 @@ public partial class Unit
 
     public string Abbreviation { get; set; } = null!;
 
-    public string PluralName { get; set; } = null!;
+    public string? PluralName { get; set; }
 
     public virtual ICollection<IngredientList> IngredientLists { get; set; } = [];
 }

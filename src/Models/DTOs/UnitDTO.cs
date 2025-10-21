@@ -8,6 +8,6 @@ public class UnitDTO
 
     public string Abbreviation { get; set; } = null!;
 
-    public string PluralName { get; set; } = null!;
+    public string? PluralName { get; set; }
 
 }

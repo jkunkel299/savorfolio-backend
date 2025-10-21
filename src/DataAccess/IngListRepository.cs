@@ -46,9 +46,11 @@ public class IngListRepository(AppDbContext context) : IIngListRepository
                 IngredientOrder = e.IngredientOrder,
                 IngredientId = e.IngredientId,
                 IngredientName = e.Ingredient.Name,
+                IngNamePlural = e.Ingredient.PluralName,
                 Quantity = e.Quantity,
                 UnitId = e.UnitId,
                 UnitName = e.Unit.Name,
+                UnitNamePlural = e.Unit.PluralName!,
                 Qualifier = e.Qualifier,
             })
             .OrderBy(e => e.IngredientOrder)
