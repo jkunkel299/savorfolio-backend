@@ -224,12 +224,11 @@ public partial class WebScraperService()
         if (recipeTitle == "")
         {
             // fallback heuristic
-            var metaTitle = document.QuerySelector("meta[property='og:title']")?.GetAttribute("content");
-            if (!string.IsNullOrEmpty(metaTitle)) recipeTitle = metaTitle;
+            recipeTitle = FallbackHeuristics.ExtractTitle(document);
         }
 
         // extract description
-        if (descriptionPattern != null)
+        if (descriptionPattern != "")
         {
             recipeDescription = document.QuerySelector($"[class*='{descriptionPattern}']")?.TextContent.Trim() ?? "";
         }
@@ -240,7 +239,7 @@ public partial class WebScraperService()
         }
 
         // extract prep time
-        if (prepTimePattern != null)
+        if (prepTimePattern != "")
         {
             recipePrep = document.QuerySelector($"[class*='{prepTimePattern}']")?.TextContent.Trim() ?? "";
         }
@@ -251,7 +250,7 @@ public partial class WebScraperService()
         }
 
         // extract cook time
-        if (cookTimePattern != null)
+        if (cookTimePattern != "")
         {
             recipeCook = document.QuerySelector($"[class*='{cookTimePattern}']")?.TextContent.Trim() ?? "";
         }
@@ -262,7 +261,7 @@ public partial class WebScraperService()
         }
 
         // extract servings/yield
-        if (servingsPattern != null)
+        if (servingsPattern != "")
         {
             recipeServings = document.QuerySelector($"[class*='{servingsPattern}']")?.TextContent.Trim() ?? "";
             string pattern = @"servings: |yield: | servings";
@@ -344,29 +343,45 @@ public partial class WebScraperService()
     // add descriptors
     public TagStringsDTO BuildRecipeTags(IDocument document, string? coursePattern, string? cuisinePattern)
     {
-        var recipeCourseElement = document
+        // initialize returns
+        string recipe_type = "";
+        string cuisine = "";
+        List<string> dietary = [];
+
+        // if there is an established pattern for the course/recipe type
+        if (coursePattern != "")
+        {
+            var recipeCourseElement = document
                                     .QuerySelectorAll("*")
                                     .Where(element => element.ClassName != null && element.ClassName.Contains($"{coursePattern}"))
                                     .FirstOrDefault();
-        var recipeCourseString = recipeCourseElement?.TextContent ?? "";
+            var recipeCourseString = recipeCourseElement?.TextContent ?? "";
+            var recipeTypeList = EnumExtensions.GetEnumList<RecipeTypeTag>();
+            ExtractedResult<string> bestRecipeTypeMatch = Process.ExtractOne(recipeCourseString, recipeTypeList);
+            recipe_type = bestRecipeTypeMatch.Value;
+        }
 
-        var recipeCuisineElement = document
+        // if there is an established pattern for the cuisine
+        if (cuisinePattern != "")
+        {
+            var recipeCuisineElement = document
                                     .QuerySelectorAll("*")
                                     .Where(element => element.ClassName != null && element.ClassName.Contains($"{cuisinePattern}"))
                                     .FirstOrDefault();
-        var recipeCuisineString = recipeCuisineElement?.TextContent ?? "";
+            var recipeCuisineString = recipeCuisineElement?.TextContent ?? "";
+            var cuisineList = EnumExtensions.GetEnumList<CuisineTag>();            
+            ExtractedResult<string> bestCuisineMatch = Process.ExtractOne(recipeCuisineString, cuisineList);
+            cuisine = bestCuisineMatch.Value;
+        }
 
-        var recipeTypeList = EnumExtensions.GetEnumList<RecipeTypeTag>();
-        var cuisineList = EnumExtensions.GetEnumList<CuisineTag>();
 
-        ExtractedResult<string> bestRecipeTypeMatch = Process.ExtractOne(recipeCourseString, recipeTypeList);
-        ExtractedResult<string> bestCuisineMatch = Process.ExtractOne(recipeCuisineString, cuisineList);
+
 
         // return new TagStringsDTO();
         var recipeTags = new TagStringsDTO
         {
-            Recipe_type = bestRecipeTypeMatch.Value,
-            Cuisine = bestCuisineMatch.Value,
+            Recipe_type = recipe_type,
+            Cuisine = cuisine,
         };
 
         return recipeTags;

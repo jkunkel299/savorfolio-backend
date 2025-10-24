@@ -12,32 +12,6 @@ namespace savorfolio_backend.LogicLayer.WebScraper;
 
 public partial class FallbackHeuristics
 {
-    #region Description
-    public static string ExtractDescription(IDocument document)
-    {
-        string recipeDescription = "";
-        var tryDescriptionElement = document.Body?.QuerySelector("[class*='recipe-description']");
-        var trySummary = document.Body?.QuerySelector("[class*='summary']");
-        var tryGeneralDescription = document.Body?.QuerySelector("[class*='description']");
-
-        if (tryDescriptionElement != null)
-        {
-            recipeDescription = tryDescriptionElement.TextContent.Trim();
-        }
-        else if (trySummary != null)
-        {
-            recipeDescription = trySummary?.TextContent.Trim() ?? "";
-        }
-        else if (tryGeneralDescription != null)
-        {
-            recipeDescription = tryGeneralDescription?.TextContent.Trim() ?? "";
-        }
-
-        return recipeDescription;
-    }
-    #endregion
-
-
     #region GetBestMatch
     public static string GetBestMatch(IEnumerable<IElement> labelElements, string labelPattern/* , List<string>? labelPatterns */)
     {
@@ -61,24 +35,86 @@ public partial class FallbackHeuristics
     #endregion
 
 
+    
+    #region Title
+    public static string ExtractTitle(IDocument document)
+    {
+        string recipeTitle = "";
+        // var tryTitle = document.Body?.QuerySelector("h2, h3, h4, [class*='recipe'], [class*='title']") ?? null;
+        var tryTitle = document.All
+            .FirstOrDefault(e => e.ClassList.Any(c => TitleRegex().IsMatch(c)));
+        if (tryTitle != null)
+        {
+            recipeTitle = tryTitle?.TextContent.Trim() ?? "";
+        }
+        else
+        {
+            var metaTitle = document.QuerySelector("meta[property='og:title']")?.GetAttribute("content");
+            if (!string.IsNullOrEmpty(metaTitle)) recipeTitle = metaTitle;
+        }
+        return recipeTitle;
+    }
+    #endregion
+
+
+    #region Description
+    public static string ExtractDescription(IDocument document)
+    {
+        string recipeDescription = "";
+        var tryTitle = document.All
+            .FirstOrDefault(e => e.ClassList.Any(c => TitleRegex().IsMatch(c)));
+        var tryDescriptionElement = document.Body?.QuerySelector("[class*='recipe-description']");
+        var trySummary = document.Body?.QuerySelector("[class*='summary']");
+
+        // first, try to find an element that has a class name including "recipe-description"
+        if (recipeDescription == "" && tryDescriptionElement != null)
+        {
+            recipeDescription = tryDescriptionElement.TextContent.Trim();
+        }
+        // if no match, try to find an element that has a class name including "summary"
+        if (recipeDescription == "" && trySummary != null)
+        {
+            recipeDescription = trySummary?.TextContent.Trim() ?? "";
+        }
+        // if still no match, try to find elements close to the recipe title long enough to be a description
+        if (recipeDescription == "" && tryTitle != null)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                if (tryTitle.NextElementSibling!.TextContent.Length > 30)
+                {
+                    recipeDescription = tryTitle.NextElementSibling!.TextContent;
+                    break;
+                }
+                i++;
+            }
+        }
+
+        return recipeDescription;
+    }
+    #endregion
+
     #region Prep/Cook Time
     public static string ExtractTimeNearLabel(IDocument document, string labelPattern)
     {
         var timeRegex = TimeRegex();
+        string bestMatch;
 
         // find all elements that contain the label pattern
         var labelElements = document.All
             .Where(e => e.TextContent != null &&
                         e.TextContent.Contains(labelPattern, StringComparison.CurrentCultureIgnoreCase) &&
                         e.TextContent.Any(char.IsDigit));
-
-        string bestMatch = GetBestMatch(labelElements, labelPattern);
-        // trim using regex to only include the time and unit
-        var matchTrim = timeRegex.Match(bestMatch);
-        if (matchTrim.Success)
+        if (labelElements.Any())
         {
-            return matchTrim.Value.Trim();
-        }
+            bestMatch = GetBestMatch(labelElements, labelPattern);
+            // trim using regex to only include the time and unit
+            var matchTrim = timeRegex.Match(bestMatch);
+            if (matchTrim.Success)
+            {
+                return matchTrim.Value.Trim();
+            }
+        } 
         return "";
     }
     #endregion
@@ -112,10 +148,9 @@ public partial class FallbackHeuristics
             {
                 if (matchTrim!.Length < 4) return matchTrim!;
             }
-            return "";
         }        
 
-        return "default";
+        return "";
     }
     #endregion
 
@@ -124,4 +159,6 @@ public partial class FallbackHeuristics
     private static partial Regex TimeRegex();
     [GeneratedRegex(@"\b\d+\s*(servings: |yield: | servings)\b", RegexOptions.IgnoreCase, "en-US")]
     private static partial Regex ServingsRegex();
+    [GeneratedRegex(@"recipe.*title", RegexOptions.IgnoreCase, "en-US")]
+    private static partial Regex TitleRegex();
 }
