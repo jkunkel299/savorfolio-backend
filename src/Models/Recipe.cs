@@ -6,7 +6,7 @@ public partial class Recipe
 
     public string Name { get; set; } = null!;
 
-    public int? Servings { get; set; }
+    public string? Servings { get; set; }
 
     public string? CookTime { get; set; }
 

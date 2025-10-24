@@ -1,0 +1,378 @@
+using AngleSharp;
+using AngleSharp.Dom;
+using FuzzySharp;
+using FuzzySharp.Extractor;
+using savorfolio_backend.Models.DTOs;
+using savorfolio_backend.Utils;
+using savorfolio_backend.Models.enums;
+using System.Text.RegularExpressions;
+
+namespace savorfolio_backend.LogicLayer.WebScraper;
+
+public partial class WebScraperService()
+{
+
+    #region Run Scraper
+    public async Task<string> RunScraper(string url)
+    {
+        var document = await GetHtmlAsStringAsync(url);
+        string patternMatch = SampleCssClasses(document);
+        var patterns = MapCssClassPatterns(patternMatch);
+        string titlePattern = patterns?["RecipeTitle"]! ?? "";
+        string descriptionPattern = patterns?["Description"]! ?? "";
+        string prepTimePattern = patterns?["PrepTime"]! ?? "";
+        string cookTimePattern = patterns?["CookTime"]! ?? "";
+        string servingsPattern = patterns?["Servings"]! ?? "";
+        // string instructionsPattern = patterns?["Instructions"]! ?? "";
+        // string coursePattern = patterns?["Course"]! ?? "";
+        // string cuisinePattern = patterns?["Cuisine"]! ?? "";
+
+        RecipeDTO recipe = BuildRecipeSummary(document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
+        // var instructions = BuildRecipeInstructions(document, instructionsPattern);
+        // var course = BuildRecipeTags(document, coursePattern, cuisinePattern);
+
+        string recipeString = $"Title: {recipe.Name} \n Description: {recipe.Description} \n Prep Time: {recipe.PrepTime} \n Cook Time: {recipe.CookTime} \n Servings: {recipe.Servings}";
+        return recipeString;
+
+        // List<string> insDraft = [];
+        // foreach (var i in instructions)
+        // {
+        //     var step = $"{i.StepNumber}. {i.InstructionText}";
+        //     insDraft.Add(step);
+        // }
+        // return string.Join("\n", insDraft);
+
+        // return $"Recipe Type: {course.Recipe_type} \nCuisine: {course.Cuisine}";
+
+    }
+    #endregion
+
+
+    #region  Get HTML
+    // function to get the HTML content using AngleSharp
+    public async Task<IDocument> GetHtmlAsStringAsync(string url)
+    {
+        // use default configuration for AngleSharp
+        var config = Configuration.Default.WithDefaultLoader();
+        // create a new browsing context
+        var context = BrowsingContext.New(config);
+        // open the given URL
+        var document = await context.OpenAsync(url);
+        // return IDocument
+        return document;
+    }
+    #endregion
+
+
+    #region Sample Classes
+    // sample HTML elements to see if one of the popular CMS class sets is used
+    public string SampleCssClasses(IDocument document)
+    {
+        // set the options for return
+        string[] classDistinct = ["wprm", "tasty", "mv-create", "none"];
+
+        // get a list of the CSS class names in the document
+        var classNames = document.All
+            .SelectMany(e => e.ClassList)
+            .Distinct()
+            .ToList();
+
+        // match the classNames to established patterns in switch expression
+        string patternMatch = classNames switch
+        {
+            var c when c.Any(x => x.StartsWith("wprm-recipe-")) => classDistinct[0],
+            var c when c.Any(x => x.StartsWith("tasty-recipes-")) => classDistinct[1],
+            var c when c.Any(x => x.StartsWith("mv-create-")) => classDistinct[2],
+            _ => "none",
+        };
+
+        // return the matching pattern
+        return patternMatch;
+    }
+    #endregion
+
+
+    #region  Map Class Patterns
+    // mapping of each CMS class set to recipe data
+    public Dictionary<string, string?>? MapCssClassPatterns(string pattern)
+    {
+        string titlePattern;
+        string descriptionPattern;
+        string prepTimePattern;
+        string cookTimePattern;
+        string servingsPattern;
+        string ingredientsPattern;
+        string instructionsPattern;
+        string cuisinePattern;
+        string coursePattern;
+
+        var htmlClassMap = new Dictionary<string, List<string>>
+        { // lists are in order wprm, tasty, mv-create
+            { "title", new List<string> { "wprm-recipe-name", "tasty-recipes-title", "mv-create-title " } },
+            { "description", new List<string> { "wprm-recipe-summary", "tasty-recipes-description-body", "mv-create-description" } },
+                // Tasty: whole description (incl. header) in "tasty-recipes-description"
+            { "prepTime", new List<string> { "wprm-recipe-prep_time", "tasty-recipes-prep-time", "mv-create-time-prep .mv-time-minutes" } },
+            { "cookTime", new List<string> { "wprm-recipe-cook_time", "tasty-recipes-cook-time", "mv-create-time-active .mv-time-minutes" } },
+            { "servings", new List<string> { "wprm-recipe-servings", "tasty-recipes-yield", "mv-create-yield" } },
+            { "ingParent", new List<string> { "wprm-recipe-ingredient", "ingredient", "mv-create-ingredients" } },
+                // parent elements:
+                    // "wprm-recipe-ingredients-container"
+                    // "tasty-recipes-ingredients-body"
+                // child elements:
+                    // <li class="wprm-recipe-ingredient"> - these also have identifying elements to make parsing easier, but would probably be a separate function
+                    // tasty-recipe-ingredients-body -> <li class="ingredient">
+                    // <li> below <h2 class="mv-create-ingredients-title">
+            { "insParent", new List<string> { "wprm-recipe-instruction-group", "tasty-recipes-instructions-body", "mv-create-instructions" } },
+                // child elements:
+                    // <li id="wprm-recipe-#####-step-0-#"> (zero-indexed)><div class="wprm-recipe-instruction-text"></div></li>
+                    // <li id="instruction-step-#"> (one-indexed)
+                    // <li id="mv_create_###_#"> (one-indexed)
+            { "course", new List<string> { "wprm-recipe-course ", "tasty-recipes-category", "mv-create-category" } },
+            { "cuisine", new List<string> { "wprm-recipe-cuisine ", "tasty-recipes-cuisine", "mv-create-cuisine" } },
+            { "author", new List<string> { "wprm-recipe-author", "tasty-recipes-author-name", "mv-create-copy" } },
+            { "notes", new List<string> { "wprm-recipe-notes", "tasty-recipes-notes" } }
+                // child elements:
+                    // <span>
+                    // <div class="tasty-recipes-notes-body"><p></p> || <div class="tasty-recipes-notes-body">...<li>
+                    // -----TBD-----
+        };
+
+        int patternMatch = pattern switch
+        {
+            "wprm" => 0,
+            "tasty" => 1,
+            "mv-create" => 2,
+            "none" => 3,
+            _ => 3,
+        };
+
+        if (patternMatch == 3)
+        {
+            return null;
+        }
+
+        // build dictionary of classes to look for
+
+        /* Recipe Summary DTO Items */
+        // recipe title
+        titlePattern = htmlClassMap["title"][patternMatch];
+        // recipe description
+        descriptionPattern = htmlClassMap["description"][patternMatch];
+        // prep time
+        prepTimePattern = htmlClassMap["prepTime"][patternMatch];
+        // cook time
+        cookTimePattern = htmlClassMap["cookTime"][patternMatch];
+        // servings
+        servingsPattern = htmlClassMap["servings"][patternMatch];
+        /* Ingredients List DTO Items */
+        // ingredients group --- this will only work for wprm and tasty
+        ingredientsPattern = htmlClassMap["ingParent"][patternMatch];
+        /* Instructions List DTO Items */
+        // instructions group --- this will only work for wprm and tasty
+        instructionsPattern = htmlClassMap["insParent"][patternMatch];
+        /* Descriptors */
+        // course
+        coursePattern = htmlClassMap["course"][patternMatch];
+        // cuisine
+        cuisinePattern = htmlClassMap["cuisine"][patternMatch];
+        // TODO
+        /* Misc (for now) */
+        // List<string> notesMatch = htmlClassMap["notes"];
+        // List<string> authorMatch = htmlClassMap["author"];
+
+        var patterns = new Dictionary<string, string?>
+        {
+            { "RecipeTitle", titlePattern },
+            { "Description", descriptionPattern },
+            { "PrepTime", prepTimePattern },
+            { "CookTime", cookTimePattern },
+            { "Servings", servingsPattern },
+            { "Ingredients", ingredientsPattern },
+            { "Instructions", instructionsPattern },
+            { "Course", coursePattern },
+            { "Cuisine", cuisinePattern },
+        };
+
+        return patterns;
+    }
+    #endregion
+
+
+    #region Build Recipe Summary
+    // build recipe summary
+    public RecipeDTO BuildRecipeSummary(
+        IDocument document,
+        string? titlePattern,
+        string? descriptionPattern,
+        string? prepTimePattern,
+        string? cookTimePattern,
+        string? servingsPattern
+    )
+    {
+        // declare variables
+        string? recipeTitle = "";
+        string? recipeDescription = "";
+        string? recipePrep = "";
+        string? recipeCook = "";
+        string? recipeServings = "";
+
+        // extract title
+        if (titlePattern != "")
+        {
+            recipeTitle = document.QuerySelector($"[class*='{titlePattern}']")?.TextContent?.Trim() ?? "";
+        }
+        if (recipeTitle == "")
+        {
+            // fallback heuristic
+            var metaTitle = document.QuerySelector("meta[property='og:title']")?.GetAttribute("content");
+            if (!string.IsNullOrEmpty(metaTitle)) recipeTitle = metaTitle;
+        }
+
+        // extract description
+        if (descriptionPattern != null)
+        {
+            recipeDescription = document.QuerySelector($"[class*='{descriptionPattern}']")?.TextContent.Trim() ?? "";
+        }
+        if (recipeDescription == "")
+        {
+            // fallback heuristic
+            recipeDescription = FallbackHeuristics.ExtractDescription(document);
+        }
+
+        // extract prep time
+        if (prepTimePattern != null)
+        {
+            recipePrep = document.QuerySelector($"[class*='{prepTimePattern}']")?.TextContent.Trim() ?? "";
+        }
+        if (recipePrep == "")
+        {
+            // fallback heuristic
+            recipePrep = FallbackHeuristics.ExtractTimeNearLabel(document, "prep time");
+        }
+
+        // extract cook time
+        if (cookTimePattern != null)
+        {
+            recipeCook = document.QuerySelector($"[class*='{cookTimePattern}']")?.TextContent.Trim() ?? "";
+        }
+        if (recipeCook == "")
+        {
+            // fallback heuristic
+            recipeCook = FallbackHeuristics.ExtractTimeNearLabel(document, "cook time");
+        }
+
+        // extract servings/yield
+        if (servingsPattern != null)
+        {
+            recipeServings = document.QuerySelector($"[class*='{servingsPattern}']")?.TextContent.Trim() ?? "";
+            string pattern = @"servings: |yield: | servings";
+            if (recipeServings != null) recipeServings = Regex.Replace(recipeServings, pattern, string.Empty);
+        }
+        if (recipeServings == "")
+        {
+            // fallback heuristic
+            // recipeServings = FallbackHeuristics.ExtractServings(document);
+        }
+
+        var recipeSummary = new RecipeDTO
+        {
+            Name = recipeTitle!,
+            Description = recipeDescription,
+            Servings = recipeServings,
+            PrepTime = recipePrep,
+            CookTime = recipeCook
+        };
+
+        return recipeSummary;
+    }
+    #endregion
+
+    
+
+
+    #region Build Ingredients
+    // TODO
+    // call logic to build ingredients
+
+        // List<string> ingMatch = htmlClassMap["ingParent"];
+        // List<string> ingredientsList = [];
+        // var ingredientsElements = document.QuerySelectorAll($".{ingMatch[patternMatch]}");
+        // foreach (var i in ingredientsElements)
+        // {
+        //     ingredientsList.Add(i.TextContent);
+        // }
+        // string ingredientsString = string.Join("| ", ingredientsList);
+
+    #endregion
+
+
+
+
+    #region Build Instructions
+    // build instructions
+    public List<InstructionDTO> BuildRecipeInstructions(IDocument document, string instructionsPattern)
+    {
+        List<string> instructionsList = [];
+        List<InstructionDTO> instructionDTOs = [];
+
+        var instructionsElements = document.QuerySelectorAll($"div.{instructionsPattern} li");
+        foreach (var i in instructionsElements)
+        {
+            instructionsList.Add(i.TextContent);
+
+        }
+
+        int stepNumber = 1;
+        foreach (var i in instructionsList)
+        {
+            instructionDTOs.Add(
+                new InstructionDTO
+                {
+                    StepNumber = stepNumber,
+                    InstructionText = i
+                }
+            );
+            stepNumber++;
+        }
+
+        return instructionDTOs;
+    }
+    #endregion
+
+
+    #region Build Tags
+    // add descriptors
+    public TagStringsDTO BuildRecipeTags(IDocument document, string? coursePattern, string? cuisinePattern)
+    {
+        var recipeCourseElement = document
+                                    .QuerySelectorAll("*")
+                                    .Where(element => element.ClassName != null && element.ClassName.Contains($"{coursePattern}"))
+                                    .FirstOrDefault();
+        var recipeCourseString = recipeCourseElement?.TextContent ?? "";
+
+        var recipeCuisineElement = document
+                                    .QuerySelectorAll("*")
+                                    .Where(element => element.ClassName != null && element.ClassName.Contains($"{cuisinePattern}"))
+                                    .FirstOrDefault();
+        var recipeCuisineString = recipeCuisineElement?.TextContent ?? "";
+
+        var recipeTypeList = EnumExtensions.GetEnumList<RecipeTypeTag>();
+        var cuisineList = EnumExtensions.GetEnumList<CuisineTag>();
+
+        ExtractedResult<string> bestRecipeTypeMatch = Process.ExtractOne(recipeCourseString, recipeTypeList);
+        ExtractedResult<string> bestCuisineMatch = Process.ExtractOne(recipeCuisineString, cuisineList);
+
+        // return new TagStringsDTO();
+        var recipeTags = new TagStringsDTO
+        {
+            Recipe_type = bestRecipeTypeMatch.Value,
+            Cuisine = bestCuisineMatch.Value,
+        };
+
+        return recipeTags;
+    }
+    #endregion
+
+
+    
+}

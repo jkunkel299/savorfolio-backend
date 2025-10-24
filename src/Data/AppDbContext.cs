@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore;
 using savorfolio_backend.Models;
 using savorfolio_backend.Models.enums;
 
@@ -227,7 +224,9 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.PrepTime)
                 .HasMaxLength(20)
                 .HasColumnName("prep_time");
-            entity.Property(e => e.Servings).HasColumnName("servings");
+            entity.Property(e => e.Servings)
+                .HasMaxLength(20)
+                .HasColumnName("servings");
             entity.Property(e => e.Temp_unit).HasColumnName("temp_unit")
                 .HasConversion<string>();
             entity.Property(e => e.Description).HasColumnName("description");
