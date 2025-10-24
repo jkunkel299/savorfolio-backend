@@ -271,7 +271,7 @@ public partial class WebScraperService()
         if (recipeServings == "")
         {
             // fallback heuristic
-            // recipeServings = FallbackHeuristics.ExtractServings(document);
+            recipeServings = FallbackHeuristics.ExtractServings(document);
         }
 
         var recipeSummary = new RecipeDTO

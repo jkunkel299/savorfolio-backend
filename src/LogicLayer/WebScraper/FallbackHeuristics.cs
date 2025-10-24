@@ -12,7 +12,7 @@ namespace savorfolio_backend.LogicLayer.WebScraper;
 
 public partial class FallbackHeuristics
 {
-    #region Fallback for description
+    #region Description
     public static string ExtractDescription(IDocument document)
     {
         string recipeDescription = "";
@@ -37,76 +37,31 @@ public partial class FallbackHeuristics
     }
     #endregion
 
-    public static string GetBestMatch(IEnumerable<IElement> labelElements, string? labelPattern/* , List<string>? labelPatterns */)
+
+    #region GetBestMatch
+    public static string GetBestMatch(IEnumerable<IElement> labelElements, string labelPattern/* , List<string>? labelPatterns */)
     {
-        if (labelPattern != null)
+        // initialize integer list for fuzz ratios
+        List<int> fuzzRatio = [];
+        // for each element that contains the pattern, score how well they match the expected label
+        foreach (var label in labelElements)
         {
-            // initialize integer list for fuzz ratios
-            List<int> fuzzRatio = [];
-            // for each element that contains the pattern, score how well they match the expected label
-            foreach (var label in labelElements)
-            {
-                int wRatioScore = Fuzz.WeightedRatio(labelPattern, label.TextContent);
-                fuzzRatio.Add(wRatioScore);
-            }
-            // get the max ratio match
-            int bestRatio = fuzzRatio.Max();
-            // get the index of the best match
-            var bestRatioIndex = fuzzRatio.IndexOf(bestRatio);
-            // get the element from the list that best matches the label, using the max match
-            var bestMatch = labelElements.GetItemByIndex(bestRatioIndex).TextContent.ToLower();
-            // return the best match
-            return bestMatch;
+            int wRatioScore = Fuzz.WeightedRatio(labelPattern, label.TextContent);
+            fuzzRatio.Add(wRatioScore);
         }
-
-        /* if (labelPatterns?.Count > 0)
-        {
-            int rows = labelPatterns.Count;
-            int cols = labelElements.Count();
-            int[,] fuzzRatio2D = new int[rows, cols];
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)// foreach (var label in labelElements)
-                {
-                    int wRatioScore = Fuzz.WeightedRatio(labelPatterns[i], labelElements.ElementAt(j).TextContent);
-                    fuzzRatio2D[i, j] = wRatioScore;//.Add(wRatioScore);
-                }
-            }
-            // int maxRatio = fuzzRatio2D.Max(innerList => innerList.Count != 0 ? innerList.Max() : int.MinValue);
-            // int maxVal = int.MinValue;
-            // int bestRatioIndex = -1;
-
-            // // Assuming all inner lists have the same number of columns
-            // int numColumns = fuzzRatio2D.First().Count;
-
-            // for (int col = 0; col < numColumns; col++)
-            // {
-            //     foreach (List<int> row in fuzzRatio2D)
-            //     {
-            //         if (row[col] > maxVal)
-            //         {
-            //             maxVal = row[col];
-            //             bestRatioIndex = col;
-            //         }
-            //     }
-            // }
-            var maxInfo = Enumerable.Range(0, rows)
-                .SelectMany(r => Enumerable.Range(0, cols)
-                    .Select(c => new { Value = fuzzRatio2D[r, c], Row = r, Col = c }))
-                .Aggregate((currentMax, next) => (next.Value > currentMax.Value) ? next : currentMax);
-            var bestRatioIndex = maxInfo.Col;
-        
-            // get the element from the list that best matches the label, using the max match
-            var bestMatch = labelElements.GetItemByIndex(bestRatioIndex).TextContent.ToLower();
-            // return the best match
-            return bestMatch;
-        } */
-        return "";
+        // get the max ratio match
+        int bestRatio = fuzzRatio.Max();
+        // get the index of the best match
+        var bestRatioIndex = fuzzRatio.IndexOf(bestRatio);
+        // get the element from the list that best matches the label, using the max match
+        var bestMatch = labelElements.GetItemByIndex(bestRatioIndex).TextContent.ToLower();
+        // return the best match
+        return bestMatch;
     }
+    #endregion
 
 
-    #region Fallback for Time
+    #region Prep/Cook Time
     public static string ExtractTimeNearLabel(IDocument document, string labelPattern)
     {
         var timeRegex = TimeRegex();
@@ -117,7 +72,7 @@ public partial class FallbackHeuristics
                         e.TextContent.Contains(labelPattern, StringComparison.CurrentCultureIgnoreCase) &&
                         e.TextContent.Any(char.IsDigit));
 
-        string bestMatch = GetBestMatch(labelElements: labelElements, labelPattern: labelPattern/* , labelPatterns: null */);
+        string bestMatch = GetBestMatch(labelElements, labelPattern);
         // trim using regex to only include the time and unit
         var matchTrim = timeRegex.Match(bestMatch);
         if (matchTrim.Success)
@@ -128,16 +83,39 @@ public partial class FallbackHeuristics
     }
     #endregion
 
-    #region Fallback Servings
+    #region Servings
     public static string ExtractServings(IDocument document)
     {
-        var servingsRegex = ServingsRegex();
-        // var searchTerms = new List<string> { "yield", "servings", "serves" };
+        // set the options for return
+        string[] terms = ["servings", "yield", "yields", "serves"];
+
+        // Access document text
+        string documentText = document.Body?.TextContent ?? string.Empty;
+
+        // Match the classNames to established patterns
+        var patternMatch = terms.FirstOrDefault(t => documentText.Contains(t, StringComparison.OrdinalIgnoreCase)) ?? "none";
+
+        // string regexPattern = @"[^\p{N}\p{P}\p{S}]"; 
+        string regexPattern = "[^0-9-]";
+
         var labelElements = document.All
-            .Where(e => e.TextContent != null && servingsRegex.IsMatch(e.TextContent.ToLower()));
-        string bestMatch = GetBestMatch(labelElements: labelElements, labelPattern: "serving"/* , labelPatterns: searchTerms */);
-        var matchTrim = Regex.Replace(bestMatch, servingsRegex.ToString(), string.Empty).Trim();
-        return matchTrim;
+                    .Where(e => e.TextContent != null &&
+                        e.TextContent.Contains(patternMatch, StringComparison.CurrentCultureIgnoreCase) &&
+                        e.TextContent.Any(char.IsDigit));
+
+        if (patternMatch != "none" && labelElements.Any())
+        {
+            string bestMatch = GetBestMatch(labelElements, patternMatch);
+            // trim using regex to only include the time and unit
+            var matchTrim = Regex.Replace(bestMatch, regexPattern, string.Empty).Replace(":", "").Trim();
+            if (matchTrim != null || matchTrim != "")
+            {
+                if (matchTrim!.Length < 4) return matchTrim!;
+            }
+            return "";
+        }        
+
+        return "default";
     }
     #endregion
 
