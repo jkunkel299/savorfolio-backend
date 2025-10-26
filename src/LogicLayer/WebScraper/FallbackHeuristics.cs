@@ -13,7 +13,7 @@ namespace savorfolio_backend.LogicLayer.WebScraper;
 public partial class FallbackHeuristics
 {
     #region GetBestMatch
-    public static string GetBestMatch(IEnumerable<IElement> labelElements, string labelPattern/* , List<string>? labelPatterns */)
+    public static string GetBestMatch(IEnumerable<IElement> labelElements, string labelPattern)
     {
         // initialize integer list for fuzz ratios
         List<int> fuzzRatio = [];
@@ -40,7 +40,7 @@ public partial class FallbackHeuristics
     public static string ExtractTitle(IDocument document)
     {
         string recipeTitle = "";
-        // var tryTitle = document.Body?.QuerySelector("h2, h3, h4, [class*='recipe'], [class*='title']") ?? null;
+
         var tryTitle = document.All
             .FirstOrDefault(e => e.ClassList.Any(c => TitleRegex().IsMatch(c)));
         if (tryTitle != null)
@@ -77,11 +77,12 @@ public partial class FallbackHeuristics
             recipeDescription = trySummary?.TextContent.Trim() ?? "";
         }
         // if still no match, try to find elements close to the recipe title long enough to be a description
-        if (recipeDescription == "" && tryTitle != null)
+        // added does not contain "!" as the summaries usually contain this character
+        if (recipeDescription == "" || !recipeDescription.Contains('!') && tryTitle != null) 
         {
             for (int i = 0; i < 10; i++)
             {
-                if (tryTitle.NextElementSibling!.TextContent.Length > 30)
+                if (tryTitle?.NextElementSibling!.TextContent.Length > 30)
                 {
                     recipeDescription = tryTitle.NextElementSibling!.TextContent;
                     break;
@@ -131,12 +132,11 @@ public partial class FallbackHeuristics
         // Match the classNames to established patterns
         var patternMatch = terms.FirstOrDefault(t => documentText.Contains(t, StringComparison.OrdinalIgnoreCase)) ?? "none";
 
-        // string regexPattern = @"[^\p{N}\p{P}\p{S}]"; 
         string regexPattern = "[^0-9-]";
 
         var labelElements = document.All
                     .Where(e => e.TextContent != null &&
-                        e.TextContent.Contains(patternMatch, StringComparison.CurrentCultureIgnoreCase) &&
+                        e.TextContent.Contains(patternMatch, StringComparison.OrdinalIgnoreCase) &&
                         e.TextContent.Any(char.IsDigit));
 
         if (patternMatch != "none" && labelElements.Any())
@@ -148,11 +148,83 @@ public partial class FallbackHeuristics
             {
                 if (matchTrim!.Length < 4) return matchTrim!;
             }
-        }        
+        }
 
         return "";
     }
     #endregion
+
+
+    #region Tags
+    public static TagStringsDTO ExtractTags(IDocument document)
+    {
+        string documentText = document.Body?.TextContent ?? string.Empty;
+        if (documentText == string.Empty) return new TagStringsDTO();
+
+        // recipe type/course
+        string recipe_type = MatchEnum<RecipeTypeTag>(document);
+
+        // cuisine
+        string cuisine = MatchEnum<CuisineTag>(document);
+
+        // meal type
+        string meal = MatchEnum<MealTag>(document);
+
+        // dietary
+        List<string> dietary = ExtractDietaryTags(documentText);
+
+        var recipeTags = new TagStringsDTO
+        {
+            Recipe_type = recipe_type,
+            Cuisine = cuisine,
+            Meal = meal,
+            Dietary = dietary
+        };
+
+        return recipeTags;
+    }
+    #endregion
+
+
+    #region Match Enum
+    public static string MatchEnum<TEnum>(IDocument document) where TEnum : Enum
+    {
+        string documentText = document.Body?.TextContent ?? string.Empty;
+        string returnValue = "";
+        var enumList = EnumExtensions.GetEnumList<TEnum>();
+        var patternMatch = enumList.FirstOrDefault(t => documentText.Contains(t, StringComparison.OrdinalIgnoreCase)) ?? "none";
+        var labelElements = document.All
+                    .Where(e => e.TextContent != null &&
+                        e.TextContent.Contains(patternMatch, StringComparison.OrdinalIgnoreCase));
+        if (patternMatch != "none" && labelElements.Any())
+        {
+            string bestMatch = GetBestMatch(labelElements, patternMatch);
+            ExtractedResult<string> bestTypeMatch = Process.ExtractOne(bestMatch, enumList);
+            if (bestTypeMatch != null) returnValue = bestTypeMatch.Value;
+        }
+        return returnValue;
+    }
+    #endregion
+
+    #region Dietary
+    public static List<string> ExtractDietaryTags(string documentText)
+    {
+        List<string> dietary = [];
+        var dietaryList = EnumExtensions.GetEnumList<DietaryTag>();
+        var dietaryDraft = dietaryList
+            .Where(tag => documentText.Contains(tag, StringComparison.OrdinalIgnoreCase))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+        foreach (var item in dietaryDraft)
+        {
+            ExtractedResult<string> bestTypeMatch = Process.ExtractOne(item, dietaryList);
+            if (bestTypeMatch != null) dietary.Add(bestTypeMatch.Value);
+        }
+        ;
+        return dietary;
+    }
+    #endregion
+    
 
     // Regex generation
     [GeneratedRegex(@"\b\d+\s*(min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b", RegexOptions.IgnoreCase, "en-US")]

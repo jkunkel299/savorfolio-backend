@@ -24,15 +24,15 @@ public partial class WebScraperService()
         string cookTimePattern = patterns?["CookTime"]! ?? "";
         string servingsPattern = patterns?["Servings"]! ?? "";
         // string instructionsPattern = patterns?["Instructions"]! ?? "";
-        // string coursePattern = patterns?["Course"]! ?? "";
-        // string cuisinePattern = patterns?["Cuisine"]! ?? "";
+        string coursePattern = patterns?["Course"]! ?? "";
+        string cuisinePattern = patterns?["Cuisine"]! ?? "";
 
         RecipeDTO recipe = BuildRecipeSummary(document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
         // var instructions = BuildRecipeInstructions(document, instructionsPattern);
-        // var course = BuildRecipeTags(document, coursePattern, cuisinePattern);
+        var tags = BuildRecipeTags(document, coursePattern, cuisinePattern);
 
-        string recipeString = $"Title: {recipe.Name} \n Description: {recipe.Description} \n Prep Time: {recipe.PrepTime} \n Cook Time: {recipe.CookTime} \n Servings: {recipe.Servings}";
-        return recipeString;
+        // string recipeString = $"Title: {recipe.Name} \n Description: {recipe.Description} \n Prep Time: {recipe.PrepTime} \n Cook Time: {recipe.CookTime} \n Servings: {recipe.Servings}";
+        // return recipeString;
 
         // List<string> insDraft = [];
         // foreach (var i in instructions)
@@ -42,7 +42,7 @@ public partial class WebScraperService()
         // }
         // return string.Join("\n", insDraft);
 
-        // return $"Recipe Type: {course.Recipe_type} \nCuisine: {course.Cuisine}";
+        return $"Recipe Type: {tags.Recipe_type} \nCuisine: {tags.Cuisine}\nMeal: {tags.Meal}\nDietary: {string.Join(", ", tags.Dietary)}";
 
     }
     #endregion
@@ -76,7 +76,7 @@ public partial class WebScraperService()
             .SelectMany(e => e.ClassList)
             .Distinct()
             .ToList();
-
+        if (classNames.Count == 0) return "none";
         // match the classNames to established patterns in switch expression
         string patternMatch = classNames switch
         {
@@ -347,6 +347,14 @@ public partial class WebScraperService()
         string recipe_type = "";
         string cuisine = "";
         List<string> dietary = [];
+        string meal = "";
+
+        // if there is not an established pattern, go straight to fallback
+        if (coursePattern == "" || cuisinePattern == "")
+        {
+            var extractedTags = FallbackHeuristics.ExtractTags(document);
+            return extractedTags;
+        }
 
         // if there is an established pattern for the course/recipe type
         if (coursePattern != "")
@@ -374,14 +382,21 @@ public partial class WebScraperService()
             cuisine = bestCuisineMatch.Value;
         }
 
+        // meal type
+        meal = FallbackHeuristics.MatchEnum<MealTag>(document);
 
-
+        // Access document text
+        string documentText = document.Body?.TextContent ?? string.Empty;
+        // dietary
+        dietary = FallbackHeuristics.ExtractDietaryTags(documentText);
 
         // return new TagStringsDTO();
         var recipeTags = new TagStringsDTO
         {
             Recipe_type = recipe_type,
             Cuisine = cuisine,
+            Meal = meal,
+            Dietary = dietary
         };
 
         return recipeTags;

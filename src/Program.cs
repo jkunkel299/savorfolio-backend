@@ -104,7 +104,8 @@ if (args.Contains("--scrape"))
     Console.WriteLine("Console mode activated.");
     using var scope = app.Services.CreateScope();
     var scraper = scope.ServiceProvider.GetRequiredService<WebScraperService>();
-    var match = await scraper.RunScraper("https://www.williams-sonoma.com/recipe/crab-bisque.html?epik=dj0yJnU9aUozUlI2eFZ6LUYxaXdPV1lYanc4djBXLWlZZVUwUmwmcD0wJm49STl3dGlGc1hnT1lESmkwVzFMMk41USZ0PUFBQUFBR2o2SmJZ#:~:text=1%20Tbs&text=1%20Tbs&text=In%20a%20large%20soup%20pot%20over%20medium%20heat%2C%20melt%20the%20butter%20with%20the%20oil&text=Reduce%20the%20heat%20to%20low%20and%20stir%20in%20the%20crabmeat");
+    var match = await scraper.RunScraper("https://fashionablefoods.com/2014/06/27/2014618roasted-chili-lime-cod");
+    // https://homeinspirediversity.com/2025/06/14/french-style-chicken-casserole-a-la-normande");
     Console.WriteLine($"Return: \n\n{match}\n\n");
     return; // prevent app.Run() from starting the web server
 }
