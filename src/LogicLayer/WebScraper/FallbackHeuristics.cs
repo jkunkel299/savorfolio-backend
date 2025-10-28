@@ -7,6 +7,9 @@ using savorfolio_backend.Utils;
 using savorfolio_backend.Models.enums;
 using System.Text.RegularExpressions;
 using AngleSharp.Common;
+using Microsoft.AspNetCore.Http.Features;
+using AngleSharp.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace savorfolio_backend.LogicLayer.WebScraper;
 
@@ -98,7 +101,7 @@ public partial class FallbackHeuristics
     #region Prep/Cook Time
     public static string ExtractTimeNearLabel(IDocument document, string labelPattern)
     {
-        var timeRegex = TimeRegex();
+        // var timeRegex = TimeRegex();
         string bestMatch;
 
         // find all elements that contain the label pattern
@@ -110,7 +113,7 @@ public partial class FallbackHeuristics
         {
             bestMatch = GetBestMatch(labelElements, labelPattern);
             // trim using regex to only include the time and unit
-            var matchTrim = timeRegex.Match(bestMatch);
+            var matchTrim = TimeRegex().Match(bestMatch);
             if (matchTrim.Success)
             {
                 return matchTrim.Value.Trim();
@@ -219,18 +222,78 @@ public partial class FallbackHeuristics
         {
             ExtractedResult<string> bestTypeMatch = Process.ExtractOne(item, dietaryList);
             if (bestTypeMatch != null) dietary.Add(bestTypeMatch.Value);
-        }
-        ;
+        };
         return dietary;
     }
     #endregion
     
 
+    #region Instructions
+    public static List<InstructionDTO> ExtractInstructions(IDocument document)
+    {
+        string[] terms = ["Instructions", "Directions"];
+        List<string> draftInstructions = [];
+        List<InstructionDTO> instructionDTOs = [];
+        // look for items with "instruction" in the class name
+        var tryInstructionsElements = document.Body?.QuerySelector("[class*='instruction']");
+        if (tryInstructionsElements != null)
+        {
+            string insString = tryInstructionsElements.TextContent;
+            draftInstructions = [.. insString.Trim().Split("\n")];
+        }
+        // else
+        if (draftInstructions.Count == 0)
+        {
+            // if no matches, look for the element with "Instructions" or "Directions" as its text content
+            // then look for ordered lists after that element
+            // then look for unordered lists after that element
+
+            // Match the content to one of the established terms
+            var instructionLabel = document.All.FirstOrDefault(e =>
+                terms.Any(t => e.TextContent.Trim().Equals(t, StringComparison.OrdinalIgnoreCase)));
+            // if there's a match for the label
+            if (instructionLabel != null)
+            {
+                // get the elements that follow the label
+                var followingElements = instructionLabel
+                    .ParentElement?
+                    .Children
+                    .SkipWhile(c => c != instructionLabel)
+                    .Skip(1) // skip the label itself
+                    .TakeWhile(c => c.Matches("div, ol, ul, li"));
+                // join the elements into a string
+                string insString = string.Join(", ", followingElements!.Select(e => e.TextContent.Trim()));
+                // trim whitespace and split into individual steps
+                draftInstructions = [.. WhitespaceRegex().Replace(insString, "\n").Split("\n")];
+            }
+        }
+        // if still no draft instructions, return empty list
+        if (draftInstructions.Count == 0) return [];
+        // build the instruction DTO list
+        for (int i = 0; i < draftInstructions.Count; i++)
+        {
+            var instructionItem = new InstructionDTO
+            {
+                StepNumber = i+1,
+                InstructionText = draftInstructions[i]
+            };
+            instructionDTOs.Add(instructionItem);
+        }
+        
+        return instructionDTOs;
+    }
+    #endregion
+
     // Regex generation
     [GeneratedRegex(@"\b\d+\s*(min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b", RegexOptions.IgnoreCase, "en-US")]
     private static partial Regex TimeRegex();
+
     [GeneratedRegex(@"\b\d+\s*(servings: |yield: | servings)\b", RegexOptions.IgnoreCase, "en-US")]
     private static partial Regex ServingsRegex();
+
     [GeneratedRegex(@"recipe.*title", RegexOptions.IgnoreCase, "en-US")]
     private static partial Regex TitleRegex();
+
+    [GeneratedRegex(@"\s{2,}")]
+    private static partial Regex WhitespaceRegex();
 }

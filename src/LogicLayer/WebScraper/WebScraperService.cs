@@ -23,26 +23,26 @@ public partial class WebScraperService()
         string prepTimePattern = patterns?["PrepTime"]! ?? "";
         string cookTimePattern = patterns?["CookTime"]! ?? "";
         string servingsPattern = patterns?["Servings"]! ?? "";
-        // string instructionsPattern = patterns?["Instructions"]! ?? "";
-        string coursePattern = patterns?["Course"]! ?? "";
-        string cuisinePattern = patterns?["Cuisine"]! ?? "";
+        string instructionsPattern = patterns?["Instructions"]! ?? "";
+        // string coursePattern = patterns?["Course"]! ?? "";
+        // string cuisinePattern = patterns?["Cuisine"]! ?? "";
 
-        RecipeDTO recipe = BuildRecipeSummary(document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
-        // var instructions = BuildRecipeInstructions(document, instructionsPattern);
-        var tags = BuildRecipeTags(document, coursePattern, cuisinePattern);
+        // RecipeDTO recipe = BuildRecipeSummary(document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
+        var instructions = BuildRecipeInstructions(document, instructionsPattern);
+        // var tags = BuildRecipeTags(document, coursePattern, cuisinePattern);
 
         // string recipeString = $"Title: {recipe.Name} \n Description: {recipe.Description} \n Prep Time: {recipe.PrepTime} \n Cook Time: {recipe.CookTime} \n Servings: {recipe.Servings}";
         // return recipeString;
 
-        // List<string> insDraft = [];
-        // foreach (var i in instructions)
-        // {
-        //     var step = $"{i.StepNumber}. {i.InstructionText}";
-        //     insDraft.Add(step);
-        // }
-        // return string.Join("\n", insDraft);
+        List<string> insDraft = [];
+        foreach (var i in instructions)
+        {
+            var step = $"{i.StepNumber}. {i.InstructionText}";
+            insDraft.Add(step);
+        }
+        return string.Join("\n", insDraft);
 
-        return $"Recipe Type: {tags.Recipe_type} \nCuisine: {tags.Cuisine}\nMeal: {tags.Meal}\nDietary: {string.Join(", ", tags.Dietary)}";
+        // return $"Recipe Type: {tags.Recipe_type} \nCuisine: {tags.Cuisine}\nMeal: {tags.Meal}\nDietary: {string.Join(", ", tags.Dietary)}";
 
     }
     #endregion
@@ -314,12 +314,19 @@ public partial class WebScraperService()
         List<string> instructionsList = [];
         List<InstructionDTO> instructionDTOs = [];
 
-        var instructionsElements = document.QuerySelectorAll($"div.{instructionsPattern} li");
-        foreach (var i in instructionsElements)
+        
+        if (instructionsPattern != "")
         {
-            instructionsList.Add(i.TextContent);
-
+            var instructionsElements = document.QuerySelectorAll($"div.{instructionsPattern} li");
+            foreach (var i in instructionsElements)
+            {
+                instructionsList.Add(i.TextContent);
+            }
         }
+        if (instructionsList.Count == 0) {
+            instructionDTOs = FallbackHeuristics.ExtractInstructions(document);
+            return instructionDTOs;
+        };
 
         int stepNumber = 1;
         foreach (var i in instructionsList)

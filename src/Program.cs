@@ -104,7 +104,7 @@ if (args.Contains("--scrape"))
     Console.WriteLine("Console mode activated.");
     using var scope = app.Services.CreateScope();
     var scraper = scope.ServiceProvider.GetRequiredService<WebScraperService>();
-    var match = await scraper.RunScraper("https://fashionablefoods.com/2014/06/27/2014618roasted-chili-lime-cod");
+    var match = await scraper.RunScraper("https://www.afamilyfeast.com/new-england-clam-chowder/#tasty-recipes-22643");
     // https://homeinspirediversity.com/2025/06/14/french-style-chicken-casserole-a-la-normande");
     Console.WriteLine($"Return: \n\n{match}\n\n");
     return; // prevent app.Run() from starting the web server
