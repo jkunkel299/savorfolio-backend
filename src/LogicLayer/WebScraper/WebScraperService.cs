@@ -10,13 +10,13 @@ using savorfolio_backend.Interfaces;
 
 namespace savorfolio_backend.LogicLayer.WebScraper;
 
-public /* partial */ class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepository ingredientRepository)
+public /* partial */ class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepository ingredientRepository) : IWebScraperService
 {
     private readonly IUnitsRepository _unitsRepository = unitsRepository;
     private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
 
     #region Run Scraper
-    public async Task<string> RunScraper(string url)
+    public async Task<DraftRecipeDTO> RunScraper(string url)
     {
         var document = await GetHtmlAsStringAsync(url);
         string patternMatch = SampleCssClasses(document);
@@ -33,11 +33,21 @@ public /* partial */ class WebScraperService(IUnitsRepository unitsRepository, I
         string ingredientsPattern = patterns?["Ingredients"] ?? "";
 
         RecipeDTO recipe = BuildRecipeSummary(document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
-        List<InstructionDTO> instructions = BuildRecipeInstructions(document, instructionsPattern);
         TagStringsDTO tags = BuildRecipeTags(document, coursePattern, cuisinePattern);
         List<string> ingredients = /* await */ BuildRecipeIngredients(document, ingredientsPattern);
+        List<InstructionDTO> instructions = BuildRecipeInstructions(document, instructionsPattern);
 
-        return string.Join("\n", ingredients);
+        var returnDto = new DraftRecipeDTO
+        {
+            RecipeSummary = recipe,
+            RecipeTags = tags,
+            IngredientsString = ingredients,
+            Instructions = instructions
+        };
+
+        return returnDto;
+
+        // return string.Join("\n", ingredients);
 
         // string recipeString = $"Title: {recipe.Name} \n Description: {recipe.Description} \n Prep Time: {recipe.PrepTime} \n Cook Time: {recipe.CookTime} \n Servings: {recipe.Servings}";
         // return recipeString;

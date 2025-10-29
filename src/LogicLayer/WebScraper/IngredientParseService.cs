@@ -7,7 +7,7 @@ using savorfolio_backend.Models;
 
 namespace savorfolio_backend.LogicLayer.WebScraper;
 
-public partial class IngredientParseService(IUnitsRepository unitsRepository, IIngredientRepository ingredientRepository)
+public partial class IngredientParseService(IUnitsRepository unitsRepository, IIngredientRepository ingredientRepository) : IIngredientParseService
 {
     private readonly IUnitsRepository _unitsRepository = unitsRepository;
     private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
@@ -351,7 +351,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
     // TODO - best match
     #region GetBestMatch
     // public static (string, int) GetBestMatch<TDTO>(List<TDTO> dtoList, string input) where TDTO : IDTOInterface
-    public static /* ( */string/* , int) */ GetBestMatch(List<string> dtoList, string input)
+    public /* ( */string/* , int) */ GetBestMatch(List<string> dtoList, string input)
     {
         // initialize integer list for fuzz ratios
         List<int> fuzzRatio = [];
