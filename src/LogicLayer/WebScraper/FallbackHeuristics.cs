@@ -1,4 +1,3 @@
-using AngleSharp;
 using AngleSharp.Dom;
 using FuzzySharp;
 using FuzzySharp.Extractor;
@@ -7,9 +6,6 @@ using savorfolio_backend.Utils;
 using savorfolio_backend.Models.enums;
 using System.Text.RegularExpressions;
 using AngleSharp.Common;
-using Microsoft.AspNetCore.Http.Features;
-using AngleSharp.Text;
-using Microsoft.IdentityModel.Tokens;
 
 namespace savorfolio_backend.LogicLayer.WebScraper;
 
@@ -38,7 +34,27 @@ public partial class FallbackHeuristics
     #endregion
 
 
-    
+    #region MatchEnum
+    public static string MatchEnum<TEnum>(IDocument document) where TEnum : Enum
+    {
+        string documentText = document.Body?.TextContent ?? string.Empty;
+        string returnValue = "";
+        var enumList = EnumExtensions.GetEnumList<TEnum>();
+        var patternMatch = enumList.FirstOrDefault(t => documentText.Contains(t, StringComparison.OrdinalIgnoreCase)) ?? "none";
+        var labelElements = document.All
+                    .Where(e => e.TextContent != null &&
+                        e.TextContent.Contains(patternMatch, StringComparison.OrdinalIgnoreCase));
+        if (patternMatch != "none" && labelElements.Any())
+        {
+            string bestMatch = GetBestMatch(labelElements, patternMatch);
+            ExtractedResult<string> bestTypeMatch = Process.ExtractOne(bestMatch, enumList);
+            if (bestTypeMatch != null) returnValue = bestTypeMatch.Value;
+        }
+        return returnValue;
+    }
+    #endregion
+
+
     #region Title
     public static string ExtractTitle(IDocument document)
     {
@@ -101,7 +117,6 @@ public partial class FallbackHeuristics
     #region Prep/Cook Time
     public static string ExtractTimeNearLabel(IDocument document, string labelPattern)
     {
-        // var timeRegex = TimeRegex();
         string bestMatch;
 
         // find all elements that contain the label pattern
@@ -145,7 +160,7 @@ public partial class FallbackHeuristics
         if (patternMatch != "none" && labelElements.Any())
         {
             string bestMatch = GetBestMatch(labelElements, patternMatch);
-            // trim using regex to only include the time and unit
+            // trim using regex to only include the servings number
             var matchTrim = Regex.Replace(bestMatch, regexPattern, string.Empty).Replace(":", "").Trim();
             if (matchTrim != null || matchTrim != "")
             {
@@ -187,27 +202,7 @@ public partial class FallbackHeuristics
         return recipeTags;
     }
     #endregion
-
-
-    #region Match Enum
-    public static string MatchEnum<TEnum>(IDocument document) where TEnum : Enum
-    {
-        string documentText = document.Body?.TextContent ?? string.Empty;
-        string returnValue = "";
-        var enumList = EnumExtensions.GetEnumList<TEnum>();
-        var patternMatch = enumList.FirstOrDefault(t => documentText.Contains(t, StringComparison.OrdinalIgnoreCase)) ?? "none";
-        var labelElements = document.All
-                    .Where(e => e.TextContent != null &&
-                        e.TextContent.Contains(patternMatch, StringComparison.OrdinalIgnoreCase));
-        if (patternMatch != "none" && labelElements.Any())
-        {
-            string bestMatch = GetBestMatch(labelElements, patternMatch);
-            ExtractedResult<string> bestTypeMatch = Process.ExtractOne(bestMatch, enumList);
-            if (bestTypeMatch != null) returnValue = bestTypeMatch.Value;
-        }
-        return returnValue;
-    }
-    #endregion
+    
 
     #region Dietary
     public static List<string> ExtractDietaryTags(string documentText)
@@ -235,13 +230,16 @@ public partial class FallbackHeuristics
         List<string> draftInstructions = [];
         List<InstructionDTO> instructionDTOs = [];
         // look for items with "instruction" in the class name
-        var tryInstructionsElements = document.Body?.QuerySelector("[class*='instruction']");
+        var tryInstructionsElements = document.Body?.QuerySelectorAll("[class*='instruction'] li, [class*='instruction'] ol li, [class*='instruction'] ul li, [class*='instruction'] p");
         if (tryInstructionsElements != null)
         {
-            string insString = tryInstructionsElements.TextContent;
-            draftInstructions = [.. insString.Trim().Split("\n")];
-        }
-        // else
+            draftInstructions.AddRange(
+               tryInstructionsElements
+                   .Select(li => li.TextContent.Trim())
+                   .Where(text => !string.IsNullOrWhiteSpace(text))
+           );
+        } 
+        
         if (draftInstructions.Count == 0)
         {
             // if no matches, look for the element with "Instructions" or "Directions" as its text content
@@ -263,8 +261,25 @@ public partial class FallbackHeuristics
                     .TakeWhile(c => c.Matches("div, ol, ul, li"));
                 // join the elements into a string
                 string insString = string.Join(", ", followingElements!.Select(e => e.TextContent.Trim()));
-                // trim whitespace and split into individual steps
-                draftInstructions = [.. WhitespaceRegex().Replace(insString, "\n").Split("\n")];
+                // trim whitespace 
+                string insStringWhitespace = WhitespaceRegex().Replace(insString, "\n");
+                // remove "Step #" labels
+                string insStringTrim = StepRegex().Replace(insStringWhitespace, "\n").Trim();
+                // split into individual steps
+                draftInstructions = [.. insStringTrim.Split("\n")];
+
+            }
+            else
+            { // last resort, look for any ordered list
+                var olElements = document.Body?.QuerySelectorAll("ol li");
+                if (olElements != null)
+                {
+                    draftInstructions.AddRange(
+                        olElements
+                            .Select(li => li.TextContent.Trim())
+                            .Where(text => !string.IsNullOrWhiteSpace(text))
+                    );
+                }
             }
         }
         // if still no draft instructions, return empty list
@@ -284,16 +299,18 @@ public partial class FallbackHeuristics
     }
     #endregion
 
+    #region Regex
     // Regex generation
     [GeneratedRegex(@"\b\d+\s*(min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b", RegexOptions.IgnoreCase, "en-US")]
     private static partial Regex TimeRegex();
-
-    [GeneratedRegex(@"\b\d+\s*(servings: |yield: | servings)\b", RegexOptions.IgnoreCase, "en-US")]
-    private static partial Regex ServingsRegex();
 
     [GeneratedRegex(@"recipe.*title", RegexOptions.IgnoreCase, "en-US")]
     private static partial Regex TitleRegex();
 
     [GeneratedRegex(@"\s{2,}")]
     private static partial Regex WhitespaceRegex();
+
+    [GeneratedRegex(@"Step\s+\d+", RegexOptions.IgnoreCase, "en-US")]
+    private static partial Regex StepRegex();
+    #endregion
 }

@@ -101,11 +101,11 @@ if (args.Contains("--scrape"))
     // somewhat labeled, mixed with tasty https://www.afamilyfeast.com/new-england-clam-chowder/#tasty-recipes-22643
     // https://www.closetcooking.com/crispy-parmesan-roast-potatoes
     // https://fashionablefoods.com/2014/06/27/2014618roasted-chili-lime-cod
+    // https://www.delish.com/cooking/recipe-ideas/a34427540/cream-of-potato-soup-recipe/?utm_source=Pinterest&utm_medium=organic&epik=dj0yJnU9Nm5BcWJDdldiUWVoMzBaN2NHelEwUDMyeVRQNVc1YWgmcD0wJm49U0d0NTVCNk8wRmlWNjYwcmhUYWI0ZyZ0PUFBQUFBR2o2Sk0w 
     Console.WriteLine("Console mode activated.");
     using var scope = app.Services.CreateScope();
     var scraper = scope.ServiceProvider.GetRequiredService<WebScraperService>();
     var match = await scraper.RunScraper("https://www.afamilyfeast.com/new-england-clam-chowder/#tasty-recipes-22643");
-    // https://homeinspirediversity.com/2025/06/14/french-style-chicken-casserole-a-la-normande");
     Console.WriteLine($"Return: \n\n{match}\n\n");
     return; // prevent app.Run() from starting the web server
 }

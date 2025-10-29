@@ -1,6 +1,8 @@
+using savorfolio_backend.Interfaces;
+
 namespace savorfolio_backend.Models.DTOs;
 
-public class UnitDTO
+public class UnitDTO : IDTOInterface
 {
     public int Id { get; set; }
 

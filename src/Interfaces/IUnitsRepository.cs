@@ -5,4 +5,5 @@ namespace savorfolio_backend.Interfaces;
 public interface IUnitsRepository
 {
     Task<List<UnitDTO>> SearchUnitTableAsync(string searchTerm);
+    Task<string> UnitSearchReturnString(string? searchTerm);
 }

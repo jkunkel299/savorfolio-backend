@@ -1,6 +1,8 @@
+using savorfolio_backend.Interfaces;
+
 namespace savorfolio_backend.Models.DTOs;
 
-public partial class IngredientVariantDTO
+public partial class IngredientVariantDTO : IDTOInterface
 {
     public int Id { get; set; }
 

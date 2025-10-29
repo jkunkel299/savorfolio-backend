@@ -6,11 +6,14 @@ using savorfolio_backend.Models.DTOs;
 using savorfolio_backend.Utils;
 using savorfolio_backend.Models.enums;
 using System.Text.RegularExpressions;
+using savorfolio_backend.Interfaces;
 
 namespace savorfolio_backend.LogicLayer.WebScraper;
 
-public partial class WebScraperService()
+public /* partial */ class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepository ingredientRepository)
 {
+    private readonly IUnitsRepository _unitsRepository = unitsRepository;
+    private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
 
     #region Run Scraper
     public async Task<string> RunScraper(string url)
@@ -18,29 +21,42 @@ public partial class WebScraperService()
         var document = await GetHtmlAsStringAsync(url);
         string patternMatch = SampleCssClasses(document);
         var patterns = MapCssClassPatterns(patternMatch);
-        string titlePattern = patterns?["RecipeTitle"]! ?? "";
-        string descriptionPattern = patterns?["Description"]! ?? "";
-        string prepTimePattern = patterns?["PrepTime"]! ?? "";
-        string cookTimePattern = patterns?["CookTime"]! ?? "";
-        string servingsPattern = patterns?["Servings"]! ?? "";
-        string instructionsPattern = patterns?["Instructions"]! ?? "";
-        // string coursePattern = patterns?["Course"]! ?? "";
-        // string cuisinePattern = patterns?["Cuisine"]! ?? "";
 
-        // RecipeDTO recipe = BuildRecipeSummary(document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
-        var instructions = BuildRecipeInstructions(document, instructionsPattern);
-        // var tags = BuildRecipeTags(document, coursePattern, cuisinePattern);
+        string titlePattern = patterns?["RecipeTitle"] ?? "";
+        string descriptionPattern = patterns?["Description"] ?? "";
+        string prepTimePattern = patterns?["PrepTime"] ?? "";
+        string cookTimePattern = patterns?["CookTime"] ?? "";
+        string servingsPattern = patterns?["Servings"] ?? "";
+        string instructionsPattern = patterns?["Instructions"] ?? "";
+        string coursePattern = patterns?["Course"]! ?? "";
+        string cuisinePattern = patterns?["Cuisine"]! ?? "";
+        string ingredientsPattern = patterns?["Ingredients"] ?? "";
+
+        RecipeDTO recipe = BuildRecipeSummary(document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
+        List<InstructionDTO> instructions = BuildRecipeInstructions(document, instructionsPattern);
+        TagStringsDTO tags = BuildRecipeTags(document, coursePattern, cuisinePattern);
+        List<string> ingredients = /* await */ BuildRecipeIngredients(document, ingredientsPattern);
+
+        return string.Join("\n", ingredients);
 
         // string recipeString = $"Title: {recipe.Name} \n Description: {recipe.Description} \n Prep Time: {recipe.PrepTime} \n Cook Time: {recipe.CookTime} \n Servings: {recipe.Servings}";
         // return recipeString;
 
-        List<string> insDraft = [];
-        foreach (var i in instructions)
-        {
-            var step = $"{i.StepNumber}. {i.InstructionText}";
-            insDraft.Add(step);
-        }
-        return string.Join("\n", insDraft);
+        // List<string> insDraft = [];
+        // foreach (var i in instructions)
+        // {
+        //     var step = $"{i.StepNumber}. {i.InstructionText}";
+        //     insDraft.Add(step);
+        // }
+        // return string.Join("\n", insDraft);
+        
+        // List<string> ingDraft = [];
+        // foreach (var i in ingredients)
+        // {
+        //     var step = $"{i.Quantity} {i.UnitName} {i.IngredientName}, {i.Qualifier}";
+        //     ingDraft.Add(step);
+        // }
+        // return string.Join("\n", ingDraft);
 
         // return $"Recipe Type: {tags.Recipe_type} \nCuisine: {tags.Cuisine}\nMeal: {tags.Meal}\nDietary: {string.Join(", ", tags.Dietary)}";
 
@@ -114,7 +130,7 @@ public partial class WebScraperService()
             { "prepTime", new List<string> { "wprm-recipe-prep_time", "tasty-recipes-prep-time", "mv-create-time-prep .mv-time-minutes" } },
             { "cookTime", new List<string> { "wprm-recipe-cook_time", "tasty-recipes-cook-time", "mv-create-time-active .mv-time-minutes" } },
             { "servings", new List<string> { "wprm-recipe-servings", "tasty-recipes-yield", "mv-create-yield" } },
-            { "ingParent", new List<string> { "wprm-recipe-ingredient", "ingredient", "mv-create-ingredients" } },
+            { "ingParent", new List<string> { "wprm-recipe-ingredient", "tasty-recipes-ingredients-body", "mv-create-ingredients" } },
                 // parent elements:
                     // "wprm-recipe-ingredients-container"
                     // "tasty-recipes-ingredients-body"
@@ -165,10 +181,8 @@ public partial class WebScraperService()
         // servings
         servingsPattern = htmlClassMap["servings"][patternMatch];
         /* Ingredients List DTO Items */
-        // ingredients group --- this will only work for wprm and tasty
         ingredientsPattern = htmlClassMap["ingParent"][patternMatch];
         /* Instructions List DTO Items */
-        // instructions group --- this will only work for wprm and tasty
         instructionsPattern = htmlClassMap["insParent"][patternMatch];
         /* Descriptors */
         // course
@@ -286,22 +300,19 @@ public partial class WebScraperService()
     }
     #endregion
 
-    
+
 
 
     #region Build Ingredients
     // TODO
-    // call logic to build ingredients
+    // call logic to build ingredients - for now this just returns a string list to be displayed to the user
+    public /* async Task<List<string>> */ List<string> BuildRecipeIngredients(IDocument document, string ingredientsPattern)
+    {
+        IngredientParseService service = new(_unitsRepository, _ingredientRepository);
+        var ingredients = /* await */ service.ExtractIngredients(document, ingredientsPattern);
 
-        // List<string> ingMatch = htmlClassMap["ingParent"];
-        // List<string> ingredientsList = [];
-        // var ingredientsElements = document.QuerySelectorAll($".{ingMatch[patternMatch]}");
-        // foreach (var i in ingredientsElements)
-        // {
-        //     ingredientsList.Add(i.TextContent);
-        // }
-        // string ingredientsString = string.Join("| ", ingredientsList);
-
+        return ingredients;
+    }
     #endregion
 
 
