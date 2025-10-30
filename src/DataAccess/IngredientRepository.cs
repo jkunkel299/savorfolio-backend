@@ -28,15 +28,22 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
         {
             // fallback for testing
             query = query.Where(i => i.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
-                .OrderByDescending(u =>
-                u.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+                .OrderByDescending(i =>
+                    i.Name == searchTerm ? 3 :
+                    i.Name.StartsWith(searchTerm + ",", StringComparison.OrdinalIgnoreCase) ||
+                    i.Name.StartsWith(searchTerm + " ", StringComparison.OrdinalIgnoreCase) ? 2 :
+                    i.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ? 1 : 0);
         }
         else
         {
             query = query
                 .Where(i => EF.Functions.ILike(i.Name, $"%{searchTerm}%") ||
                     EF.Functions.ILike(i.PluralName!, $"%{searchTerm}%"))
-                .OrderBy(e => EF.Functions.ILike(e.Name, $"%{searchTerm}%"));
+                .OrderByDescending(i =>
+                    i.Name == searchTerm ? 3 :
+                    EF.Functions.ILike(i.Name, $"{searchTerm},%") ||
+                    EF.Functions.ILike(i.Name, $"{searchTerm} %") ? 2 :
+                    EF.Functions.ILike(i.Name, $"%{searchTerm}%") ? 1 : 0);
         }
         ;
 
