@@ -239,6 +239,8 @@ public /* partial */ class WebScraperService(IUnitsRepository unitsRepository, I
         string? recipePrep = "";
         string? recipeCook = "";
         string? recipeServings = "";
+        int? bakeTemp;
+        string? tempUnit;
 
         // extract title
         if (titlePattern != "")
@@ -289,7 +291,7 @@ public /* partial */ class WebScraperService(IUnitsRepository unitsRepository, I
         {
             recipeServings = document.QuerySelector($"[class*='{servingsPattern}']")?.TextContent.Trim() ?? "";
             string pattern = @"servings: |yield: | servings";
-            if (recipeServings != null) recipeServings = Regex.Replace(recipeServings, pattern, string.Empty);
+            if (recipeServings != null) recipeServings = Regex.Replace(recipeServings, pattern, string.Empty, RegexOptions.IgnoreCase);
         }
         if (recipeServings == "")
         {
@@ -297,14 +299,36 @@ public /* partial */ class WebScraperService(IUnitsRepository unitsRepository, I
             recipeServings = FallbackHeuristics.ExtractServings(document);
         }
 
-        var recipeSummary = new RecipeDTO
+        // bake temp
+        (bakeTemp, tempUnit) = FallbackHeuristics.ExtractBakeTemp(document);
+        _ = new RecipeDTO();
+        RecipeDTO? recipeSummary;
+        if (bakeTemp != null)
         {
-            Name = recipeTitle!,
-            Description = recipeDescription,
-            Servings = recipeServings,
-            PrepTime = recipePrep,
-            CookTime = recipeCook
-        };
+            if (tempUnit != "F" || tempUnit != "C") tempUnit = "F";
+            recipeSummary = new RecipeDTO
+            {
+                Name = recipeTitle!,
+                Description = recipeDescription,
+                Servings = recipeServings,
+                PrepTime = recipePrep,
+                CookTime = recipeCook,
+                BakeTemp = bakeTemp,
+                Temp_unit = tempUnit,
+            };
+        }
+        else
+        {
+            recipeSummary = new RecipeDTO
+            {
+                Name = recipeTitle!,
+                Description = recipeDescription,
+                Servings = recipeServings,
+                PrepTime = recipePrep,
+                CookTime = recipeCook
+            };
+           
+        }
 
         return recipeSummary;
     }
@@ -335,7 +359,7 @@ public /* partial */ class WebScraperService(IUnitsRepository unitsRepository, I
         List<string> instructionsList = [];
         List<InstructionDTO> instructionDTOs = [];
 
-        
+
         if (instructionsPattern != "")
         {
             var instructionsElements = document.QuerySelectorAll($"div.{instructionsPattern} li");
@@ -344,10 +368,12 @@ public /* partial */ class WebScraperService(IUnitsRepository unitsRepository, I
                 instructionsList.Add(i.TextContent);
             }
         }
-        if (instructionsList.Count == 0) {
+        if (instructionsList.Count == 0)
+        {
             instructionDTOs = FallbackHeuristics.ExtractInstructions(document);
             return instructionDTOs;
-        };
+        }
+        ;
 
         int stepNumber = 1;
         foreach (var i in instructionsList)

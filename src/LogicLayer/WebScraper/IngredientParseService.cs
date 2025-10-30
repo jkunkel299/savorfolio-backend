@@ -159,17 +159,18 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
         }
         // if still no draft instructions, return empty list
         if (extractIngredients.Count == 0) return ["Could not find ingredients"];
-        // List<string> flagged = [];
-        // foreach (var ing in extractIngredients)
-        // {
-        //     (var unit, _) = await ExtractUnit(ing);
-        //     (var quantity, _) = ExtractQuantity(ing);
-        //     // if (unit == "none") flagged.Add(ing);
-        // }
-        // foreach (var ing in flagged)
-        // {
-        //     extractIngredients.Remove(ing);
-        // }
+        List<string> flagged = [];
+        foreach (var ing in extractIngredients)
+        {
+            // (var unit, _) = await ExtractUnit(ing);
+            // (var quantity, _) = ExtractQuantity(ing);
+            // if (unit == "none") flagged.Add(ing);
+            if (ing.Contains("Ingredients") || ing.Contains("ingredients")) flagged.Add(ing);
+        }
+        foreach (var ing in flagged)
+        {
+            extractIngredients.Remove(ing);
+        }
         return extractIngredients;
     }
 

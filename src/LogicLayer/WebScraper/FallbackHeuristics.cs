@@ -6,6 +6,7 @@ using savorfolio_backend.Utils;
 using savorfolio_backend.Models.enums;
 using System.Text.RegularExpressions;
 using AngleSharp.Common;
+using AngleSharp.Text;
 
 namespace savorfolio_backend.LogicLayer.WebScraper;
 
@@ -222,7 +223,7 @@ public partial class FallbackHeuristics
         return dietary;
     }
     #endregion
-    
+
 
     #region Instructions
     public static List<InstructionDTO> ExtractInstructions(IDocument document)
@@ -239,8 +240,8 @@ public partial class FallbackHeuristics
                    .Select(li => li.TextContent.Trim())
                    .Where(text => !string.IsNullOrWhiteSpace(text))
            );
-        } 
-        
+        }
+
         if (draftInstructions.Count == 0)
         {
             // if no matches, look for the element with "Instructions" or "Directions" as its text content
@@ -290,15 +291,66 @@ public partial class FallbackHeuristics
         {
             var instructionItem = new InstructionDTO
             {
-                StepNumber = i+1,
+                StepNumber = i + 1,
                 InstructionText = draftInstructions[i]
             };
             instructionDTOs.Add(instructionItem);
         }
-        
+
         return instructionDTOs;
     }
     #endregion
+
+
+
+    #region Bake Temp
+    public static (int? temp, string? temp_unit) ExtractBakeTemp(IDocument document)
+    {
+        int? temp = null;
+        string? temp_unit = "F";
+        List<string> terms = ["Preheat"];
+
+        // Access document text
+        string documentText = document.Body?.TextContent ?? string.Empty;
+
+        // Match the classNames to established patterns
+        var patternMatch = terms.FirstOrDefault(t => documentText.Contains(t, StringComparison.OrdinalIgnoreCase)) ?? "none";
+
+        var regexPattern = @"(\d{3})(\s*)?(°|degrees)?\s*([FC])?";
+        var regex = new Regex(regexPattern, RegexOptions.IgnoreCase);
+        var bakeTempLine = document.All.FirstOrDefault(e =>
+                terms.Any(t => e.TextContent.Trim().Contains(t, StringComparison.OrdinalIgnoreCase) &&
+                        e.TextContent.Any(char.IsDigit)));
+        if (bakeTempLine?.TextContent != null)
+        {
+            var bakeTempLineText = bakeTempLine.TextContent;
+            var matches = regex.Matches(bakeTempLineText);
+            if (matches.Count == 0)
+                return (null, null);
+
+            foreach (Match match in matches)
+            {
+                var index = match.Index;
+                var nearbyText = bakeTempLineText.Substring(Math.Max(0, index - 50), Math.Min(100, bakeTempLineText.Length - index));
+
+                if (terms.Any(t => nearbyText.Contains(t, StringComparison.OrdinalIgnoreCase)))
+                {
+                    if (int.TryParse(match.Groups[1].Value, out int val))
+                    {
+                        temp = val;
+                        var unit = match.Groups[3].Value?.ToUpperInvariant();
+
+                        temp_unit = string.IsNullOrEmpty(unit) ? "F" : unit; // default to F if unspecified
+                        break;
+                    }
+                }
+            }
+        }
+        return (temp, temp_unit);
+    }
+    #endregion
+    
+
 
     #region Regex
     // Regex generation
