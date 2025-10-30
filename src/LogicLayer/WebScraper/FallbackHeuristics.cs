@@ -37,10 +37,11 @@ public partial class FallbackHeuristics
     #region MatchEnum
     public static string MatchEnum<TEnum>(IDocument document) where TEnum : Enum
     {
-        string documentText = document.Body?.TextContent ?? string.Empty;
+        var documentText = document.QuerySelector("[class*='entry-footer']")?.TextContent ?? document.Body?.TextContent;
+        documentText = document.QuerySelector("[class*='post-terms']")?.TextContent ?? document.Body?.TextContent;
         string returnValue = "";
         var enumList = EnumExtensions.GetEnumList<TEnum>();
-        var patternMatch = enumList.FirstOrDefault(t => documentText.Contains(t, StringComparison.OrdinalIgnoreCase)) ?? "none";
+        var patternMatch = enumList.FirstOrDefault(t => documentText!.Contains(t, StringComparison.OrdinalIgnoreCase)) ?? "none";
         var labelElements = document.All
                     .Where(e => e.TextContent != null &&
                         e.TextContent.Contains(patternMatch, StringComparison.OrdinalIgnoreCase));

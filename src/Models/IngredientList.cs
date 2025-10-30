@@ -12,7 +12,7 @@ public partial class IngredientList
 
     public string? Quantity { get; set; }
 
-    public int? UnitId { get; set; }
+    public int UnitId { get; set; }
 
     public int IngredientId { get; set; }
 

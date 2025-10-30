@@ -59,7 +59,9 @@ builder.Services.AddScoped<IIngListRepository, IngListRepository>();
 builder.Services.AddScoped<IInstructionsRepository, InstructionsRepository>();
 //Tags Services
 builder.Services.AddScoped<ITagsRepository, TagsRepository>();
-builder.Services.AddScoped<WebScraperService>();
+// recipe scraping services
+builder.Services.AddScoped<IWebScraperService, WebScraperService>();
+builder.Services.AddScoped<IIngredientParseService, IngredientParseService>();
 
 
 var app = builder.Build();
@@ -81,7 +83,8 @@ app.MapRecipeById();
 app.MapRecipeSearch();
 // add a new recipe manually
 app.MapManualRecipe();
-
+// scrape recipe
+app.MapDraftRecipe();
 
 
 

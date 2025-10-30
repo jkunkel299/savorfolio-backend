@@ -16,7 +16,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
     {
         List<string> rawIngredients = [];
         // List<IngredientListDTO> ingredientsList = [];
-        List<string> ingredientsList = [];
+        // List<string> ingredientsList = [];
         // call function to get ingredient elements by pattern
         if (ingredientsPattern != "")
         {
@@ -98,7 +98,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
         List<string> draftIngredients = []; // for use in general matching without class names
         var contentRoot = document.QuerySelector("[class*='entry-content']") ?? document.Body;
 
-        // look for items with "ingredient" in the class name
+        // look for items with "ingredient" in the class name or id
         var tryIngredientsElements = contentRoot?
             .QuerySelectorAll(
                 @"[class*='ingredient'] li, [class*='ingredient'] div, 
@@ -111,8 +111,10 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
                 string addIng = item.TextContent.Trim();
                 var cleaned = CheckboxRegex().Replace(addIng, string.Empty);
                 cleaned = SpaceRegex().Replace(cleaned, " ");
+                cleaned = Regex.Replace(cleaned, @"\*", string.Empty);
                 cleaned = Regex.Replace(cleaned, @"^\s*\d+\s*$(\r?\n)?", string.Empty, RegexOptions.Multiline);
-                if (cleaned.Length < 400) extractIngredients.Add(cleaned);
+                if (cleaned == string.Empty) continue;
+                if (cleaned.Length < 400) extractIngredients.Add(cleaned.Trim());
             }
         } 
         
@@ -157,6 +159,17 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
         }
         // if still no draft instructions, return empty list
         if (extractIngredients.Count == 0) return ["Could not find ingredients"];
+        // List<string> flagged = [];
+        // foreach (var ing in extractIngredients)
+        // {
+        //     (var unit, _) = await ExtractUnit(ing);
+        //     (var quantity, _) = ExtractQuantity(ing);
+        //     // if (unit == "none") flagged.Add(ing);
+        // }
+        // foreach (var ing in flagged)
+        // {
+        //     extractIngredients.Remove(ing);
+        // }
         return extractIngredients;
     }
 
@@ -209,34 +222,41 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
     // TODO - extract unit
     public async Task<(string unitName, /* int unitId, */ string remainder)> ExtractUnit(string rawIngredient)
     {
-        // string unitName = "";
         string unit = "none";
         string tryUnit;
         string unitTerm = "";
-        // int unitId = 0;
-        // var cleaned = Regex.Replace(rawIngredient, @"\(.*?\)", string.Empty);
-        var cleaned = Regex.Replace(rawIngredient, @"\u00A0", " ");
-        // split the ingredient at each space
-        var splitIngredient = SplitIngredientIntoTokens(cleaned);
-        foreach (var term in splitIngredient)
+        string ingAndQualifier = rawIngredient;
+        try
         {
-            unitTerm = term;
-            tryUnit = await _unitsRepository.UnitSearchReturnString(term);
-            if (tryUnit != "none")
+            // string unitName = "";
+            // int unitId = 0;
+            // var cleaned = Regex.Replace(rawIngredient, @"\(.*?\)", string.Empty);
+            var cleaned = Regex.Replace(rawIngredient, @"\u00A0", " ");
+            // split the ingredient at each space
+            var splitIngredient = SplitIngredientIntoTokens(cleaned);
+            foreach (var term in splitIngredient)
             {
-                unit = tryUnit;
-                break;
+                unitTerm = term;
+                tryUnit = await _unitsRepository.UnitSearchReturnString(term);
+                if (tryUnit != "none")
+                {
+                    unit = tryUnit;
+                    break;
+                }
+                else
+                {
+                    unit = "none";
+                }
+                ;
             }
-            else
-            {
-                unit = "none";
-            }
-            ;
-        }
 
-        Regex rawUnitRegex = new(unitTerm);
-        // remove the unit from the ingredient line
-        var ingAndQualifier = rawUnitRegex.Replace(rawIngredient, string.Empty, 1).Trim();
+            Regex rawUnitRegex = new(unitTerm);
+            // remove the unit from the ingredient line
+            ingAndQualifier = rawUnitRegex.Replace(rawIngredient, string.Empty, 1).Trim();
+        } catch (RegexParseException)
+        {
+            unit = "none";
+        }
         // if no unit keep whole line
         if (unit == "none") ingAndQualifier = rawIngredient.Trim();
         return (unit, /* unitId,  */ingAndQualifier);
@@ -376,7 +396,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
     
 
     #region Regex
-    [GeneratedRegex(@"^\s*(\d+\s\d+/\d+|\d+/\d+|\d+(\.\d+)?)", RegexOptions.IgnoreCase, "en-US")]
+    [GeneratedRegex(@"^\s*(\d+\s\d+/\d+|\d+/\d+|\d+(\.\d+)?|[¼½¾⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞])", RegexOptions.IgnoreCase, "en-US")]
     private static partial Regex QuantityRegex();
     [GeneratedRegex(@"▢")]
     private static partial Regex CheckboxRegex();

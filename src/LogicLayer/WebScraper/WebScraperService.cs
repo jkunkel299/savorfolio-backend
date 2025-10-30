@@ -34,7 +34,7 @@ public /* partial */ class WebScraperService(IUnitsRepository unitsRepository, I
 
         RecipeDTO recipe = BuildRecipeSummary(document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
         TagStringsDTO tags = BuildRecipeTags(document, coursePattern, cuisinePattern);
-        List<string> ingredients = /* await */ BuildRecipeIngredients(document, ingredientsPattern);
+        List<string> ingredients = BuildRecipeIngredients(document, ingredientsPattern);
         List<InstructionDTO> instructions = BuildRecipeInstructions(document, instructionsPattern);
 
         var returnDto = new DraftRecipeDTO

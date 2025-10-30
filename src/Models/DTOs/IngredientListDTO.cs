@@ -18,9 +18,9 @@ public class IngredientListDTO
 
     public string? Quantity { get; set; }
 
-    public int? UnitId { get; set; }
+    public int UnitId { get; set; }
 
-    public string? UnitName { get; set; } = null!;
+    public string UnitName { get; set; } = null!;
 
     public string? UnitNamePlural { get; set; } = null!;
 
