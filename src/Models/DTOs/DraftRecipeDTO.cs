@@ -6,6 +6,8 @@ public class DraftRecipeDTO
 
     public required TagStringsDTO RecipeTags { get; set; }
 
+    public List<SectionDTO>? RecipeSections { get; set; }
+
     public required List<string> IngredientsString { get; set; }
 
     public required List<InstructionDTO> Instructions { get; set; }

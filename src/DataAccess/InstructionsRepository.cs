@@ -12,15 +12,25 @@ public class InstructionsRepository(AppDbContext context) : IInstructionsReposit
 {
     private readonly AppDbContext _context = context;
 
-    public int AddNewRecipeIns(List<InstructionDTO> instructionsData, int recipeId)
+    public int AddNewRecipeIns(List<InstructionDTO> instructionsData, int recipeId, List<SectionDTO>? sectionsData)
     {
         // for each instruction in the list, create a new row in the Instructions table
         foreach (InstructionDTO instruction in instructionsData)
         {
+            int? sectionId = null;
+
+            if (sectionsData!.Count != 0 && !string.IsNullOrEmpty(instruction.SectionName))
+            {
+                var matchedSection = sectionsData
+                    .FirstOrDefault(s =>
+                        string.Equals(s.SectionName, instruction.SectionName, StringComparison.OrdinalIgnoreCase));
+
+                sectionId = matchedSection?.Id;
+            }
             var newInstruction = new Instruction
             {
                 RecipeId = recipeId,
-                // SectionId = instruction.SectionId,
+                SectionId = sectionId,
                 StepNumber = instruction.StepNumber,
                 InstructionText = instruction.InstructionText
             };
@@ -42,7 +52,9 @@ public class InstructionsRepository(AppDbContext context) : IInstructionsReposit
                 Id = e.Id,
                 RecipeId = e.RecipeId,
                 StepNumber = e.StepNumber,
-                InstructionText = e.InstructionText
+                InstructionText = e.InstructionText,
+                SectionId = e.SectionId,
+                SectionName = e.Section != null ? e.Section.SectionName : null
             })
             .OrderBy(e => e.StepNumber)
             .ToListAsync();

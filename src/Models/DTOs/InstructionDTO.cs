@@ -6,11 +6,11 @@ public class InstructionDTO
 
     public int RecipeId { get; set; }
 
-    // public int? SectionId { get; set; }
+    public int? SectionId { get; set; }
+
+    public string? SectionName { get; set; }
 
     public int StepNumber { get; set; }
 
     public string InstructionText { get; set; } = null!;
-
-    // public virtual RecipeSection? Section { get; set; }
 }

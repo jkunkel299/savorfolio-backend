@@ -44,8 +44,7 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
                     EF.Functions.ILike(i.Name, $"{searchTerm},%") ||
                     EF.Functions.ILike(i.Name, $"{searchTerm} %") ? 2 :
                     EF.Functions.ILike(i.Name, $"%{searchTerm}%") ? 1 : 0);
-        }
-        ;
+        };
 
         return await query
             .Take(10)

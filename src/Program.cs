@@ -59,6 +59,8 @@ builder.Services.AddScoped<IIngListRepository, IngListRepository>();
 builder.Services.AddScoped<IInstructionsRepository, InstructionsRepository>();
 //Tags Services
 builder.Services.AddScoped<ITagsRepository, TagsRepository>();
+// Sections Services
+builder.Services.AddScoped<ISectionsRepository, SectionsRepository>();
 // recipe scraping services
 builder.Services.AddScoped<IWebScraperService, WebScraperService>();
 builder.Services.AddScoped<IIngredientParseService, IngredientParseService>();

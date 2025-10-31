@@ -12,16 +12,27 @@ public class IngListRepository(AppDbContext context) : IIngListRepository
 {
     private readonly AppDbContext _context = context;
 
-    public int AddNewRecipeIng(List<IngredientListDTO> ingredientsData, int recipeId)
+    public int AddNewRecipeIng(List<IngredientListDTO> ingredientsData, int recipeId, List<SectionDTO>? sectionsData)
     {
         // for each ingredient in the list, create a new row in the IngredientList table
         foreach (IngredientListDTO ingredient in ingredientsData)
         {
+            int? sectionId = null;
+
+            if (sectionsData!.Count != 0 && !string.IsNullOrEmpty(ingredient.SectionName))
+            {
+                var matchedSection = sectionsData
+                    .FirstOrDefault(s =>
+                        string.Equals(s.SectionName, ingredient.SectionName, StringComparison.OrdinalIgnoreCase));
+
+                sectionId = matchedSection?.Id;
+            }
+                
             var newIngredient = new IngredientList
             {
                 RecipeId = recipeId,
                 IngredientOrder = ingredient.IngredientOrder,
-                // SectionId = ingredient.SectionId,
+                SectionId = sectionId,
                 Quantity = ingredient.Quantity,
                 UnitId = ingredient.UnitId,
                 IngredientId = ingredient.IngredientId,
@@ -52,6 +63,8 @@ public class IngListRepository(AppDbContext context) : IIngListRepository
                 UnitName = e.Unit.Name,
                 UnitNamePlural = e.Unit.PluralName!,
                 Qualifier = e.Qualifier,
+                SectionId = e.SectionId,
+                SectionName = e.Section != null ? e.Section.SectionName : null
             })
             .OrderBy(e => e.IngredientOrder)
             .ToListAsync();

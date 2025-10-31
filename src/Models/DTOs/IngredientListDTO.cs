@@ -6,7 +6,9 @@ public class IngredientListDTO
 
     public int RecipeId { get; set; }
 
-    // public int? SectionId { get; set; }
+    public int? SectionId { get; set; }
+
+    public string? SectionName { get; set; }
 
     public int IngredientOrder { get; set; }
 
@@ -22,7 +24,7 @@ public class IngredientListDTO
 
     public string UnitName { get; set; } = null!;
 
-    public string? UnitNamePlural { get; set; } = null!;
+    public string? UnitNamePlural { get; set; }
 
     public string? Qualifier { get; set; } = "";
 }
