@@ -19,12 +19,11 @@ public class SectionsRepository(AppDbContext context) : ISectionsRepository
         {
             var newSection = new RecipeSection
             {
-                Id = section.Id,
                 RecipeId = recipeId,
                 SectionName = section.SectionName,
                 SortOrder = section.SortOrder
             };
-            // Console.WriteLine($"Adding section name {Section.StepNumber} with RecipeId {recipeId}");
+            Console.WriteLine($"Adding section name {newSection.SectionName} with RecipeId {recipeId}");
 
             _context.RecipeSections.Add(newSection);
         }

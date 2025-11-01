@@ -34,7 +34,7 @@ public class AddRecipeService(
         var newRecipeId = await _recipeRepository.AddNewRecipe(newRecipe);
 
         // build sections list DTO or set as empty list
-        var sectionsList = (newRecipeContent["sections"]?.ToObject<List<SectionDTO>>()) ?? [];
+        var sectionsList = (newRecipeContent["recipeSections"]?.ToObject<List<SectionDTO>>()) ?? [];
 
         // if sections, call sectionsRepository.AddNewRecipeSection with the new section DTO list
         int sectionsRecords = 0;
