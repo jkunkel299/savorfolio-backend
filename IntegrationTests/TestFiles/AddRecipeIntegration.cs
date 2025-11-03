@@ -27,7 +27,7 @@ public class AddRecipeFullTests(DatabaseFixture databaseFixture, TestServerFixtu
         Assert.False(string.IsNullOrEmpty(_databaseFixture.ConnectionString));
 
         // initialize expected recipe ID
-        int expectedId = 3;
+        int expectedId = 4;
         // initialize the expected response message
         string expectedMessage = $"\"Recipe ID {expectedId} added successfully\"";
 

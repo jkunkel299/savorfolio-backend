@@ -1,0 +1,20 @@
+[
+    {
+        "Id": 1,
+        "RecipeId": 3,
+        "SectionName": "Apple Filling",
+        "SortOrder": 1
+    },
+    {
+        "Id": 2,
+        "RecipeId": 3,
+        "SectionName": "Blondies",
+        "SortOrder": 2
+    },
+    {
+        "Id": 3,
+        "RecipeId": 3,
+        "SectionName": "Maple Glaze",
+        "SortOrder": 3
+    }
+]

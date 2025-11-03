@@ -30,7 +30,7 @@ public class UnitSearchIntegrationTests(DatabaseFixture databaseFixture, TestSer
                 "Id": 37,
                 "Name": "to taste",
                 "Abbreviation": "to taste",
-                "PluralName": "to taste"
+                "PluralName": null
             },
             {
                 "Id": 2,
@@ -73,7 +73,7 @@ public class UnitSearchIntegrationTests(DatabaseFixture databaseFixture, TestSer
                 "Id": 37,
                 "Name": "to taste",
                 "Abbreviation": "to taste",
-                "PluralName": "to taste"
+                "PluralName": null
             },
             {
                 "Id": 2,

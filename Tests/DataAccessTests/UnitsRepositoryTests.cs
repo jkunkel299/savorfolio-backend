@@ -24,7 +24,7 @@ public class UnitRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixture<Un
                 "Id": 37,
                 "Name": "to taste",
                 "Abbreviation": "to taste",
-                "PluralName": "to taste"
+                "PluralName": null
             },
             {
                 "Id": 2,

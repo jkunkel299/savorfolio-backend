@@ -23,11 +23,41 @@ public class IngredientSearchIntegrationTests(DatabaseFixture databaseFixture, T
         // initialize expected result as string, convert to JSON
         string expectedJson = """
         [
-            {"Id":145,"Name": "chicken thigh","PluralName": null,"TypeId": 7,"IngredientCategory": "Protein"},
-            {"Id":144,"Name": "chicken breast","PluralName": null,"TypeId": 7,"IngredientCategory": "Protein"},
-            {"Id":143,"Name": "chicken","PluralName": null,"TypeId": 7,"IngredientCategory": "Protein"},
-            {"Id":251,"Name": "chicken broth","PluralName": null,"TypeId": 4,"IngredientCategory": "Broth & Stock"},
-            {"Id":20,"Name": "chicken stock","PluralName": null,"TypeId": 4,"IngredientCategory": "Broth & Stock"},            
+            {
+                "Id": 143,
+                "Name": "chicken",
+                "PluralName": null,
+                "TypeId": 7,
+                "IngredientCategory": "Protein"
+            },
+            {
+                "Id": 145,
+                "Name": "chicken thigh",
+                "PluralName": null,
+                "TypeId": 7,
+                "IngredientCategory": "Protein"
+            },
+            {
+                "Id": 144,
+                "Name": "chicken breast",
+                "PluralName": null,
+                "TypeId": 7,
+                "IngredientCategory": "Protein"
+            },
+            {
+                "Id": 251,
+                "Name": "chicken broth",
+                "PluralName": null,
+                "TypeId": 4,
+                "IngredientCategory": "Broth & Stock"
+            },
+            {
+                "Id": 20,
+                "Name": "chicken stock",
+                "PluralName": null,
+                "TypeId": 4,
+                "IngredientCategory": "Broth & Stock"
+            }
         ]
         """;
         JToken expectedToken = JToken.Parse(expectedJson);
@@ -58,11 +88,41 @@ public class IngredientSearchIntegrationTests(DatabaseFixture databaseFixture, T
         // initialize expected result as string, convert to JSON
         string expectedJson = """
         [
-            {"Id":145,"Name": "chicken thigh","PluralName": null,"TypeId": 7,"IngredientCategory": "Protein"},
-            {"Id":144,"Name": "chicken breast","PluralName": null,"TypeId": 7,"IngredientCategory": "Protein"},
-            {"Id":143,"Name": "chicken","PluralName": null,"TypeId": 7,"IngredientCategory": "Protein"},
-            {"Id":251,"Name": "chicken broth","PluralName": null,"TypeId": 4,"IngredientCategory": "Broth & Stock"},
-            {"Id":20,"Name": "chicken stock","PluralName": null,"TypeId": 4,"IngredientCategory": "Broth & Stock"},            
+            {
+                "Id": 143,
+                "Name": "chicken",
+                "PluralName": null,
+                "TypeId": 7,
+                "IngredientCategory": "Protein"
+            },
+            {
+                "Id": 145,
+                "Name": "chicken thigh",
+                "PluralName": null,
+                "TypeId": 7,
+                "IngredientCategory": "Protein"
+            },
+            {
+                "Id": 144,
+                "Name": "chicken breast",
+                "PluralName": null,
+                "TypeId": 7,
+                "IngredientCategory": "Protein"
+            },
+            {
+                "Id": 251,
+                "Name": "chicken broth",
+                "PluralName": null,
+                "TypeId": 4,
+                "IngredientCategory": "Broth & Stock"
+            },
+            {
+                "Id": 20,
+                "Name": "chicken stock",
+                "PluralName": null,
+                "TypeId": 4,
+                "IngredientCategory": "Broth & Stock"
+            }
         ]
         """;
         JToken expectedToken = JToken.Parse(expectedJson);

@@ -28,6 +28,8 @@ public class AddRecipeServiceTests()
         var newRecipeContent = _expectedAddRecipe;
         // initialize the recipe ID
         int recipeId = 3;
+        // initialize sections (no sections)
+        List<SectionDTO> sections = [];
 
         // mock recipe repository interface
         var mockRecipeRepo = new Mock<IRecipeRepository>();
@@ -37,20 +39,25 @@ public class AddRecipeServiceTests()
         var mockInstructionsRepo = new Mock<IInstructionsRepository>();
         // mock tags repository interface
         var mockTagsRepo = new Mock<ITagsRepository>();
+        // mock sections repository interface
+        var mockSectionsRepo = new Mock<ISectionsRepository>();
 
         // set up mock repository functions
         mockRecipeRepo.Setup(r => r.AddNewRecipe(It.IsAny<RecipeDTO>()))
                     .ReturnsAsync(recipeId);
-        mockIngListRepo.Setup(r => r.AddNewRecipeIng(It.IsAny<List<IngredientListDTO>>(), recipeId))
+        mockIngListRepo.Setup(r => r.AddNewRecipeIng(It.IsAny<List<IngredientListDTO>>(), recipeId, sections))
                     .Returns(1);
-        mockInstructionsRepo.Setup(r => r.AddNewRecipeIns(It.IsAny<List<InstructionDTO>>(), recipeId))
+        mockInstructionsRepo.Setup(r => r.AddNewRecipeIns(It.IsAny<List<InstructionDTO>>(), recipeId, sections))
                     .Returns(1);
         mockTagsRepo.Setup(r => r.AddNewRecipeTags(It.IsAny<RecipeTagDTO>(), recipeId))
                     .Returns(1);
+        mockSectionsRepo.Setup(r => r.AddNewRecipeSectionsAsync(It.IsAny<List<SectionDTO>>(), recipeId))
+                    .ReturnsAsync((0, sections));
 
         // mock AddRecipeService
         var addRecipeService = new AddRecipeService(
             mockRecipeRepo.Object,
+            mockSectionsRepo.Object,
             mockIngListRepo.Object,
             mockInstructionsRepo.Object,
             mockTagsRepo.Object
@@ -62,9 +69,9 @@ public class AddRecipeServiceTests()
         // assert mocked recipe repo function called once
         mockRecipeRepo.Verify(d => d.AddNewRecipe(It.IsAny<RecipeDTO>()), Times.Once);
         // assert mocked ingredient list repo function called once
-        mockIngListRepo.Verify(d => d.AddNewRecipeIng(It.IsAny<List<IngredientListDTO>>(), recipeId), Times.Once);
+        mockIngListRepo.Verify(d => d.AddNewRecipeIng(It.IsAny<List<IngredientListDTO>>(), recipeId, sections), Times.Once);
         // assert mocked instructions repo function called once
-        mockInstructionsRepo.Verify(d => d.AddNewRecipeIns(It.IsAny<List<InstructionDTO>>(), recipeId), Times.Once);
+        mockInstructionsRepo.Verify(d => d.AddNewRecipeIns(It.IsAny<List<InstructionDTO>>(), recipeId, sections), Times.Once);
         // assert mocked tags repo function called once
         mockTagsRepo.Verify(d => d.AddNewRecipeTags(It.IsAny<RecipeTagDTO>(), recipeId), Times.Once);
     }
@@ -79,6 +86,8 @@ public class AddRecipeServiceTests()
         var newRecipeContent = _expectedAddRecipe;
         // initialize the recipe ID
         int recipeId = 3;
+        // initialize sections (no sections)
+        List<SectionDTO> sections = [];
 
         // mock recipe repository interface
         var mockRecipeRepo = new Mock<IRecipeRepository>();
@@ -88,13 +97,15 @@ public class AddRecipeServiceTests()
         var mockInstructionsRepo = new Mock<IInstructionsRepository>();
         // mock tags repository interface
         var mockTagsRepo = new Mock<ITagsRepository>();
+        // mock sections repository interface
+        var mockSectionsRepo = new Mock<ISectionsRepository>();
 
         // set up mock repository functions
         mockRecipeRepo.Setup(r => r.AddNewRecipe(It.IsAny<RecipeDTO>()))
                     .ReturnsAsync(recipeId);
-        mockIngListRepo.Setup(r => r.AddNewRecipeIng(It.IsAny<List<IngredientListDTO>>(), recipeId))
+        mockIngListRepo.Setup(r => r.AddNewRecipeIng(It.IsAny<List<IngredientListDTO>>(), recipeId, sections))
                     .Returns(1);
-        mockInstructionsRepo.Setup(r => r.AddNewRecipeIns(It.IsAny<List<InstructionDTO>>(), recipeId))
+        mockInstructionsRepo.Setup(r => r.AddNewRecipeIns(It.IsAny<List<InstructionDTO>>(), recipeId, sections))
                     .Returns(1);
         mockTagsRepo.Setup(r => r.AddNewRecipeTags(It.IsAny<RecipeTagDTO>(), recipeId))
                     .Returns(1);
@@ -102,6 +113,7 @@ public class AddRecipeServiceTests()
         // mock AddRecipeService
         var addRecipeService = new AddRecipeService(
             mockRecipeRepo.Object,
+            mockSectionsRepo.Object,
             mockIngListRepo.Object,
             mockInstructionsRepo.Object,
             mockTagsRepo.Object
@@ -127,6 +139,8 @@ public class AddRecipeServiceTests()
         var newRecipeContent = _expectedAddRecipe;
         // initialize the recipe ID
         int recipeId = 3;
+        // initialize sections (no sections)
+        List<SectionDTO> sections = [];
 
         // mock recipe repository interface
         var mockRecipeRepo = new Mock<IRecipeRepository>();
@@ -136,13 +150,15 @@ public class AddRecipeServiceTests()
         var mockInstructionsRepo = new Mock<IInstructionsRepository>();
         // mock tags repository interface
         var mockTagsRepo = new Mock<ITagsRepository>();
+        // mock sections repository interface
+        var mockSectionsRepo = new Mock<ISectionsRepository>();
 
         // set up mock repository functions
         mockRecipeRepo.Setup(r => r.AddNewRecipe(It.IsAny<RecipeDTO>()))
                     .ReturnsAsync(recipeId);
-        mockIngListRepo.Setup(r => r.AddNewRecipeIng(It.IsAny<List<IngredientListDTO>>(), recipeId))
+        mockIngListRepo.Setup(r => r.AddNewRecipeIng(It.IsAny<List<IngredientListDTO>>(), recipeId, sections))
                     .Returns(returnValues[0]);
-        mockInstructionsRepo.Setup(r => r.AddNewRecipeIns(It.IsAny<List<InstructionDTO>>(), recipeId))
+        mockInstructionsRepo.Setup(r => r.AddNewRecipeIns(It.IsAny<List<InstructionDTO>>(), recipeId, sections))
                     .Returns(returnValues[1]);
         mockTagsRepo.Setup(r => r.AddNewRecipeTags(It.IsAny<RecipeTagDTO>(), recipeId))
                     .Returns(returnValues[2]);
@@ -150,6 +166,7 @@ public class AddRecipeServiceTests()
         // mock AddRecipeService
         var addRecipeService = new AddRecipeService(
             mockRecipeRepo.Object,
+            mockSectionsRepo.Object,
             mockIngListRepo.Object,
             mockInstructionsRepo.Object,
             mockTagsRepo.Object

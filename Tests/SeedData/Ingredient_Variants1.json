@@ -1298,5 +1298,85 @@
         "TypeId": 10,
         "Name": "tomato",
         "PluralName": "tomatoes"
+    },
+    {
+        "TypeId": 12,
+        "Name": "wide egg noodle",
+        "PluralName": "wide egg noodles"
+    },
+    {
+        "TypeId": 10,
+        "Name": "white onion",
+        "PluralName": "white onions"
+    },
+    {
+        "TypeId": 10,
+        "Name": "baby bella mushroom",
+        "PluralName": "baby bella mushrooms"
+    },
+    {
+        "TypeId": 33,
+        "Name": "canola oil",
+        "PluralName": null
+    },
+    {
+        "TypeId": 33,
+        "Name": "olive oil",
+        "PluralName": null
+    },
+    {
+        "TypeId": 33,
+        "Name": "extra-virgin olive oil",
+        "PluralName": null
+    },
+    {
+        "TypeId": 33,
+        "Name": "vegetable oil",
+        "PluralName": null
+    },
+    {
+        "TypeId": 10,
+        "Name": "creamed corn",
+        "PluralName": null
+    },
+    {
+        "TypeId": 28,
+        "Name": "smoked paprika",
+        "PluralName": null
+    },
+    {
+        "TypeId": 34,
+        "Name": "Jiffy Corn Muffin Mix",
+        "PluralName": null
+    },
+    {
+        "TypeId": 28,
+        "Name": "garlic powder",
+        "PluralName": null
+    },
+    {
+        "TypeId": 28,
+        "Name": "seasoning salt",
+        "PluralName": null
+    },
+    {
+        "TypeId": 28,
+        "Name": "onion powder",
+        "PluralName": null
+    },
+    {
+        "TypeId": 28,
+        "Name": "cayenne pepper",
+        "PluralName": null
+    },
+    {
+        "TypeId": 24,
+        "Name": "dark brown sugar",
+        "PluralName": null
+    },
+    {
+        "TypeId": 26,
+        "Name": "vanilla extract",
+        "PluralName": null
     }
 ]

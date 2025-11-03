@@ -94,5 +94,11 @@
     },
     {
         "Name": "Thickener"
+    },
+    {
+        "Name": "Oil"
+    },
+    {
+        "Name": "Mixes"
     }
 ]

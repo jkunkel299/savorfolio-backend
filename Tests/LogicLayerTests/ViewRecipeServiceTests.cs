@@ -35,9 +35,12 @@ public class ViewRecipeServiceTests()
         var mockInstructionsRepo = new Mock<IInstructionsRepository>();
         // mock tags repository interface
         var mockTagsRepo = new Mock<ITagsRepository>();
+        // mock sections repository interface
+        var mockSectionsRepo = new Mock<ISectionsRepository>();
         // mock ViewRecipeService
         var viewRecipeService = new ViewRecipeService(
             mockRecipeRepo.Object,
+            mockSectionsRepo.Object,
             mockIngListRepo.Object,
             mockInstructionsRepo.Object,
             mockTagsRepo.Object
@@ -72,9 +75,12 @@ public class ViewRecipeServiceTests()
         var mockInstructionsRepo = new Mock<IInstructionsRepository>();
         // mock tags repository interface
         var mockTagsRepo = new Mock<ITagsRepository>();
+        // mock sections repository interface
+        var mockSectionsRepo = new Mock<ISectionsRepository>();
         // mock ViewRecipeService
         var viewRecipeService = new ViewRecipeService(
             mockRecipeRepo.Object,
+            mockSectionsRepo.Object,
             mockIngListRepo.Object,
             mockInstructionsRepo.Object,
             mockTagsRepo.Object
@@ -84,6 +90,8 @@ public class ViewRecipeServiceTests()
         var mockRecipeSummary = _expectedViewRecipe["RecipeSummary"]?.ToObject<RecipeDTO>() ?? new RecipeDTO();
         mockRecipeRepo.Setup(d => d.ReturnRecipeByIdAsync(recipeId))
                         .ReturnsAsync(mockRecipeSummary);
+        // set up expected DTO return from sections repository (no sections)
+        var mockSections = _expectedViewRecipe["RecipeSections"]?.ToObject<List<SectionDTO>>() ?? [];
         // set up expected DTO return from ingredient list repository
         var mockIngList = _expectedViewRecipe["Ingredients"]?.ToObject<List<IngredientListDTO>>() ?? [];
         mockIngListRepo.Setup(d => d.GetIngredientsByRecipeAsync(recipeId))
@@ -103,6 +111,7 @@ public class ViewRecipeServiceTests()
             RecipeId = recipeId,
             RecipeSummary = mockRecipeSummary,
             RecipeTags = mockTags,
+            RecipeSections = mockSections,
             Ingredients = mockIngList,
             Instructions = mockInsList
         };

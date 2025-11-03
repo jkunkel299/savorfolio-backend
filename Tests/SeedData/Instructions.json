@@ -103,5 +103,96 @@
         "SectionId": null,
         "StepNumber": 6,
         "InstructionText": "Bake for 8-10 minutes. The cookies will be slightly underdone when you remove them from the oven. Let the cookies sit for 10-15 minutes before moving them from the baking sheet to a wire cooling rack."
+    },
+    {
+        "Id": 16,
+        "RecipeId": 3,
+        "SectionId": 1,
+        "StepNumber": 1,
+        "InstructionText": "On med-low heat, cook apple filling mixture for about 3-4 minutes. Pull off heat and allow to cool."
+    },
+    {
+        "Id": 17,
+        "RecipeId": 3,
+        "SectionId": 2,
+        "StepNumber": 2,
+        "InstructionText": "Preheat oven to 350 and line an 11x7 pan with tin foil (or spray with pan with cooking spray)."
+    },
+    {
+        "Id": 18,
+        "RecipeId": 3,
+        "SectionId": 2,
+        "StepNumber": 3,
+        "InstructionText": "Cream butter until light and fluffy, about 1 minute. Add in brown sugar and granulated sugar, and mix until well combined."
+    },
+    {
+        "Id": 19,
+        "RecipeId": 3,
+        "SectionId": 2,
+        "StepNumber": 4,
+        "InstructionText": "Add in eggs, 1 at a time, beating well after each addition."
+    },
+    {
+        "Id": 20,
+        "RecipeId": 3,
+        "SectionId": 2,
+        "StepNumber": 5,
+        "InstructionText": "Add in salt and vanilla extract. Mix until combined."
+    },
+    {
+        "Id": 21,
+        "RecipeId": 3,
+        "SectionId": 2,
+        "StepNumber": 6,
+        "InstructionText": "In a separate bowl, mix flour, baking powder, and cinnamon together. Add to the wet ingredients and stir until combined."
+    },
+    {
+        "Id": 22,
+        "RecipeId": 3,
+        "SectionId": 2,
+        "StepNumber": 7,
+        "InstructionText": "In the bottom of the pan, spread half the blondie batter evenly, using a spatula (or your hands--batter is very thick, so I prefer to spread with my hands)."
+    },
+    {
+        "Id": 23,
+        "RecipeId": 3,
+        "SectionId": 2,
+        "StepNumber": 8,
+        "InstructionText": "Spread apple filling all over the layer."
+    },
+    {
+        "Id": 24,
+        "RecipeId": 3,
+        "SectionId": 2,
+        "StepNumber": 9,
+        "InstructionText": "Top with remaining blondie batter and spread evenly."
+    },
+    {
+        "Id": 25,
+        "RecipeId": 3,
+        "SectionId": 2,
+        "StepNumber": 10,
+        "InstructionText": "Bake for 25-30 minutes, or until the top is golden brown and a cake tester comes out clean."
+    },
+    {
+        "Id": 26,
+        "RecipeId": 3,
+        "SectionId": 3,
+        "StepNumber": 11,
+        "InstructionText": "Melt butter, maple syrup, vanilla extract, and cinnamon over low heat. Once melted together, pull off the heat. Sift in powdered sugar, and whisk until fully combined. Allow to cool for 8-10 minutes so the glaze can thicken."
+    },
+    {
+        "Id": 27,
+        "RecipeId": 3,
+        "SectionId": 3,
+        "StepNumber": 12,
+        "InstructionText": "Allow bars to cool for about 10 minutes, then pour the glaze over the bars and allow it to set."
+    },
+    {
+        "Id": 28,
+        "RecipeId": 3,
+        "SectionId": 3,
+        "StepNumber": 13,
+        "InstructionText": "Slice into squares and enjoy!"
     }
 ]

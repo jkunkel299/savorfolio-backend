@@ -54,9 +54,9 @@ public class TagsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixtur
     public async Task AddTagsTest()
     {
         // initialize the recipe DTO to add to the database
-        var addRecipeDTO = _expectedAddRecipe["RecipeSummary"]?.ToObject<RecipeDTO>();
+        var addRecipeDTO = _expectedAddRecipe["recipeSummary"]?.ToObject<RecipeDTO>();
         // initialize the list of ingredient DTOs to add to the table
-        var tags = _expectedAddRecipe["RecipeTags"]?.ToObject<RecipeTagDTO>();
+        var tags = _expectedAddRecipe["recipeTags"]?.ToObject<RecipeTagDTO>();
 
         // initialize the number of records expected to be added to the table: 1
         int expectedRecordCount = 1;

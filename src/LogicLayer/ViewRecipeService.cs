@@ -28,6 +28,8 @@ public class ViewRecipeService(
         var ingredientsList = await _ingListRepository.GetIngredientsByRecipeAsync(recipeId);
         var instructionsList = await _instructionsRepository.GetInstructionsByRecipeAsync(recipeId);
 
+        sections ??= [];
+
         var compiledRecipe = new FullRecipeDTO
         {
             RecipeId = recipeId,

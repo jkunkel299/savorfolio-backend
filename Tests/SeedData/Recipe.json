@@ -1,7 +1,7 @@
 [
     {
         "Name":"Chicken Ragout",
-        "Servings":4,
+        "Servings":"4",
         "CookTime":"20 minutes",
         "PrepTime":"10 minutes",
         "BakeTemp":null,
@@ -10,11 +10,20 @@
     },
     {
         "Name":"Fall Spice Chocolate Chip Cookies",
-        "Servings":8,
+        "Servings":"8",
         "CookTime":"10 minutes",
         "PrepTime":"15 minutes",
         "BakeTemp":400,
         "Temp_unit":"F",
         "Description":"Soft, chewy Fall cookie with dark brown sugar, molasses, cinnamon, ginger, cloves, nutmeg, and chocolate chips for the perfect Autumn cookie. This is the perfect Fall spiced chocolate chip cookie recipe!"
+    },
+    {
+        "Name":"Maple Glazed Apple Blondies",
+        "Servings":"12",
+        "CookTime":"25 minutes",
+        "PrepTime":"20 minutes",
+        "BakeTemp":350,
+        "Temp_unit":"F",
+        "Description":"These chewy Maple Glazed Apple Blondies taste like sweet apple pie with a warm maple icing! This homemade apple blondie recipe is the perfect fall dessert! It's easy, super flavorful, and always a crowd pleaser!"
     }
 ]
