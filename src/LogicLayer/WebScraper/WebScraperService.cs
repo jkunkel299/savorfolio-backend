@@ -10,7 +10,7 @@ using savorfolio_backend.Interfaces;
 
 namespace savorfolio_backend.LogicLayer.WebScraper;
 
-public /* partial */ class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepository ingredientRepository) : IWebScraperService
+public class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepository ingredientRepository) : IWebScraperService
 {
     private readonly IUnitsRepository _unitsRepository = unitsRepository;
     private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
@@ -18,7 +18,7 @@ public /* partial */ class WebScraperService(IUnitsRepository unitsRepository, I
     #region Run Scraper
     public async Task<DraftRecipeDTO> RunScraper(string url)
     {
-        var document = await GetHtmlAsStringAsync(url);
+        var document = await GetHtmlAsync(url);
         string patternMatch = SampleCssClasses(document);
         var patterns = MapCssClassPatterns(patternMatch);
 
@@ -76,7 +76,7 @@ public /* partial */ class WebScraperService(IUnitsRepository unitsRepository, I
 
     #region  Get HTML
     // function to get the HTML content using AngleSharp
-    public async Task<IDocument> GetHtmlAsStringAsync(string url)
+    public async Task<IDocument> GetHtmlAsync(string url)
     {
         // use default configuration for AngleSharp
         var config = Configuration.Default.WithDefaultLoader();

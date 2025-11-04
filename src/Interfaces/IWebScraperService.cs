@@ -6,7 +6,7 @@ namespace savorfolio_backend.Interfaces;
 public interface IWebScraperService
 {
     Task<DraftRecipeDTO> RunScraper(string url);
-    Task<IDocument> GetHtmlAsStringAsync(string url);
+    Task<IDocument> GetHtmlAsync(string url);
     string SampleCssClasses(IDocument document);
     Dictionary<string, string?>? MapCssClassPatterns(string pattern);
     RecipeDTO BuildRecipeSummary(
