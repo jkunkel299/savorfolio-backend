@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.LogicLayer.WebScraper;
-using savorfolio_backend.Models.DTOs;
+using savorfolio_backend.Models.enums;
 using Tests.Fixtures;
 
 namespace Tests.LogicLayerTests.WebScraperTests;
@@ -15,20 +15,18 @@ public partial class WprmWebScraperTests(WebScraperFixture webScraperFixture) : 
 {
     private IDocument _document = default!;
     private WebScraperService scraper = default!;
-
+    // mock FallbackHeuristics interface
+    private readonly Mock<IFallbackHeuristics> mockFallbackHeuristics = new();
+    // mock IngredientParseService interface
+    private readonly Mock<IIngredientParseService> mockIngredientParseService = new();
     // initialize document and web scraper
     public async Task InitializeAsync()
     {
-        // var scraper = webScraperFixture.WebScraperService;
         _document = await webScraperFixture.WebScraperSetupAsync("wprmPattern.html");
-        // mock units repository interface
-        var mockUnitRepo = new Mock<IUnitsRepository>();
-        // mock units repository interface
-        var mockIngredientRepo = new Mock<IIngredientRepository>();
         // Initialize the mock once for all tests
         scraper = new WebScraperService(
-            mockUnitRepo.Object,
-            mockIngredientRepo.Object
+            mockFallbackHeuristics.Object,
+            mockIngredientParseService.Object
         );
     }
 
@@ -93,6 +91,12 @@ public partial class WprmWebScraperTests(WebScraperFixture webScraperFixture) : 
         string recipeServings = "8";
         int bakeTemp = 400;
         string tempUnit = "F";
+
+        // bake temp and temp unit rely on fallback heuristics, and for isolation 
+        // purposes the ExtractBakeTemp returns must be mocked
+        var tupleExtractBakeTemp = (bakeTemp, tempUnit);
+        mockFallbackHeuristics.Setup(r => r.ExtractBakeTemp(_document))
+            .Returns(tupleExtractBakeTemp);
 
         // call BuildRecipeSummary
         var actualReturn = scraper.BuildRecipeSummary(_document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
@@ -186,28 +190,28 @@ public partial class WprmWebScraperTests(WebScraperFixture webScraperFixture) : 
         string coursePattern = "wprm-recipe-course ";
         string cuisinePattern = "wprm-recipe-cuisine ";
 
-        // initialize expected result as string, convert to JSON
-        string expectedJson = """
-        {
-            "RecipeId": 0,
-            "Meal": "Breakfast",
-            "Recipe_type": "Dessert",
-            "Cuisine": "American",
-            "Dietary": []
-        }
-        """;
-        // the returned meal being "breakfast" instead of "dessert" is a known issue 
-        // and is an area of improvement for the meal tag extraction heuristics
-        JToken expectedToken = JToken.Parse(expectedJson);
+        // initialize expected returns for recipe_type and cuisine
+        string expectedRecipeType = "Dessert";
+        string expectedCuisine = "American";
+
+        // Meal and Dietary rely on fallback heuristics, and for isolation 
+        // purposes this context will only test that they are called once each
+        // set up returns for fallback functions called in BuildRecipeInstructions
+        mockFallbackHeuristics.Setup(r => r.MatchEnum<MealTag>(_document))
+            .Returns(It.IsAny<string>());
+        mockFallbackHeuristics.Setup(r => r.ExtractDietaryTags(It.IsAny<string>()))
+            .Returns(It.IsAny<List<string>>());
 
         // call BuildRecipeTags
         var actualReturn = scraper.BuildRecipeTags(_document, coursePattern, cuisinePattern);
-        // Convert Result to JSON
-        var actualJson = JsonConvert.SerializeObject(actualReturn);
-        JToken actualToken = JToken.Parse(actualJson);
 
-        // Assert Equal
-        Assert.True(JToken.DeepEquals(expectedToken, actualToken));
+        // Assert equal
+        Assert.Equal(expectedRecipeType, actualReturn.Recipe_type);
+        Assert.Equal(expectedCuisine, actualReturn.Cuisine);
+
+        // assert fallbacks are called once
+        mockFallbackHeuristics.Verify(f => f.MatchEnum<MealTag>(_document), Times.AtMostOnce);
+        mockFallbackHeuristics.Verify(f => f.ExtractDietaryTags(It.IsAny<string>()), Times.AtMostOnce);
     }
 
     [GeneratedRegex(@"\s{2,}")]

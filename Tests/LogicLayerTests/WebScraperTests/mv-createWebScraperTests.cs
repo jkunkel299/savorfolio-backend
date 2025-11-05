@@ -15,20 +15,18 @@ public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture
 {
     private IDocument _document = default!;
     private WebScraperService scraper = default!;
-
+    // mock FallbackHeuristics interface
+    private readonly Mock<IFallbackHeuristics> mockFallbackHeuristics = new();
+    // mock IngredientParseService interface
+    private readonly Mock<IIngredientParseService> mockIngredientParseService = new();
     // initialize document and web scraper
     public async Task InitializeAsync()
     {
-        // var scraper = webScraperFixture.WebScraperService;
         _document = await webScraperFixture.WebScraperSetupAsync("mv-createPattern.html");
-        // mock units repository interface
-        var mockUnitRepo = new Mock<IUnitsRepository>();
-        // mock units repository interface
-        var mockIngredientRepo = new Mock<IIngredientRepository>();
         // Initialize the mock once for all tests
         scraper = new WebScraperService(
-            mockUnitRepo.Object,
-            mockIngredientRepo.Object
+            mockFallbackHeuristics.Object,
+            mockIngredientParseService.Object
         );
     }
 
@@ -81,8 +79,8 @@ public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture
         // initialize inputs
         string titlePattern = "mv-create-title ";
         string descriptionPattern = "mv-create-description";
-        string prepTimePattern = "mv-create-time-prep .mv-time-minutes";
-        string cookTimePattern = "mv-create-time-active .mv-time-minutes";
+        string prepTimePattern = "mv-create-time-prep";
+        string cookTimePattern = "mv-create-time-active";
         string servingsPattern = "mv-create-yield";
 
         // initialize expected returns
@@ -92,7 +90,13 @@ public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture
         string recipeCook = "40 minutes";
         string recipeServings = "16";
         int? bakeTemp = 400;
-        string? tempUnit = "F";
+        string tempUnit = "F";
+
+        // bake temp and temp unit rely on fallback heuristics, and for isolation 
+        // purposes the ExtractBakeTemp returns must be mocked
+        var tupleExtractBakeTemp = (bakeTemp, tempUnit);
+        mockFallbackHeuristics.Setup(r => r.ExtractBakeTemp(_document))
+            .Returns(tupleExtractBakeTemp);
 
         // call BuildRecipeSummary
         var actualReturn = scraper.BuildRecipeSummary(_document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
@@ -171,34 +175,19 @@ public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture
         string coursePattern = "mv-create-category";
         string cuisinePattern = "mv-create-cuisine";
 
-        // initialize expected result as string, convert to JSON
-        string expectedJson = """
-        {
-            "RecipeId": 0,
-            "Meal": "Breakfast",
-            "Recipe_type": "Side",
-            "Cuisine": "American",
-            "Dietary": [
-                "Vegan",
-                "Vegetarian",
-                "Dairy-Free",
-                "Keto"
-            ]
-        }
-        """;
-        // the returned meal tag being "breakfast" instead of "lunch" or "dinner", 
-        // as well as the erroneous dietary tags, are known issues
-        // and each is an area of improvement for the meal tag and dietary tag extraction heuristics
-        JToken expectedToken = JToken.Parse(expectedJson);
+        // initialize expected returns for recipe_type and cuisine
+        string expectedRecipeType = "Side";
+        string expectedCuisine = "American";
+
+        // Meal and Dietary rely on fallback heuristics, and for isolation 
+        // purposes will not be tested in this context
 
         // call BuildRecipeTags
         var actualReturn = scraper.BuildRecipeTags(_document, coursePattern, cuisinePattern);
-        // Convert Result to JSON
-        var actualJson = JsonConvert.SerializeObject(actualReturn);
-        JToken actualToken = JToken.Parse(actualJson);
 
-        // Assert Equal
-        Assert.True(JToken.DeepEquals(expectedToken, actualToken));
+        // Assert equal
+        Assert.Equal(expectedRecipeType, actualReturn.Recipe_type);
+        Assert.Equal(expectedCuisine, actualReturn.Cuisine);
     }
 
     [GeneratedRegex(@"\s{2,}")]

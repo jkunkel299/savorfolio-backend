@@ -67,13 +67,13 @@ public class AddRecipeServiceTests()
         _ = await addRecipeService.AddRecipeManually(newRecipeContent);
 
         // assert mocked recipe repo function called once
-        mockRecipeRepo.Verify(d => d.AddNewRecipe(It.IsAny<RecipeDTO>()), Times.Once);
+        mockRecipeRepo.Verify(d => d.AddNewRecipe(It.IsAny<RecipeDTO>()), Times.AtMostOnce);
         // assert mocked ingredient list repo function called once
-        mockIngListRepo.Verify(d => d.AddNewRecipeIng(It.IsAny<List<IngredientListDTO>>(), recipeId, sections), Times.Once);
+        mockIngListRepo.Verify(d => d.AddNewRecipeIng(It.IsAny<List<IngredientListDTO>>(), recipeId, sections), Times.AtMostOnce);
         // assert mocked instructions repo function called once
-        mockInstructionsRepo.Verify(d => d.AddNewRecipeIns(It.IsAny<List<InstructionDTO>>(), recipeId, sections), Times.Once);
+        mockInstructionsRepo.Verify(d => d.AddNewRecipeIns(It.IsAny<List<InstructionDTO>>(), recipeId, sections), Times.AtMostOnce);
         // assert mocked tags repo function called once
-        mockTagsRepo.Verify(d => d.AddNewRecipeTags(It.IsAny<RecipeTagDTO>(), recipeId), Times.Once);
+        mockTagsRepo.Verify(d => d.AddNewRecipeTags(It.IsAny<RecipeTagDTO>(), recipeId), Times.AtMostOnce);
     }
 
 

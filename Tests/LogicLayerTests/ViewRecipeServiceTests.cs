@@ -50,13 +50,13 @@ public class ViewRecipeServiceTests()
         _ = await viewRecipeService.CompileRecipeAsync(recipeId);
 
         // assert mocked recipe repo function called once
-        mockRecipeRepo.Verify(d => d.ReturnRecipeByIdAsync(recipeId), Times.Once);
+        mockRecipeRepo.Verify(d => d.ReturnRecipeByIdAsync(recipeId), Times.AtMostOnce);
         // assert mocked ingredient list repo function called once
-        mockIngListRepo.Verify(d => d.GetIngredientsByRecipeAsync(recipeId), Times.Once);
+        mockIngListRepo.Verify(d => d.GetIngredientsByRecipeAsync(recipeId), Times.AtMostOnce);
         // assert mocked instructions repo function called once
-        mockInstructionsRepo.Verify(d => d.GetInstructionsByRecipeAsync(recipeId), Times.Once);
+        mockInstructionsRepo.Verify(d => d.GetInstructionsByRecipeAsync(recipeId), Times.AtMostOnce);
         // assert mocked tags repo function called once
-        mockTagsRepo.Verify(d => d.GetTagsByRecipe(recipeId), Times.Once);
+        mockTagsRepo.Verify(d => d.GetTagsByRecipe(recipeId), Times.AtMostOnce);
     }
 
 

@@ -7,13 +7,15 @@ using savorfolio_backend.Models.enums;
 using System.Text.RegularExpressions;
 using AngleSharp.Common;
 using AngleSharp.Text;
+using savorfolio_backend.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 
 namespace savorfolio_backend.LogicLayer.WebScraper;
 
-public partial class FallbackHeuristics
+public partial class FallbackHeuristics : IFallbackHeuristics
 {
     #region GetBestMatch
-    public static string GetBestMatch(IEnumerable<IElement> labelElements, string labelPattern)
+    public string GetBestMatch(IEnumerable<IElement> labelElements, string labelPattern)
     {
         // initialize integer list for fuzz ratios
         List<int> fuzzRatio = [];
@@ -36,7 +38,7 @@ public partial class FallbackHeuristics
 
 
     #region MatchEnum
-    public static string MatchEnum<TEnum>(IDocument document) where TEnum : Enum
+    public string MatchEnum<TEnum>(IDocument document) where TEnum : Enum
     {
         var documentText = document.QuerySelector("[class*='entry-footer']")?.TextContent ?? document.Body?.TextContent;
         documentText = document.QuerySelector("[class*='post-terms']")?.TextContent ?? document.Body?.TextContent;
@@ -58,7 +60,7 @@ public partial class FallbackHeuristics
 
 
     #region Title
-    public static string ExtractTitle(IDocument document)
+    public string ExtractTitle(IDocument document)
     {
         string recipeTitle = "";
 
@@ -79,7 +81,7 @@ public partial class FallbackHeuristics
 
 
     #region Description
-    public static string ExtractDescription(IDocument document)
+    public string ExtractDescription(IDocument document)
     {
         string recipeDescription = "";
         var tryTitle = document.All
@@ -117,7 +119,7 @@ public partial class FallbackHeuristics
     #endregion
 
     #region Prep/Cook Time
-    public static string ExtractTimeNearLabel(IDocument document, string labelPattern)
+    public string ExtractTimeNearLabel(IDocument document, string labelPattern)
     {
         string bestMatch;
 
@@ -141,7 +143,7 @@ public partial class FallbackHeuristics
     #endregion
 
     #region Servings
-    public static string ExtractServings(IDocument document)
+    public string ExtractServings(IDocument document)
     {
         // set the options for return
         string[] terms = ["servings", "yield", "yields", "serves"];
@@ -162,10 +164,12 @@ public partial class FallbackHeuristics
         if (patternMatch != "none" && labelElements.Any())
         {
             string bestMatch = GetBestMatch(labelElements, patternMatch);
+            // return bestMatch;
             // trim using regex to only include the servings number
-            var matchTrim = Regex.Replace(bestMatch, regexPattern, string.Empty).Replace(":", "").Trim();
-            if (matchTrim != null || matchTrim != "")
+            var matchTrim = Regex.Replace(bestMatch, regexPattern, string.Empty).Trim();
+            if (!matchTrim.IsNullOrEmpty())
             {
+                // return matchTrim;
                 if (matchTrim!.Length < 4) return matchTrim!;
             }
         }
@@ -176,7 +180,7 @@ public partial class FallbackHeuristics
 
 
     #region Tags
-    public static TagStringsDTO ExtractTags(IDocument document)
+    public TagStringsDTO ExtractTags(IDocument document)
     {
         string documentText = document.Body?.TextContent ?? string.Empty;
         if (documentText == string.Empty) return new TagStringsDTO();
@@ -207,7 +211,7 @@ public partial class FallbackHeuristics
     
 
     #region Dietary
-    public static List<string> ExtractDietaryTags(string documentText)
+    public List<string> ExtractDietaryTags(string documentText)
     {
         List<string> dietary = [];
         var dietaryList = EnumExtensions.GetEnumList<DietaryTag>();
@@ -226,7 +230,7 @@ public partial class FallbackHeuristics
 
 
     #region Instructions
-    public static List<InstructionDTO> ExtractInstructions(IDocument document)
+    public List<InstructionDTO> ExtractInstructions(IDocument document)
     {
         string[] terms = ["Instructions", "Directions"];
         List<string> draftInstructions = [];
@@ -304,7 +308,7 @@ public partial class FallbackHeuristics
 
 
     #region Bake Temp
-    public static (int? temp, string? temp_unit) ExtractBakeTemp(IDocument document)
+    public (int? temp, string? temp_unit) ExtractBakeTemp(IDocument document)
     {
         int? temp = null;
         string? temp_unit = "F";

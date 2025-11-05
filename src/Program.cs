@@ -8,6 +8,7 @@ using savorfolio_backend.DataAccess;
 using savorfolio_backend.API;
 using System.Text.RegularExpressions;
 using savorfolio_backend.LogicLayer.WebScraper;
+using AngleSharp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +64,7 @@ builder.Services.AddScoped<ITagsRepository, TagsRepository>();
 builder.Services.AddScoped<ISectionsRepository, SectionsRepository>();
 // recipe scraping services
 builder.Services.AddScoped<IWebScraperService, WebScraperService>();
+builder.Services.AddScoped<IFallbackHeuristics, FallbackHeuristics>();
 builder.Services.AddScoped<IIngredientParseService, IngredientParseService>();
 
 
@@ -109,9 +111,16 @@ if (args.Contains("--scrape"))
     // https://www.delish.com/cooking/recipe-ideas/a34427540/cream-of-potato-soup-recipe/?utm_source=Pinterest&utm_medium=organic&epik=dj0yJnU9Nm5BcWJDdldiUWVoMzBaN2NHelEwUDMyeVRQNVc1YWgmcD0wJm49U0d0NTVCNk8wRmlWNjYwcmhUYWI0ZyZ0PUFBQUFBR2o2Sk0w 
     Console.WriteLine("Console mode activated.");
     using var scope = app.Services.CreateScope();
-    var scraper = scope.ServiceProvider.GetRequiredService<WebScraperService>();
-    var match = await scraper.RunScraper("https://www.afamilyfeast.com/new-england-clam-chowder/#tasty-recipes-22643");
-    Console.WriteLine($"Return: \n\n{match}\n\n");
+    var scraper = scope.ServiceProvider.GetRequiredService<IWebScraperService>();
+    var match = await scraper.RunScraper("https://keytomylime.com/jiffy-cornbread-with-creamed-corn-recipe ");
+    // var document = await scraper.GetHtmlAsync("https://fashionablefoods.com/2014/06/27/2014618roasted-chili-lime-cod");
+    
+    // string filePath = Path.Combine(
+    //         AppContext.BaseDirectory,
+    //         "..", "..", "..", "..", "src", "noPattern.html"
+    //     );
+    // File.WriteAllText(filePath, document.ToHtml());
+    // Console.WriteLine($"Return: \n\n{match}\n\n");
     return; // prevent app.Run() from starting the web server
 }
 

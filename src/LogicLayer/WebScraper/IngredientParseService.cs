@@ -12,7 +12,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
     private readonly IUnitsRepository _unitsRepository = unitsRepository;
     private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
 
-    public /* async Task<List<string>> */ List<string> ExtractIngredients(IDocument document, string ingredientsPattern)
+    public /* async Task<List<string>> */ List<string> ExtractIngredients(IDocument document, string ingredientsPattern = "")
     {
         List<string> rawIngredients = [];
         // List<IngredientListDTO> ingredientsList = [];

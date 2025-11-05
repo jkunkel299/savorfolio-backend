@@ -15,20 +15,18 @@ public partial class TastyWebScraperTests(WebScraperFixture webScraperFixture) :
 {
     private IDocument _document = default!;
     private WebScraperService scraper = default!;
-
+    // mock FallbackHeuristics interface
+    private readonly Mock<IFallbackHeuristics> mockFallbackHeuristics = new();
+    // mock IngredientParseService interface
+    private readonly Mock<IIngredientParseService> mockIngredientParseService = new();
     // initialize document and web scraper
     public async Task InitializeAsync()
     {
-        // var scraper = webScraperFixture.WebScraperService;
         _document = await webScraperFixture.WebScraperSetupAsync("tastyPattern.html");
-        // mock units repository interface
-        var mockUnitRepo = new Mock<IUnitsRepository>();
-        // mock units repository interface
-        var mockIngredientRepo = new Mock<IIngredientRepository>();
         // Initialize the mock once for all tests
         scraper = new WebScraperService(
-            mockUnitRepo.Object,
-            mockIngredientRepo.Object
+            mockFallbackHeuristics.Object,
+            mockIngredientParseService.Object
         );
     }
 
@@ -179,33 +177,19 @@ public partial class TastyWebScraperTests(WebScraperFixture webScraperFixture) :
         string coursePattern = "tasty-recipes-category";
         string cuisinePattern = "tasty-recipes-cuisine";
 
-        // initialize expected result as string, convert to JSON
-        string expectedJson = """
-        {
-            "RecipeId": 0,
-            "Meal": "Dinner",
-            "Recipe_type": "Main",
-            "Cuisine": "Italian",
-            "Dietary": [
-                "Vegan",
-                "Vegetarian",
-                "Gluten-Free",
-                "Kosher"
-            ]
-        }
-        """;
-        // the returned dietary categories including "vegan" and "gluten-free" is a known issue 
-        // and is an area of improvement for the dietary tag extraction heuristics
-        JToken expectedToken = JToken.Parse(expectedJson);
+        // initialize expected returns for recipe_type and cuisine
+        string expectedRecipeType = "Main";
+        string expectedCuisine = "Italian";
+
+        // Meal and Dietary rely on fallback heuristics, and for isolation 
+        // purposes will not be tested in this context
 
         // call BuildRecipeTags
         var actualReturn = scraper.BuildRecipeTags(_document, coursePattern, cuisinePattern);
-        // Convert Result to JSON
-        var actualJson = JsonConvert.SerializeObject(actualReturn);
-        JToken actualToken = JToken.Parse(actualJson);
 
-        // Assert Equal
-        Assert.True(JToken.DeepEquals(expectedToken, actualToken));
+        // Assert equal
+        Assert.Equal(expectedRecipeType, actualReturn.Recipe_type);
+        Assert.Equal(expectedCuisine, actualReturn.Cuisine);
     }
 
     [GeneratedRegex(@"\s{2,}")]

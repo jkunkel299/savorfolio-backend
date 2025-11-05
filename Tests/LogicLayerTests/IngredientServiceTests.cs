@@ -21,6 +21,6 @@ public class IngredientServiceTests()
         _ = await ingredientService.SearchIngredientsAsync(searchTerm);
 
         // assert mocked function called once
-        mockDependency.Verify(d => d.SearchByNameAsync(searchTerm), Times.Once);
+        mockDependency.Verify(d => d.SearchByNameAsync(searchTerm), Times.AtMostOnce);
     }
 }

@@ -11,13 +11,13 @@ public interface IWebScraperService
     Dictionary<string, string?>? MapCssClassPatterns(string pattern);
     RecipeDTO BuildRecipeSummary(
         IDocument document,
-        string? titlePattern,
-        string? descriptionPattern,
-        string? prepTimePattern,
-        string? cookTimePattern,
-        string? servingsPattern
+        string titlePattern = "",
+        string descriptionPattern = "",
+        string prepTimePattern = "",
+        string cookTimePattern = "",
+        string servingsPattern = ""
     );
-    List<string> BuildRecipeIngredients(IDocument document, string ingredientsPattern);
-    List<InstructionDTO> BuildRecipeInstructions(IDocument document, string instructionsPattern);
-    TagStringsDTO BuildRecipeTags(IDocument document, string? coursePattern, string? cuisinePattern);
+    List<string> BuildRecipeIngredients(IDocument document, string ingredientsPattern = "");
+    List<InstructionDTO> BuildRecipeInstructions(IDocument document, string instructionsPattern = "");
+    TagStringsDTO BuildRecipeTags(IDocument document, string coursePattern = "", string cuisinePattern = "");
 }

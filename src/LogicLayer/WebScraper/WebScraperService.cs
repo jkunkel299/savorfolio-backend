@@ -10,10 +10,12 @@ using savorfolio_backend.Interfaces;
 
 namespace savorfolio_backend.LogicLayer.WebScraper;
 
-public class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepository ingredientRepository) : IWebScraperService
+public class WebScraperService(
+    IFallbackHeuristics fallbackHeuristics,
+    IIngredientParseService ingredientParseService) : IWebScraperService
 {
-    private readonly IUnitsRepository _unitsRepository = unitsRepository;
-    private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
+    private readonly IFallbackHeuristics _fallbackHeuristics = fallbackHeuristics;
+    private readonly IIngredientParseService _ingredientParseService = ingredientParseService;
 
     #region Run Scraper
     public async Task<DraftRecipeDTO> RunScraper(string url)
@@ -137,8 +139,8 @@ public class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepo
             { "title", new List<string> { "wprm-recipe-name", "tasty-recipes-title", "mv-create-title " } },
             { "description", new List<string> { "wprm-recipe-summary", "tasty-recipes-description-body", "mv-create-description" } },
                 // Tasty: whole description (incl. header) in "tasty-recipes-description"
-            { "prepTime", new List<string> { "wprm-recipe-prep_time", "tasty-recipes-prep-time", "mv-create-time-prep .mv-time-minutes" } },
-            { "cookTime", new List<string> { "wprm-recipe-cook_time", "tasty-recipes-cook-time", "mv-create-time-active .mv-time-minutes" } },
+            { "prepTime", new List<string> { "wprm-recipe-prep_time", "tasty-recipes-prep-time", "mv-create-time-prep" } },
+            { "cookTime", new List<string> { "wprm-recipe-cook_time", "tasty-recipes-cook-time", "mv-create-time-active" } },
             { "servings", new List<string> { "wprm-recipe-servings", "tasty-recipes-yield", "mv-create-yield" } },
             { "ingParent", new List<string> { "wprm-recipe-ingredient", "tasty-recipes-ingredients-body", "mv-create-ingredients" } },
                 // parent elements:
@@ -226,11 +228,11 @@ public class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepo
     // build recipe summary
     public RecipeDTO BuildRecipeSummary(
         IDocument document,
-        string? titlePattern,
-        string? descriptionPattern,
-        string? prepTimePattern,
-        string? cookTimePattern,
-        string? servingsPattern
+        string titlePattern = "",
+        string descriptionPattern = "",
+        string prepTimePattern = "",
+        string cookTimePattern = "",
+        string servingsPattern = ""
     )
     {
         // declare variables
@@ -250,7 +252,7 @@ public class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepo
         if (recipeTitle == "")
         {
             // fallback heuristic
-            recipeTitle = FallbackHeuristics.ExtractTitle(document);
+            recipeTitle = _fallbackHeuristics.ExtractTitle(document);
         }
 
         // extract description
@@ -261,29 +263,31 @@ public class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepo
         if (recipeDescription == "")
         {
             // fallback heuristic
-            recipeDescription = FallbackHeuristics.ExtractDescription(document);
+            recipeDescription = _fallbackHeuristics.ExtractDescription(document);
         }
 
         // extract prep time
         if (prepTimePattern != "")
         {
-            recipePrep = document.QuerySelector($"[class*='{prepTimePattern}']")?.TextContent.Trim() ?? "";
+            var raw = document.QuerySelector($"[class*='{prepTimePattern}']")?.TextContent.Trim() ?? "";
+            recipePrep = Regex.Replace(raw, @"^[A-Za-z ]+:?\s*", "");
         }
         if (recipePrep == "")
         {
             // fallback heuristic
-            recipePrep = FallbackHeuristics.ExtractTimeNearLabel(document, "prep time");
+            recipePrep = _fallbackHeuristics.ExtractTimeNearLabel(document, "prep time");
         }
 
         // extract cook time
         if (cookTimePattern != "")
         {
-            recipeCook = document.QuerySelector($"[class*='{cookTimePattern}']")?.TextContent.Trim() ?? "";
+            var raw = document.QuerySelector($"[class*='{cookTimePattern}']")?.TextContent.Trim() ?? "";
+            recipeCook = Regex.Replace(raw, @"^[A-Za-z ]+:?\s*", "");
         }
         if (recipeCook == "")
         {
             // fallback heuristic
-            recipeCook = FallbackHeuristics.ExtractTimeNearLabel(document, "cook time");
+            recipeCook = _fallbackHeuristics.ExtractTimeNearLabel(document, "cook time");
         }
 
         // extract servings/yield
@@ -296,11 +300,11 @@ public class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepo
         if (recipeServings == "")
         {
             // fallback heuristic
-            recipeServings = FallbackHeuristics.ExtractServings(document);
+            recipeServings = _fallbackHeuristics.ExtractServings(document);
         }
 
         // bake temp
-        (bakeTemp, tempUnit) = FallbackHeuristics.ExtractBakeTemp(document);
+        (bakeTemp, tempUnit) = _fallbackHeuristics.ExtractBakeTemp(document);
         _ = new RecipeDTO();
         RecipeDTO? recipeSummary;
         if (bakeTemp != null)
@@ -340,10 +344,9 @@ public class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepo
     #region Build Ingredients
     // TODO
     // call logic to build ingredients - for now this just returns a string list to be displayed to the user
-    public /* async Task<List<string>> */ List<string> BuildRecipeIngredients(IDocument document, string ingredientsPattern)
+    public List<string> BuildRecipeIngredients(IDocument document, string ingredientsPattern = "")
     {
-        IngredientParseService service = new(_unitsRepository, _ingredientRepository);
-        var ingredients = /* await */ service.ExtractIngredients(document, ingredientsPattern);
+        var ingredients = _ingredientParseService.ExtractIngredients(document, ingredientsPattern);
 
         return ingredients;
     }
@@ -354,7 +357,7 @@ public class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepo
 
     #region Build Instructions
     // build instructions
-    public List<InstructionDTO> BuildRecipeInstructions(IDocument document, string instructionsPattern)
+    public List<InstructionDTO> BuildRecipeInstructions(IDocument document, string instructionsPattern = "")
     {
         List<string> instructionsList = [];
         List<InstructionDTO> instructionDTOs = [];
@@ -370,7 +373,7 @@ public class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepo
         }
         if (instructionsList.Count == 0)
         {
-            instructionDTOs = FallbackHeuristics.ExtractInstructions(document);
+            instructionDTOs = _fallbackHeuristics.ExtractInstructions(document);
             return instructionDTOs;
         }
         ;
@@ -395,7 +398,7 @@ public class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepo
 
     #region Build Tags
     // add descriptors
-    public TagStringsDTO BuildRecipeTags(IDocument document, string? coursePattern, string? cuisinePattern)
+    public TagStringsDTO BuildRecipeTags(IDocument document, string coursePattern = "", string cuisinePattern = "")
     {
         // initialize returns
         string recipe_type = "";
@@ -406,7 +409,7 @@ public class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepo
         // if there is not an established pattern, go straight to fallback
         if (coursePattern == "" || cuisinePattern == "")
         {
-            var extractedTags = FallbackHeuristics.ExtractTags(document);
+            var extractedTags = _fallbackHeuristics.ExtractTags(document);
             return extractedTags;
         }
 
@@ -437,12 +440,12 @@ public class WebScraperService(IUnitsRepository unitsRepository, IIngredientRepo
         }
 
         // meal type
-        meal = FallbackHeuristics.MatchEnum<MealTag>(document);
+        meal = _fallbackHeuristics.MatchEnum<MealTag>(document);
 
         // Access document text
         string documentText = document.Body?.TextContent ?? string.Empty;
         // dietary
-        dietary = FallbackHeuristics.ExtractDietaryTags(documentText);
+        dietary = _fallbackHeuristics.ExtractDietaryTags(documentText);
 
         // return new TagStringsDTO();
         var recipeTags = new TagStringsDTO
