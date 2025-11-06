@@ -1,0 +1,275 @@
+{
+    "recipeSummary":{
+        "name": "Maple Glazed Apple Blondies",
+        "description": "These chewy Maple Glazed Apple Blondies taste like sweet apple pie with a warm maple icing! This homemade apple blondie recipe is the perfect fall dessert! It's easy, super flavorful, and always a crowd pleaser!",
+        "servings": 12,
+        "cookTime": "25 minutes",
+        "prepTime": "20 minutes",
+        "bakeTemp": 350,
+        "temp_unit": "F"
+    },
+    "recipeSections":[
+        {
+            "sectionName": "Apple Filling",
+            "sortOrder": 1
+        },
+        {
+            "sectionName": "Blondies",
+            "sortOrder": 2
+        },
+        {
+            "sectionName": "Maple Glaze",
+            "sortOrder": 3
+        }
+    ],
+    "ingredients":[
+        {
+            "ingredientOrder": 1,
+            "IngredientId": 60,
+            "ingredientName": "apple",
+            "sectionName": "Apple Filling",
+            "quantity": "2",
+            "unitId": 42,
+            "unitName": "large",
+            "qualifier": "chopped finely"
+        },
+        {
+            "ingredientOrder": 2,
+            "IngredientId": 200,
+            "ingredientName": "brown sugar",
+            "sectionName": "Apple Filling",
+            "quantity": "2",
+            "unitId": 2,
+            "unitName": "tablespoon"
+        },
+        {
+            "ingredientOrder": 3,
+            "IngredientId": 24,
+            "ingredientName": "butter, salted",
+            "sectionName": "Apple Filling",
+            "quantity": "1",
+            "unitId": 2,
+            "unitName": "tablespoon"
+        },
+        {
+            "ingredientOrder": 4,
+            "IngredientId": 276,
+            "ingredientName": "vanilla extract",
+            "sectionName": "Apple Filling",
+            "quantity": "1/2",
+            "unitId": 1,
+            "unitName": "teaspoon"
+        },
+        {
+            "ingredientOrder": 5,
+            "IngredientId": 185,
+            "ingredientName": "cinnamon",
+            "sectionName": "Apple Filling",
+            "quantity": "1/2",
+            "unitId": 1,
+            "unitName": "teaspoon"
+        },
+        {
+            "ingredientOrder": 6,
+            "ingredientId": 54,
+            "ingredientName": "all-purpose flour",
+            "sectionName": "Blondies",
+            "quantity": "2",
+            "unitId": 4,
+            "unitName": "cup"
+        },
+        {
+            "ingredientOrder": 7,
+            "ingredientId": 96,
+            "ingredientName": "baking powder",
+            "sectionName": "Blondies",
+            "quantity": "1",
+            "unitId": 1,
+            "unitName": "teaspoon",
+            "qualifier": "diced"
+        },
+        {
+            "ingredientOrder": 8,
+            "ingredientId": 250,
+            "ingredientName": "salt",
+            "sectionName": "Blondies",
+            "quantity": "1/2",
+            "unitId": 1,
+            "unitName": "teaspoon"
+        },
+        {
+            "ingredientOrder": 9,
+            "IngredientId": 24,
+            "ingredientName": "butter, salted",
+            "sectionName": "Blondies",
+            "quantity": "1",
+            "unitId": 4,
+            "unitName": "cup",
+            "qualifier": "softened"
+        },
+        {
+            "ingredientOrder": 10,
+            "IngredientId": 199,
+            "ingredientName": "white sugar",
+            "sectionName": "Blondies",
+            "quantity": "1/4",
+            "unitId": 4,
+            "unitName": "cup"
+        },
+        {
+            "ingredientOrder": 11,
+            "IngredientId": 275,
+            "ingredientName": "dark brown sugar",
+            "sectionName": "Blondies",
+            "quantity": "1",
+            "unitId": 4,
+            "unitName": "cup"
+        },
+        {
+            "ingredientOrder": 12,
+            "IngredientId": 159,
+            "ingredientName": "egg",
+            "sectionName": "Blondies",
+            "quantity": "2",
+            "unitId": 42,
+            "unitName": "large"
+        },
+        {
+            "ingredientOrder": 13,
+            "IngredientId": 276,
+            "ingredientName": "vanilla extract",
+            "sectionName": "Blondies",
+            "quantity": "1 1/2",
+            "unitId": 1,
+            "unitName": "teaspoon"
+        },
+        {
+            "ingredientOrder": 14,
+            "IngredientId": 185,
+            "ingredientName": "cinnamon",
+            "sectionName": "Blondies",
+            "quantity": "1/2",
+            "unitId": 1,
+            "unitName": "teaspoon"
+        },
+        {
+            "ingredientOrder": 15,
+            "IngredientId": 24,
+            "ingredientName": "butter, salted",
+            "sectionName": "Maple Glaze",
+            "quantity": "2",
+            "unitId": 2,
+            "unitName": "tablespoon"
+        },
+        {
+            "ingredientOrder": 16,
+            "IngredientId": 204,
+            "ingredientName": "maple syrup",
+            "sectionName": "Maple Glaze",
+            "quantity": "1/4",
+            "unitId": 4,
+            "unitName": "cup",
+            "qualifier": "pure"
+        },
+        {
+            "ingredientOrder": 17,
+            "IngredientId": 201,
+            "ingredientName": "powdered sugar",
+            "sectionName": "Maple Glaze",
+            "quantity": "1/2",
+            "unitId": 4,
+            "unitName": "cup"
+        },
+        {
+            "ingredientOrder": 18,
+            "IngredientId": 276,
+            "ingredientName": "vanilla extract",
+            "sectionName": "Maple Glaze",
+            "quantity": "1/4",
+            "unitId": 1,
+            "unitName": "teaspoon"
+        },
+        {
+            "ingredientOrder": 19,
+            "IngredientId": 185,
+            "ingredientName": "cinnamon",
+            "sectionName": "Maple Glaze",
+            "quantity": "1/8",
+            "unitId": 1,
+            "unitName": "teaspoon"
+        }
+    ],
+    "instructions": [
+        {
+            "stepNumber": 1,
+            "instructionText": "On med-low heat, cook apple filling mixture for about 3-4 minutes. Pull off heat and allow to cool.",
+            "sectionName": "Apple Filling"
+        },
+        {
+            "stepNumber": 2,
+            "instructionText": "Preheat oven to 350 and line an 11x7 pan with tin foil (or spray with pan with cooking spray).",
+            "sectionName": "Blondies"
+        },
+        {
+            "stepNumber": 3,
+            "instructionText": "Cream butter until light and fluffy, about 1 minute. Add in brown sugar and granulated sugar, and mix until well combined.",
+            "sectionName": "Blondies"
+        },
+        {
+            "stepNumber": 4,
+            "instructionText": "Add in eggs, 1 at a time, beating well after each addition.",
+            "sectionName": "Blondies"
+        },
+        {
+            "stepNumber": 5,
+            "instructionText": "Add in salt and vanilla extract. Mix until combined.",
+            "sectionName": "Blondies"
+        },
+        {
+            "stepNumber": 6,
+            "instructionText": "In a separate bowl, mix flour, baking powder, and cinnamon together. Add to the wet ingredients and stir until combined.",
+            "sectionName": "Blondies"
+        },
+        {
+            "stepNumber": 7,
+            "instructionText": "In the bottom of the pan, spread half the blondie batter evenly, using a spatula (or your hands--batter is very thick, so I prefer to spread with my hands).",
+            "sectionName": "Blondies"
+        },
+        {
+            "stepNumber": 8,
+            "instructionText": "Spread apple filling all over the layer.",
+            "sectionName": "Blondies"
+        },
+        {
+            "stepNumber": 9,
+            "instructionText": "Top with remaining blondie batter and spread evenly.",
+            "sectionName": "Blondies"
+        },
+        {
+            "stepNumber": 10,
+            "instructionText": "Bake for 25-30 minutes, or until the top is golden brown and a cake tester comes out clean.",
+            "sectionName": "Blondies"
+        },
+        {
+            "stepNumber": 11,
+            "instructionText": "Melt butter, maple syrup, vanilla extract, and cinnamon over low heat. Once melted together, pull off the heat. Sift in powdered sugar, and whisk until fully combined. Allow to cool for 8-10 minutes so the glaze can thicken.",
+            "sectionName": "Maple Glaze"
+        },
+        {
+            "stepNumber": 12,
+            "instructionText": "Allow bars to cool for about 10 minutes, then pour the glaze over the bars and allow it to set.",
+            "sectionName": "Maple Glaze"
+        },
+        {
+            "stepNumber": 13,
+            "instructionText": "Slice into squares and enjoy!",
+            "sectionName": "Maple Glaze"
+        }
+    ],
+    "recipeTags":{
+        "meal": "Dessert",
+        "recipe_type": "Dessert",
+        "cuisine": "American",
+        "dietary": ["Nut-Free", "Soy-Free"]
+    }
+}

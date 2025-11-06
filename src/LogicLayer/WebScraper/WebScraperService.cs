@@ -141,7 +141,7 @@ public class WebScraperService(
                 // Tasty: whole description (incl. header) in "tasty-recipes-description"
             { "prepTime", new List<string> { "wprm-recipe-prep_time", "tasty-recipes-prep-time", "mv-create-time-prep" } },
             { "cookTime", new List<string> { "wprm-recipe-cook_time", "tasty-recipes-cook-time", "mv-create-time-active" } },
-            { "servings", new List<string> { "wprm-recipe-servings", "tasty-recipes-yield", "mv-create-yield" } },
+            { "servings", new List<string> { "wprm-recipe-servings ", "tasty-recipes-yield", "mv-create-yield" } },
             { "ingParent", new List<string> { "wprm-recipe-ingredient", "tasty-recipes-ingredients-body", "mv-create-ingredients" } },
                 // parent elements:
                     // "wprm-recipe-ingredients-container"
@@ -442,10 +442,14 @@ public class WebScraperService(
         // meal type
         meal = _fallbackHeuristics.MatchEnum<MealTag>(document);
 
+        /*  The dietary tags extraction would be best served using natural language processing, 
+            and with the current fallback heuristic is wrong more than it is correct. The 
+            functionality will be removed for now, returning a blank list for the user to select
+            applicable dietary considerations for the recipe. */
         // Access document text
-        string documentText = document.Body?.TextContent ?? string.Empty;
-        // dietary
-        dietary = _fallbackHeuristics.ExtractDietaryTags(documentText);
+        // string documentText = document.Body?.TextContent ?? string.Empty;
+        // // dietary
+        // dietary = _fallbackHeuristics.ExtractDietaryTags(documentText);
 
         // return new TagStringsDTO();
         var recipeTags = new TagStringsDTO
@@ -453,7 +457,7 @@ public class WebScraperService(
             Recipe_type = recipe_type,
             Cuisine = cuisine,
             Meal = meal,
-            Dietary = dietary
+            // Dietary = dietary
         };
 
         return recipeTags;

@@ -88,27 +88,27 @@ public partial class NoPatternWebScraperTests(WebScraperFixture webScraperFixtur
         // call BuildRecipeSummary from mocked web scraper interface
         _ = scraper.BuildRecipeSummary(_document);
 
-        // asserted mocked ExtractTitle function called once
+        // assert mocked ExtractTitle function called once
         mockFallbackHeuristics.Verify(f => f.ExtractTitle(_document), Times.AtMostOnce);
-        // asserted mocked ExtractTitle function called once
+        // assert mocked ExtractTitle function called once
         mockFallbackHeuristics.Verify(f => f.ExtractDescription(_document), Times.AtMostOnce);
-        // asserted mocked ExtractTitle function called once
+        // assert mocked ExtractTitle function called once
         mockFallbackHeuristics.Verify(f => f.ExtractTimeNearLabel(_document, "prep time"), Times.AtMostOnce);
-        // asserted mocked ExtractTitle function called once
+        // assert mocked ExtractTitle function called once
         mockFallbackHeuristics.Verify(f => f.ExtractTimeNearLabel(_document, "cook time"), Times.AtMostOnce);
-        // asserted mocked ExtractTitle function called once
+        // assert mocked ExtractTitle function called once
         mockFallbackHeuristics.Verify(f => f.ExtractBakeTemp(_document), Times.AtMostOnce);
     }
 
     [Fact]
-    public void BuildRecipeIngredients_callsFallbacks()
+    public void BuildRecipeIngredients_callsParseService()
     {
         // set up returns for ingredient parse function called in BuildRecipeIngredients
         mockIngredientParseService.Setup(r => r.ExtractIngredients(_document, ""))
             .Returns(It.IsAny<List<string>>());
         // call BuildRecipeIngredients from mocked web scraper interface
         _ = scraper.BuildRecipeIngredients(_document);
-        // asserted mocked ExtractIngredients function called once
+        // assert mocked ExtractIngredients function called once
         mockIngredientParseService.Verify(f => f.ExtractIngredients(_document, It.IsAny<string>()), Times.AtMostOnce);
     }
 
@@ -119,20 +119,20 @@ public partial class NoPatternWebScraperTests(WebScraperFixture webScraperFixtur
         mockFallbackHeuristics.Setup(r => r.ExtractInstructions(_document))
             .Returns(It.IsAny<List<InstructionDTO>>());
         // call BuildRecipeInstructions from mocked web scraper interface
-        _ = scraper.BuildRecipeIngredients(_document);
-        // asserted mocked ExtractInstructions function called once
+        _ = scraper.BuildRecipeInstructions(_document);
+        // assert mocked ExtractInstructions function called once
         mockFallbackHeuristics.Verify(f => f.ExtractInstructions(_document), Times.AtMostOnce);
     }
 
     [Fact]
     public void BuildRecipeTags_callsFallbacks()
     {
-        // set up returns for fallback function called in BuildRecipeInstructions
+        // set up returns for fallback function called in BuildRecipeTags
         mockFallbackHeuristics.Setup(r => r.ExtractTags(_document))
             .Returns(It.IsAny<TagStringsDTO>());
-        // call BuildRecipeInstructions from mocked web scraper interface
-        _ = scraper.BuildRecipeIngredients(_document);
-        // asserted mocked ExtractInstructions function called once
-        mockFallbackHeuristics.Verify(f => f.ExtractInstructions(_document), Times.AtMostOnce);
+        // call BuildRecipeTags from mocked web scraper interface
+        _ = scraper.BuildRecipeTags(_document);
+        // assert mocked ExtractTags function called once
+        mockFallbackHeuristics.Verify(f => f.ExtractTags(_document), Times.AtMostOnce);
     }
 }

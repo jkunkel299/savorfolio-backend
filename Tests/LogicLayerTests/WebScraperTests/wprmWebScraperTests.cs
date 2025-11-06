@@ -196,11 +196,12 @@ public partial class WprmWebScraperTests(WebScraperFixture webScraperFixture) : 
 
         // Meal and Dietary rely on fallback heuristics, and for isolation 
         // purposes this context will only test that they are called once each
+        // However, due to change in the web scraper, dietary tags will be excluded.
         // set up returns for fallback functions called in BuildRecipeInstructions
         mockFallbackHeuristics.Setup(r => r.MatchEnum<MealTag>(_document))
             .Returns(It.IsAny<string>());
-        mockFallbackHeuristics.Setup(r => r.ExtractDietaryTags(It.IsAny<string>()))
-            .Returns(It.IsAny<List<string>>());
+        // mockFallbackHeuristics.Setup(r => r.ExtractDietaryTags(It.IsAny<string>()))
+        //     .Returns(It.IsAny<List<string>>());
 
         // call BuildRecipeTags
         var actualReturn = scraper.BuildRecipeTags(_document, coursePattern, cuisinePattern);
@@ -211,7 +212,7 @@ public partial class WprmWebScraperTests(WebScraperFixture webScraperFixture) : 
 
         // assert fallbacks are called once
         mockFallbackHeuristics.Verify(f => f.MatchEnum<MealTag>(_document), Times.AtMostOnce);
-        mockFallbackHeuristics.Verify(f => f.ExtractDietaryTags(It.IsAny<string>()), Times.AtMostOnce);
+        // mockFallbackHeuristics.Verify(f => f.ExtractDietaryTags(It.IsAny<string>()), Times.AtMostOnce);
     }
 
     [GeneratedRegex(@"\s{2,}")]

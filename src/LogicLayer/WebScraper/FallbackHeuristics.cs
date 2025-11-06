@@ -6,7 +6,6 @@ using savorfolio_backend.Utils;
 using savorfolio_backend.Models.enums;
 using System.Text.RegularExpressions;
 using AngleSharp.Common;
-using AngleSharp.Text;
 using savorfolio_backend.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
@@ -40,11 +39,17 @@ public partial class FallbackHeuristics : IFallbackHeuristics
     #region MatchEnum
     public string MatchEnum<TEnum>(IDocument document) where TEnum : Enum
     {
-        var documentText = document.QuerySelector("[class*='entry-footer']")?.TextContent ?? document.Body?.TextContent;
-        documentText = document.QuerySelector("[class*='post-terms']")?.TextContent ?? document.Body?.TextContent;
+        var documentContent = document.Body?.QuerySelector("[class*='content']");
+
+        // var documentText = documentContent?.QuerySelector("[class*='entry-footer']")?.TextContent ?? "";
+        // if (documentText == "" )
+        // {
+        //     documentText = documentContent?.QuerySelector("[class*='post-terms']")?.TextContent ?? document.Body?.TextContent;
+        // }
+        
         string returnValue = "";
         var enumList = EnumExtensions.GetEnumList<TEnum>();
-        var patternMatch = enumList.FirstOrDefault(t => documentText!.Contains(t, StringComparison.OrdinalIgnoreCase)) ?? "none";
+        var patternMatch = enumList.FirstOrDefault(t => documentContent!.TextContent.Contains(t, StringComparison.OrdinalIgnoreCase), "none") ?? "none";
         var labelElements = document.All
                     .Where(e => e.TextContent != null &&
                         e.TextContent.Contains(patternMatch, StringComparison.OrdinalIgnoreCase));

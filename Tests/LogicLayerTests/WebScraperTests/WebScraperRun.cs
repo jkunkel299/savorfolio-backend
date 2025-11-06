@@ -1,15 +1,17 @@
 using AngleSharp.Dom;
 using Moq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.LogicLayer.WebScraper;
 using savorfolio_backend.Models.DTOs;
+using Tests.Helpers;
 
 namespace Tests.LogicLayerTests.WebScraperTests;
 
 [Collection("Web Scraper collection")]
 public partial class WebScraperRun() 
 {
-    // private IDocument _document = default!;
     private WebScraperService scraper = default!;
     // mock FallbackHeuristics interface
     private readonly Mock<IFallbackHeuristics> mockFallbackHeuristics = new();
@@ -28,6 +30,15 @@ public partial class WebScraperRun()
         );
 
         // set up mock returns for dependent functions
+        mockWebScraperService.Setup(r => r.GetHtmlAsync(It.IsAny<string>()))
+            .ReturnsAsync(It.IsAny<IDocument>());
+
+        mockWebScraperService.Setup(r => r.SampleCssClasses(It.IsAny<IDocument>()))
+            .Returns(It.IsAny<string>());
+
+        mockWebScraperService.Setup(r => r.MapCssClassPatterns(It.IsAny<string>()))
+            .Returns(It.IsAny<Dictionary<string, string?>?>());
+
         mockWebScraperService.Setup(r => r.BuildRecipeSummary(
             It.IsAny<IDocument>(),
             It.IsAny<string>(),
@@ -57,6 +68,12 @@ public partial class WebScraperRun()
         // call RunScraper
         _ = scraper.RunScraper(It.IsAny<string>());
 
+        // assert GetHtmlAsync is called once
+        mockWebScraperService.Verify(f => f.GetHtmlAsync(It.IsAny<string>()), Times.AtMostOnce);
+        // assert SampleCssClasses is called once
+        mockWebScraperService.Verify(f => f.SampleCssClasses(It.IsAny<IDocument>()), Times.AtMostOnce);
+        // assert MapCssClassPatterns is called once
+        mockWebScraperService.Verify(f => f.MapCssClassPatterns(It.IsAny<string>()), Times.AtMostOnce);
         // assert BuildRecipeSummary is called once
         mockWebScraperService.Verify(f => f.BuildRecipeSummary(
             It.IsAny<IDocument>(),
