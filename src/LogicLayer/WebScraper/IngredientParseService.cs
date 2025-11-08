@@ -97,11 +97,11 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
         foreach (var addIng in useIngs)
         {
             // clean each item in the list to remove checkboxes
-            var cleaned = CheckboxRegex().Replace(addIng, string.Empty);
+            var cleaned = CheckboxRegex.Replace(addIng, string.Empty);
             // remove unicode space characters
-            cleaned = SpaceRegex().Replace(cleaned, " ");
+            cleaned = SpaceRegex.Replace(cleaned, " ");
             // remove excessive whitespace
-            cleaned = WhitespaceRegex().Replace(cleaned, string.Empty);
+            cleaned = WhitespaceRegex.Replace(cleaned, string.Empty);
             // if the string is empty, skip it
             if (string.IsNullOrEmpty(cleaned)) continue;
             // otherwise add the string to the final ingredient string list
@@ -133,8 +133,8 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
             foreach (var item in tryIngredientsElements)
             {
                 string addIng = item.TextContent.Trim();
-                var cleaned = CheckboxRegex().Replace(addIng, string.Empty);
-                cleaned = SpaceRegex().Replace(cleaned, " ");
+                var cleaned = CheckboxRegex.Replace(addIng, string.Empty);
+                cleaned = SpaceRegex.Replace(cleaned, " ");
                 cleaned = Regex.Replace(cleaned, @"\*", string.Empty);
                 cleaned = Regex.Replace(cleaned, @"^\s*\d+\s*$(\r?\n)?", string.Empty, RegexOptions.Multiline);
                 if (cleaned == string.Empty) continue;
@@ -165,7 +165,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
                 // join the elements into a string
                 string ingString = string.Join(", ", followingElements!.Select(e => e.TextContent.Trim()));
                 // trim whitespace 
-                string ingStringWhitespace = WhitespaceRegex().Replace(ingString, "\n");
+                string ingStringWhitespace = WhitespaceRegex.Replace(ingString, "\n");
                 // split into individual ingredients
                 extractIngredients = [.. ingStringWhitespace.Split("\n")];
             }
@@ -232,7 +232,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
         string quantity = "none";
         string ingMinusQuant;
 
-        var quantityMatch = QuantityRegex().Match(ingredient);
+        var quantityMatch = QuantityRegex.Match(ingredient);
         if (quantityMatch.Success)
         {
             quantity = quantityMatch.Value.Trim();
@@ -427,17 +427,25 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
         return bestMatchName/* , bestMatchId */;
     }
     #endregion
-    
-    
+
+
 
     #region Regex
-    [GeneratedRegex(@"^\s*(\d+\s\d+/\d+|\d+/\d+|\d+(\.\d+)?|[¼½¾⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞])", RegexOptions.IgnoreCase, "en-US")]
-    private static partial Regex QuantityRegex();
-    [GeneratedRegex(@"▢")]
-    private static partial Regex CheckboxRegex();
-    [GeneratedRegex(@"\u00A0")]
-    private static partial Regex SpaceRegex();
-    [GeneratedRegex(@"\s{2,}")]
-    private static partial Regex WhitespaceRegex();
+    // [GeneratedRegex(@"^\s*(\d+\s\d+/\d+|\d+/\d+|\d+(\.\d+)?|[¼½¾⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞])", RegexOptions.IgnoreCase, "en-US")]
+    // [ExcludeFromCodeCoverage]
+    // private static partial Regex QuantityRegex();
+    private static readonly Regex QuantityRegex = new(@"^\s*(\d+\s\d+/\d+|\d+/\d+|\d+(\.\d+)?|[¼½¾⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    // [GeneratedRegex(@"▢")]
+    // [ExcludeFromCodeCoverage]
+    // private static partial Regex CheckboxRegex();
+    private static readonly Regex CheckboxRegex = new(@"▢", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    // [GeneratedRegex(@"\u00A0")]
+    // [ExcludeFromCodeCoverage]
+    // private static partial Regex SpaceRegex();
+    private static readonly Regex SpaceRegex = new(@"\u00A0", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    // [GeneratedRegex(@"\s{2,}")]
+    // [ExcludeFromCodeCoverage]
+    // private static partial Regex WhitespaceRegex();
+    private static readonly Regex WhitespaceRegex = new(@"\s{2,}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     #endregion
 }

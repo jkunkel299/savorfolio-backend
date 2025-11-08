@@ -20,7 +20,7 @@ public partial class WebScraperRun()
     private readonly Mock<IWebScraperService> mockWebScraperService = new();
 
     [Fact]
-    public void RunScraperCallsFunctions()
+    public void RunScraperAsyncCallsFunctions()
     {
         // initialize web scraper
         scraper = new WebScraperService(
@@ -65,8 +65,8 @@ public partial class WebScraperRun()
         ))
             .Returns(It.IsAny<List<InstructionDTO>>());
 
-        // call RunScraper
-        _ = scraper.RunScraper(It.IsAny<string>());
+        // call RunScraperAsync
+        _ = scraper.RunScraperAsync(It.IsAny<string>());
 
         // assert GetHtmlAsync is called once
         mockWebScraperService.Verify(f => f.GetHtmlAsync(It.IsAny<string>()), Times.AtMostOnce);

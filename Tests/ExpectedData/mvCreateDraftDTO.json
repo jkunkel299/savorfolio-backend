@@ -1,0 +1,56 @@
+{
+    "recipeSummary": {
+        "id": 0,
+        "name": "BEST Jiffy Cornbread With Creamed Corn",
+        "servings": "16",
+        "cookTime": "40 minutes",
+        "prepTime": "5 minutes",
+        "bakeTemp": 400,
+        "temp_unit": "F",
+        "description": "7-ingredient Creamed Corn Cornbread is a staple Southern side dish. Jiffy Cornbread with Creamed Corn is full of flavor, so easy to make, and will become an instant family favorite.",
+        "ingredients": []
+    },
+    "recipeTags": {
+        "recipeId": 0,
+        "meal": "Breakfast",
+        "recipe_type": "Side",
+        "cuisine": "American",
+        "dietary": []
+    },
+    "recipeSections": null,
+    "ingredientsString": [
+        "2 large eggs",
+        "1/3 cup vegetable oil",
+        "1/3 cup milk",
+        "2 Tablespoons honey",
+        "1 (14.75 ounce) can cream style corn",
+        "1/2 cup sour cream",
+        "2 (8.5 ounce) boxes Jiffy Corn Muffin Mix"
+    ],
+    "instructions": [
+        {
+            "id": 0,
+            "recipeId": 0,
+            "sectionId": null,
+            "sectionName": null,
+            "stepNumber": 1,
+            "instructionText": "Preheat the oven to 400 F (204 C), and lightly grease an 8 x 8 baking dish with cooking spray."
+        },
+        {
+            "id": 0,
+            "recipeId": 0,
+            "sectionId": null,
+            "sectionName": null,
+            "stepNumber": 2,
+            "instructionText": "In a large mixing bowl, whisk the eggs and oil together, then whisk in the milk and honey  (make sure to give the honey a good mixing to combine well). Add in the cream style corn and sour cream, and mix to combine. Stir the Jiffy Corn Muffin Mix into the liquid until just combined (don't over mix it). "
+        },
+        {
+            "id": 0,
+            "recipeId": 0,
+            "sectionId": null,
+            "sectionName": null,
+            "stepNumber": 3,
+            "instructionText": "Pour the batter into the greased baking dish and bake for 40 - 45 minutes. Check the cornbread after 40 minutes. To test if it’s ready, insert a toothpick into the center. If the toothpick comes out clean, it's done. If it comes out a bit wet, put in for a few more minutes."
+        }
+    ]
+}

@@ -21,7 +21,7 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
         string recipeTitle = "";
 
         var tryTitle = document.All
-            .FirstOrDefault(e => e.ClassList.Any(c => TitleRegex().IsMatch(c)));
+            .FirstOrDefault(e => e.ClassList.Any(c => TitleRegex.IsMatch(c)));
         if (tryTitle != null)
         {
             recipeTitle = tryTitle?.TextContent.Trim() ?? "";
@@ -41,7 +41,7 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
     {
         string recipeDescription = "";
         var tryTitle = document.All
-            .FirstOrDefault(e => e.ClassList.Any(c => TitleRegex().IsMatch(c)));
+            .FirstOrDefault(e => e.ClassList.Any(c => TitleRegex.IsMatch(c)));
         var tryDescriptionElement = document.Body?.QuerySelector("[class*='recipe-description']");
         var trySummary = document.Body?.QuerySelector("[class*='summary']");
 
@@ -88,7 +88,7 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
         {
             bestMatch = _heuristicExtensions.GetBestMatch(labelElements, labelPattern);
             // trim using regex to only include the time and unit
-            var matchTrim = TimeRegex().Match(bestMatch);
+            var matchTrim = TimeRegex.Match(bestMatch);
             if (matchTrim.Success)
             {
                 return matchTrim.Value.Trim();
@@ -227,9 +227,9 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
                 // join the elements into a string
                 string insString = string.Join(", ", followingElements!.Select(e => e.TextContent.Trim()));
                 // trim whitespace 
-                string insStringWhitespace = WhitespaceRegex().Replace(insString, "\n");
+                string insStringWhitespace = WhitespaceRegex.Replace(insString, "\n");
                 // remove "Step #" labels
-                string insStringTrim = StepRegex().Replace(insStringWhitespace, "\n").Trim();
+                string insStringTrim = StepRegex.Replace(insStringWhitespace, "\n").Trim();
                 // split into individual steps
                 draftInstructions = [.. insStringTrim.Split("\n")];
 
@@ -312,21 +312,26 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
         return (temp, temp_unit);
     }
     #endregion
-    
+
 
 
     #region Regex
     // Regex generation
-    [GeneratedRegex(@"\b\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b(?:\s+\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b)?", RegexOptions.IgnoreCase, "en-US")]
-    private static partial Regex TimeRegex();
-
-    [GeneratedRegex(@"recipe.*title", RegexOptions.IgnoreCase, "en-US")]
-    private static partial Regex TitleRegex();
-
-    [GeneratedRegex(@"\s{2,}")]
-    private static partial Regex WhitespaceRegex();
-
-    [GeneratedRegex(@"Step\s+\d+", RegexOptions.IgnoreCase, "en-US")]
-    private static partial Regex StepRegex();
+    // [GeneratedRegex(@"\b\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b(?:\s+\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b)?", RegexOptions.IgnoreCase, "en-US")]
+    // [ExcludeFromCodeCoverage]
+    // private static partial Regex TimeRegex();
+    private static readonly Regex TimeRegex = new(@"\b\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b(?:\s+\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b)?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    // [GeneratedRegex(@"recipe.*title", RegexOptions.IgnoreCase, "en-US")]
+    // [ExcludeFromCodeCoverage]
+    // private static partial Regex TitleRegex();
+    private static readonly Regex TitleRegex = new(@"recipe.*title", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    // [GeneratedRegex(@"\s{2,}")]
+    // [ExcludeFromCodeCoverage]
+    // private static partial Regex WhitespaceRegex();
+    private static readonly Regex WhitespaceRegex = new(@"\s{2,}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    // [GeneratedRegex(@"Step\s+\d+", RegexOptions.IgnoreCase, "en-US")]
+    // [ExcludeFromCodeCoverage]
+    // private static partial Regex StepRegex();
+    private static readonly Regex StepRegex = new(@"Step\s+\d+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     #endregion
 }

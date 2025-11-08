@@ -126,13 +126,13 @@ public class DatabaseFixture : IDisposable
         {
             using var insertCmd = new NpgsqlCommand(@"
                 INSERT INTO ""Instructions"" (recipe_id, section_id, step_number, instruction_text) 
-                VALUES (@recipe_id, @section_id, @step, @text)",
+                VALUES (@recipe_id, @section_id, @step_number, @instruction_text)",
             conn);
             // insertCmd.Parameters.AddWithValue("@id", ins.Id);
             insertCmd.Parameters.AddWithValue("@recipe_id", ins.RecipeId);
             insertCmd.Parameters.AddWithValue("@section_id", ins.SectionId ?? (object)DBNull.Value);
-            insertCmd.Parameters.AddWithValue("@step", ins.StepNumber);
-            insertCmd.Parameters.AddWithValue("@text", ins.InstructionText);
+            insertCmd.Parameters.AddWithValue("@step_number", ins.StepNumber);
+            insertCmd.Parameters.AddWithValue("@instruction_text", ins.InstructionText);
             await insertCmd.ExecuteNonQueryAsync();
         }
 
@@ -141,13 +141,13 @@ public class DatabaseFixture : IDisposable
         {
             using var insertCmd = new NpgsqlCommand(@"
                 INSERT INTO ""Recipe_Tags"" (recipe_id, type_tag, meal_tag, cuisine_tag, dietary_tag) 
-                VALUES (@recipe, @type, @meal, @cuisine, @dietary)",
+                VALUES (@recipe_id, @type_tag, @meal_tag, @cuisine_tag, @dietary_tag)",
             conn);
-            insertCmd.Parameters.AddWithValue("@recipe", tag.RecipeId);
-            insertCmd.Parameters.AddWithValue("@type", tag.Recipe_type ?? (object)DBNull.Value);
-            insertCmd.Parameters.AddWithValue("@meal", tag.Meal ?? (object)DBNull.Value);
-            insertCmd.Parameters.AddWithValue("@cuisine", tag.Cuisine ?? (object)DBNull.Value);
-            insertCmd.Parameters.AddWithValue("@dietary", tag.Dietary);
+            insertCmd.Parameters.AddWithValue("@recipe_id", tag.RecipeId);
+            insertCmd.Parameters.AddWithValue("@type_tag", tag.Recipe_type ?? (object)DBNull.Value);
+            insertCmd.Parameters.AddWithValue("@meal_tag", tag.Meal ?? (object)DBNull.Value);
+            insertCmd.Parameters.AddWithValue("@cuisine_tag", tag.Cuisine ?? (object)DBNull.Value);
+            insertCmd.Parameters.AddWithValue("@dietary_tag", tag.Dietary);
             await insertCmd.ExecuteNonQueryAsync();
         }
     }
@@ -163,7 +163,7 @@ public class DatabaseFixture : IDisposable
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-        public int? Servings { get; set; }
+        public string? Servings { get; set; }
         public string? CookTime { get; set; }
         public string? PrepTime { get; set; }
         public int? BakeTemp { get; set; }

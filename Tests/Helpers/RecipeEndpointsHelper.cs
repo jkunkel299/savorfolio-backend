@@ -52,7 +52,7 @@ public static class RecipeEndpointsHelper
     // replicates the API endpoint defined in AddRecipeEndpoints.MapDraftRecipe
     public static async Task<IResult> InvokeRecipeScrapeEndpoint(string url, IWebScraperService webScraperService)
     {
-        DraftRecipeDTO results = await webScraperService.RunScraper(url);
+        DraftRecipeDTO results = await webScraperService.RunScraperAsync(url);
         return Results.Ok(results);
     }
 }

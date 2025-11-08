@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using AngleSharp;
 using Moq;
@@ -88,7 +89,7 @@ public partial class IngredientParseServiceTests(WebScraperFixture webScraperFix
         // clean the strings, artifact from loading HTML markup locally
         for (int i = 0; i < actualReturn.Count; i++)
         {
-            var cleaned = WhitespaceRegex().Replace(actualReturn[i], string.Empty);
+            var cleaned = WhitespaceRegex.Replace(actualReturn[i], string.Empty);
             actualReturn[i] = cleaned;
         }
         // Convert Result to JSON
@@ -123,6 +124,6 @@ public partial class IngredientParseServiceTests(WebScraperFixture webScraperFix
         Assert.Equal(expectedReturn, actualReturn);
     }
     #endregion
-    [GeneratedRegex(@"\s{2,}")]
-    private static partial Regex WhitespaceRegex();
+
+    private static readonly Regex WhitespaceRegex = new(@"\s{2,}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 }

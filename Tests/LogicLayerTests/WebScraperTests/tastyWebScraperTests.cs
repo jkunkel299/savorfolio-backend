@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using AngleSharp.Dom;
 using Moq;
@@ -97,7 +98,7 @@ public partial class TastyWebScraperTests(WebScraperFixture webScraperFixture) :
 
         // call BuildRecipeSummary
         var actualReturn = scraper.BuildRecipeSummary(_document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
-        string cleanedServings = WhitespaceRegex().Replace(actualReturn.Servings!, " ");
+        string cleanedServings = WhitespaceRegex.Replace(actualReturn.Servings!, " ");
 
         // assert elements are as expected
         Assert.Equal(recipeTitle, actualReturn.Name);
@@ -162,7 +163,7 @@ public partial class TastyWebScraperTests(WebScraperFixture webScraperFixture) :
         foreach (var item in actualReturn)
         {
             var text = item.InstructionText;
-            var cleaned = WhitespaceRegex().Replace(text, string.Empty);
+            var cleaned = WhitespaceRegex.Replace(text, string.Empty);
             item.InstructionText = cleaned;
         }
         // Convert Result to JSON
@@ -195,6 +196,5 @@ public partial class TastyWebScraperTests(WebScraperFixture webScraperFixture) :
         Assert.Equal(expectedCuisine, actualReturn.Cuisine);
     }
 
-    [GeneratedRegex(@"\s{2,}")]
-    private static partial Regex WhitespaceRegex();
+    private static readonly Regex WhitespaceRegex = new(@"\s{2,}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 }

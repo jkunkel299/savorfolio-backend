@@ -1,0 +1,79 @@
+{
+    "recipeSummary": {
+        "id": 0,
+        "name": "Fall Chocolate Chip Spiced Cookie (Levain Bakery Fall Cookie)",
+        "servings": "8",
+        "cookTime": "10 minutes",
+        "prepTime": "15 minutes",
+        "bakeTemp": 400,
+        "temp_unit": "F",
+        "description": "Soft, chewy Fall cookie with dark brown sugar, molasses, cinnamon, ginger, cloves, nutmeg, and chocolate chips for the perfect Autumn cookie. This is the perfect Fall spiced chocolate chip cookie recipe!",
+        "ingredients": []
+    },
+    "recipeTags": {
+        "recipeId": 0,
+        "meal": "Dessert",
+        "recipe_type": "Dessert",
+        "cuisine": "American",
+        "dietary": []
+    },
+    "recipeSections": null,
+    "ingredientsString": [
+        " 12 Tablespoons Butter (cold, cut into cubes)",
+        " 1/2 cup Dark Brown Sugar (may substitute light)",
+        " 1/2 cup Sugar",
+        " 1 large Egg",
+        " 2 Tablespoons Molasses",
+        " 2 cups Flour",
+        " 1 teaspoon Baking Soda",
+        " 1 teaspoon Cornstarch",
+        " 1/2 teaspoon Salt (1/4 tsp if you using salted butter)",
+        " 1 teaspoon Cinnamon",
+        " 1 1/4 teaspoon Ground Ginger * (may reduce to 1 teaspoon)",
+        " 1/2 teaspoon Ground Nutmeg (may reduce to 1/4 teaspoon)",
+        " 1/8 teaspoon Ground Cloves (optional)",
+        " 1 1/2 cups Chocolate Chips or Chunks"
+    ],
+    "instructions": [
+        {
+            "id": 0,
+            "recipeId": 0,
+            "sectionId": null,
+            "sectionName": null,
+            "stepNumber": 1,
+            "instructionText": "Preheat oven to 400 degrees. In a large mixing bowl, beat butter, brown sugar, and sugar for 4 minutes until light and fluffy."
+        },
+        {
+            "id": 0,
+            "recipeId": 0,
+            "sectionId": null,
+            "sectionName": null,
+            "stepNumber": 2,
+            "instructionText": "Add molasses and egg and mix for 1 minute longer."
+        },
+        {
+            "id": 0,
+            "recipeId": 0,
+            "sectionId": null,
+            "sectionName": null,
+            "stepNumber": 3,
+            "instructionText": "Fold in flour, baking soda, cornstarch, salt, cinnamon, ginger, nutmeg, cloves, and chocolate chips. "
+        },
+        {
+            "id": 0,
+            "recipeId": 0,
+            "sectionId": null,
+            "sectionName": null,
+            "stepNumber": 4,
+            "instructionText": "Roll into 4-ounce, 5-ounce, or 6-ounce balls. Place on a parchment paper lined baking sheet. I prefer to use light-colored baking sheets."
+        },
+        {
+            "id": 0,
+            "recipeId": 0,
+            "sectionId": null,
+            "sectionName": null,
+            "stepNumber": 5,
+            "instructionText": "Bake for 8-10 minutes. The cookies will still be slightly underdone when you remove them from the oven. Let the cookies sit for 10-15 minutes before moving them from the baking sheet. "
+        }
+    ]
+}

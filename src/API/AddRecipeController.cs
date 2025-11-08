@@ -39,7 +39,7 @@ public static class AddRecipeEndpoints
             IWebScraperService webScraperService
         ) =>
         {
-            DraftRecipeDTO results = await webScraperService.RunScraper(url);
+            DraftRecipeDTO results = await webScraperService.RunScraperAsync(url);
             return Results.Ok(results);
         });
     }

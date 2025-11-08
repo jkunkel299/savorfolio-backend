@@ -1,0 +1,64 @@
+{
+    "recipeSummary": {
+        "id": 0,
+        "name": "Chili-Lime Cod Fillets",
+        "servings": "",
+        "cookTime": "12 min",
+        "prepTime": "5 min",
+        "bakeTemp": 450,
+        "temp_unit": "F",
+        "description": "Fragrant spices and lime come together for a flavor explosion on cod filets. This is a super easy, quick, and healthy meal for busy weeknights!",
+        "ingredients": []
+    },
+    "recipeTags": {
+        "recipeId": 0,
+        "meal": "Breakfast",
+        "recipe_type": "Main",
+        "cuisine": "",
+        "dietary": []
+    },
+    "recipeSections": null,
+    "ingredientsString": [
+        "1 Teaspoon Paprika",
+        "1 Teaspoon Dried Parsley",
+        "½ Teaspoon Oregano",
+        "½ Teaspoon Chili Powder",
+        "½ Teaspoon Garlic Powder",
+        "¼ Teaspoon Cumin",
+        "¼ Teaspoon Salt",
+        "¼ Teaspoon Freshly Ground Black Pepper",
+        "1/8 Teaspoon Cayenne Pepper",
+        "2 Tablespoons Extra-Virgin Olive Oil, divided",
+        "2 Cod Fillets",
+        "1 Tablespoon Unsalted Butter, or use ghee for Paleo & Whole30",
+        "Zest and Juice of 2 Limes",
+        "Cooked Rice, Quinoa, or Cauliflower Rice, for serving",
+        "Your Favorite Vegetable, for serving"
+    ],
+    "instructions": [
+        {
+            "id": 0,
+            "recipeId": 0,
+            "sectionId": null,
+            "sectionName": null,
+            "stepNumber": 1,
+            "instructionText": "In a small bowl combine all of the spices and mix well. Using 1 tablespoon of olive oil, brush the cod filets and then rub the filets with the spice mixture. You will use the entire rub – so make sure to coat them very well. Refrigerate the cod filets for at least 30 minutes, or up to 12 hours."
+        },
+        {
+            "id": 0,
+            "recipeId": 0,
+            "sectionId": null,
+            "sectionName": null,
+            "stepNumber": 2,
+            "instructionText": "Preheat the oven to 450º. Place the cod filets on a foil-lined baking sheet and roast in the oven for 10-12 minutes – the fish will flake easily and be opaque throughout when it’s cooked through."
+        },
+        {
+            "id": 0,
+            "recipeId": 0,
+            "sectionId": null,
+            "sectionName": null,
+            "stepNumber": 3,
+            "instructionText": "Meanwhile in a small saucepot, melt the butter with the remaining tablespoon of olive oil. Add in the lime zest and juice and swirl the pan to mix. Serve the cod overtop of your chosen accompaniments and top with the lime butter."
+        }
+    ]
+}

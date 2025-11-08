@@ -1,0 +1,27 @@
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <!-- Output formats -->
+          <Format>cobertura,lcov,opencover</Format>
+
+          <!-- Assembly exclusions -->
+          <Exclude>[xunit.*]*</Exclude>
+          <Exclude>[Tests*]*</Exclude>
+          <Exclude>[IntegrationTests*]*</Exclude>
+          <Exclude>[*.Tests]*</Exclude>
+          <Exclude>[*.IntegrationTests]*</Exclude>
+          <Exclude>[*.TestAdapter]*</Exclude>
+
+          <!-- File-level exclusions -->
+          <ExcludeByFile>**/bin/**,**/obj/**</ExcludeByFile>
+          <ExcludeByFile>**/RegexGenerator.g.cs</ExcludeByFile>
+
+          <!-- Optional: if your coverage includes build metadata -->
+          <IncludeTestAssembly>false</IncludeTestAssembly>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

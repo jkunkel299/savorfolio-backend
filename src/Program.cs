@@ -114,7 +114,7 @@ if (args.Contains("--scrape"))
     Console.WriteLine("Console mode activated.");
     using var scope = app.Services.CreateScope();
     var scraper = scope.ServiceProvider.GetRequiredService<IWebScraperService>();
-    var match = await scraper.RunScraper("https://keytomylime.com/jiffy-cornbread-with-creamed-corn-recipe ");
+    var match = await scraper.RunScraperAsync("https://keytomylime.com/jiffy-cornbread-with-creamed-corn-recipe ");
     // var document = await scraper.GetHtmlAsync("https://fashionablefoods.com/2014/06/27/2014618roasted-chili-lime-cod");
     
     // string filePath = Path.Combine(

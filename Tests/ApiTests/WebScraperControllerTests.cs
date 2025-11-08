@@ -13,15 +13,15 @@ public class WebScraperControllerTests()
         // mock web scraper service interface
         var mockWebScraperService = new Mock<IWebScraperService>();
         // set up return
-        mockWebScraperService.Setup(r => r.RunScraper(It.IsAny<string>()))
+        mockWebScraperService.Setup(r => r.RunScraperAsync(It.IsAny<string>()))
             .ReturnsAsync(It.IsAny<DraftRecipeDTO>());
         // call mocked API endpoint
         var result = await RecipeEndpointsHelper.InvokeRecipeScrapeEndpoint(
             It.IsAny<string>(),
             mockWebScraperService.Object
         );
-        // assert RunScraper called once
-        mockWebScraperService.Verify(d => d.RunScraper(It.IsAny<string>()), Times.AtMostOnce);
+        // assert RunScraperAsync called once
+        mockWebScraperService.Verify(d => d.RunScraperAsync(It.IsAny<string>()), Times.AtMostOnce);
         // assert result.Ok type
         var okResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.Ok>(result);
     }

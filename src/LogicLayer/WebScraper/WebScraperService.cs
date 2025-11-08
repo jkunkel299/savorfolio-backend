@@ -20,7 +20,7 @@ public class WebScraperService(
     private readonly IIngredientParseService _ingredientParseService = ingredientParseService;
 
     #region Run Scraper
-    public async Task<DraftRecipeDTO> RunScraper(string url)
+    public async Task<DraftRecipeDTO> RunScraperAsync(string url)
     {
         var document = await GetHtmlAsync(url);
         string patternMatch = SampleCssClasses(document);
