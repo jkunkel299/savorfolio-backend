@@ -70,16 +70,41 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
     {
         List<string> ingredients = [];
         string query = $".{ingredientsPattern}";
+        // if the pattern is mv-create-ingredients
         if (ingredientsPattern == "mv-create-ingredients")
         {
+            // adjust the query to get only list items in the labeled div
             query = $"div.{ingredientsPattern} li";
         }
         var ingredientsElements = document.QuerySelectorAll(query);
-        foreach (var i in ingredientsElements)
+
+        List<string> useIngs = [];
+        // if the ingredientsElements is just one long string
+        if (ingredientsElements.Length == 1)
         {
-            string addIng = i.TextContent.Trim();
+            // split by \n character and add elements to the list useIngs
+            useIngs = [.. ingredientsElements[0].TextContent.Split('\n')];
+        }
+        else
+        {
+            // otherwise, add each element's text content to useIngs
+            foreach (var item in ingredientsElements)
+            {
+                useIngs.Add(item.TextContent.Trim());
+            }
+        }
+
+        foreach (var addIng in useIngs)
+        {
+            // clean each item in the list to remove checkboxes
             var cleaned = CheckboxRegex().Replace(addIng, string.Empty);
+            // remove unicode space characters
             cleaned = SpaceRegex().Replace(cleaned, " ");
+            // remove excessive whitespace
+            cleaned = WhitespaceRegex().Replace(cleaned, string.Empty);
+            // if the string is empty, skip it
+            if (string.IsNullOrEmpty(cleaned)) continue;
+            // otherwise add the string to the final ingredient string list
             ingredients.Add(cleaned);
         }
         return ingredients;
@@ -94,7 +119,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
     {
         string term = "Ingredients";
         List<string> extractIngredients = [];
-        List<string> draftIngredients = []; // for use in general matching without class names
+        // List<string> draftIngredients = []; // for use in general matching without class names
         var contentRoot = document.QuerySelector("[class*='entry-content']") ?? document.Body;
 
         // look for items with "ingredient" in the class name or id
@@ -124,7 +149,9 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
             // then look for lists and div after that element
 
             // Match the content the established term
-            var ingredientLabel = document.All.FirstOrDefault(e => e.TextContent.Trim().Equals(term, StringComparison.OrdinalIgnoreCase));
+            var ingredientLabel = document.All
+                .FirstOrDefault(e => e.TextContent.Trim()
+                .Equals(term, StringComparison.OrdinalIgnoreCase));
             // if there's a match for the label
             if (ingredientLabel != null)
             {
@@ -148,12 +175,13 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
                 var ulElements = document.Body?.QuerySelectorAll("ul li");
                 if (ulElements != null)
                 {
-                    draftIngredients.AddRange(
+                    extractIngredients.AddRange(
                         ulElements
                             .Select(li => li.TextContent.Trim())
                             .Where(text => !string.IsNullOrWhiteSpace(text))
                     );
                 }
+
             }
         }
         // if still no draft instructions, return empty list
@@ -165,6 +193,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
             // (var quantity, _) = ExtractQuantity(ing);
             // if (unit == "none") flagged.Add(ing);
             if (ing.Contains("Ingredients") || ing.Contains("ingredients")) flagged.Add(ing);
+            if (ing.Contains('\t')) flagged.Add(ing);
         }
         foreach (var ing in flagged)
         {

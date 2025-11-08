@@ -21,8 +21,8 @@ public static class RecipeEndpointsHelper
     {
         var recipe = await service.CompileRecipeAsync(recipeId);
         return Results.Ok(recipe);
-    }   
-    
+    }
+
     // replicates the API endpoint defined in AddRecipeEndpoints.MapManualRecipe
     public static async Task<IResult> InvokeAddManualRecipeEndpoint(string jsonBody, IAddRecipeService service)
     {
@@ -37,7 +37,7 @@ public static class RecipeEndpointsHelper
         }
 
         var newRecipe = JObject.Parse(newRecipeBody.RootElement.GetRawText());
-        
+
         OperationResult<int> result = await service.AddRecipeManually(newRecipe);
         if (result.Success)
         {
@@ -47,5 +47,12 @@ public static class RecipeEndpointsHelper
         {
             return Results.Problem("Recipe not added successfully");
         }
+    }
+
+    // replicates the API endpoint defined in AddRecipeEndpoints.MapDraftRecipe
+    public static async Task<IResult> InvokeRecipeScrapeEndpoint(string url, IWebScraperService webScraperService)
+    {
+        DraftRecipeDTO results = await webScraperService.RunScraper(url);
+        return Results.Ok(results);
     }
 }

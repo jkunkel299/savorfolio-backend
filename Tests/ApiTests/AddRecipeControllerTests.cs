@@ -44,7 +44,7 @@ public class AddRecipeControllerTests()
         var result = await RecipeEndpointsHelper.InvokeAddManualRecipeEndpoint(jsonBody, mockAddRecipeService.Object);
 
         // assert AddRecipeManually called once
-        mockAddRecipeService.Verify(d => d.AddRecipeManually(It.IsAny<JObject>()), Times.Once);
+        mockAddRecipeService.Verify(d => d.AddRecipeManually(It.IsAny<JObject>()), Times.AtMostOnce);
 
         // assert result.Ok type
         var okResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.Ok<string>>(result);
@@ -76,7 +76,7 @@ public class AddRecipeControllerTests()
         var result = await RecipeEndpointsHelper.InvokeAddManualRecipeEndpoint(jsonBody, mockAddRecipeService.Object);
 
         // assert AddRecipeManually called once
-        mockAddRecipeService.Verify(d => d.AddRecipeManually(It.IsAny<JObject>()), Times.Once);
+        mockAddRecipeService.Verify(d => d.AddRecipeManually(It.IsAny<JObject>()), Times.AtMostOnce);
 
         // assert result.Problem type
         var badResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult>(result);

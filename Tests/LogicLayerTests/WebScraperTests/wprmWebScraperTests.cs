@@ -62,7 +62,7 @@ public partial class WprmWebScraperTests(WebScraperFixture webScraperFixture) : 
             { "Description", "wprm-recipe-summary" },
             { "PrepTime", "wprm-recipe-prep_time" },
             { "CookTime", "wprm-recipe-cook_time" },
-            { "Servings", "wprm-recipe-servings" },
+            { "Servings", "wprm-recipe-servings " },
             { "Ingredients", "wprm-recipe-ingredient" },
             { "Instructions", "wprm-recipe-instruction-group" },
             { "Course", "wprm-recipe-course " },

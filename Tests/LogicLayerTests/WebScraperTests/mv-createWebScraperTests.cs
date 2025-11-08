@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.LogicLayer.WebScraper;
-using savorfolio_backend.Models.DTOs;
 using Tests.Fixtures;
 
 namespace Tests.LogicLayerTests.WebScraperTests;
@@ -60,8 +59,8 @@ public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture
         {
             { "RecipeTitle", "mv-create-title " },
             { "Description", "mv-create-description" },
-            { "PrepTime", "mv-create-time-prep .mv-time-minutes" },
-            { "CookTime", "mv-create-time-active .mv-time-minutes" },
+            { "PrepTime", "mv-create-time-prep" },
+            { "CookTime", "mv-create-time-active" },
             { "Servings", "mv-create-yield" },
             { "Ingredients", "mv-create-ingredients" },
             { "Instructions", "mv-create-instructions" },

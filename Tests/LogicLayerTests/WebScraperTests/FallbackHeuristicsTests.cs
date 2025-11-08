@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using AngleSharp;
 using AngleSharp.Dom;
 using Moq;
@@ -8,20 +7,20 @@ using savorfolio_backend.Interfaces;
 using savorfolio_backend.LogicLayer.WebScraper;
 using savorfolio_backend.Models.DTOs;
 using savorfolio_backend.Models.enums;
-using savorfolio_backend.Utils;
 using Tests.TestData;
 
 namespace Tests.LogicLayerTests.WebScraperTests;
 
-[Collection("Web Scraper collection")]
+// [Collection("Web Scraper collection")]
 public class FallbackHeuristicsTests
 {
     private readonly Mock<IFallbackHeuristics> mockFallbackHeuristics = new();
-    private static readonly Mock<IHeuristicExtensions> mockHeuristicExtensions = new();
-    private readonly FallbackHeuristics _fallback = default!;
+    private readonly Mock<IHeuristicExtensions> mockHeuristicExtensions;
+    private readonly FallbackHeuristics _fallback;
 
     public FallbackHeuristicsTests()
     {
+        mockHeuristicExtensions = new Mock<IHeuristicExtensions>();
         _fallback = new(mockHeuristicExtensions.Object);
     }
     

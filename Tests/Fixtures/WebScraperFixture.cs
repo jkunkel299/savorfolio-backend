@@ -28,7 +28,7 @@ public class WebScraperFixture : IDisposable
     //     );
     // }
 
-    public async Task<IDocument> WebScraperSetupAsync(string filename)
+    public virtual async Task<IDocument> WebScraperSetupAsync(string filename)
     {
         // Normalize the key (case-insensitive)
         string cacheKey = filename.ToLowerInvariant();
