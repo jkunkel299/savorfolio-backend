@@ -9,6 +9,7 @@ using savorfolio_backend.API;
 using System.Text.RegularExpressions;
 using savorfolio_backend.LogicLayer.WebScraper;
 using AngleSharp;
+using savorfolio_backend.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +66,7 @@ builder.Services.AddScoped<ISectionsRepository, SectionsRepository>();
 // recipe scraping services
 builder.Services.AddScoped<IWebScraperService, WebScraperService>();
 builder.Services.AddScoped<IFallbackHeuristics, FallbackHeuristics>();
+builder.Services.AddScoped<IHeuristicExtensions, HeuristicExtensions>();
 builder.Services.AddScoped<IIngredientParseService, IngredientParseService>();
 
 

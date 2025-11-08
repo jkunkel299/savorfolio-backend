@@ -17,6 +17,8 @@ public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture
     private WebScraperService scraper = default!;
     // mock FallbackHeuristics interface
     private readonly Mock<IFallbackHeuristics> mockFallbackHeuristics = new();
+    // mock fallback heuristic extensions interface
+    private readonly Mock<IHeuristicExtensions> mockHeuristicExtensions = new();
     // mock IngredientParseService interface
     private readonly Mock<IIngredientParseService> mockIngredientParseService = new();
     // initialize document and web scraper
@@ -26,7 +28,8 @@ public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture
         // Initialize the mock once for all tests
         scraper = new WebScraperService(
             mockFallbackHeuristics.Object,
-            mockIngredientParseService.Object
+            mockIngredientParseService.Object,
+            mockHeuristicExtensions.Object
         );
     }
 

@@ -1,11 +1,8 @@
 using AngleSharp.Dom;
 using Moq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.LogicLayer.WebScraper;
 using savorfolio_backend.Models.DTOs;
-using Tests.Helpers;
 
 namespace Tests.LogicLayerTests.WebScraperTests;
 
@@ -15,6 +12,8 @@ public partial class WebScraperRun()
     private WebScraperService scraper = default!;
     // mock FallbackHeuristics interface
     private readonly Mock<IFallbackHeuristics> mockFallbackHeuristics = new();
+    // mock fallback heuristic extensions interface
+    private readonly Mock<IHeuristicExtensions> mockHeuristicExtensions = new();
     // mock IngredientParseService interface
     private readonly Mock<IIngredientParseService> mockIngredientParseService = new();
     // mock WebScraperService interface
@@ -26,7 +25,8 @@ public partial class WebScraperRun()
         // initialize web scraper
         scraper = new WebScraperService(
             mockFallbackHeuristics.Object,
-            mockIngredientParseService.Object
+            mockIngredientParseService.Object,
+            mockHeuristicExtensions.Object
         );
 
         // set up mock returns for dependent functions

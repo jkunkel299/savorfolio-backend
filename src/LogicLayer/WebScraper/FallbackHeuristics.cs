@@ -5,64 +5,15 @@ using savorfolio_backend.Models.DTOs;
 using savorfolio_backend.Utils;
 using savorfolio_backend.Models.enums;
 using System.Text.RegularExpressions;
-using AngleSharp.Common;
 using savorfolio_backend.Interfaces;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics.CodeAnalysis;
 
 namespace savorfolio_backend.LogicLayer.WebScraper;
 
-public partial class FallbackHeuristics : IFallbackHeuristics
+public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions) : IFallbackHeuristics
 {
-    #region GetBestMatch
-    public string GetBestMatch(IEnumerable<IElement> labelElements, string labelPattern)
-    {
-        // initialize integer list for fuzz ratios
-        List<int> fuzzRatio = [];
-        // for each element that contains the pattern, score how well they match the expected label
-        foreach (var label in labelElements)
-        {
-            int wRatioScore = Fuzz.WeightedRatio(labelPattern, label.TextContent);
-            fuzzRatio.Add(wRatioScore);
-        }
-        // get the max ratio match
-        int bestRatio = fuzzRatio.Max();
-        // get the index of the best match
-        var bestRatioIndex = fuzzRatio.IndexOf(bestRatio);
-        // get the element from the list that best matches the label, using the max match
-        var bestMatch = labelElements.GetItemByIndex(bestRatioIndex).TextContent.ToLower();
-        // return the best match
-        return bestMatch;
-    }
-    #endregion
-
-
-    #region MatchEnum
-    public string MatchEnum<TEnum>(IDocument document) where TEnum : Enum
-    {
-        var documentContent = document.Body?.QuerySelector("[class*='content']");
-
-        // var documentText = documentContent?.QuerySelector("[class*='entry-footer']")?.TextContent ?? "";
-        // if (documentText == "" )
-        // {
-        //     documentText = documentContent?.QuerySelector("[class*='post-terms']")?.TextContent ?? document.Body?.TextContent;
-        // }
-        
-        string returnValue = "";
-        var enumList = EnumExtensions.GetEnumList<TEnum>();
-        var patternMatch = enumList.FirstOrDefault(t => documentContent!.TextContent.Contains(t, StringComparison.OrdinalIgnoreCase), "none") ?? "none";
-        var labelElements = document.All
-                    .Where(e => e.TextContent != null &&
-                        e.TextContent.Contains(patternMatch, StringComparison.OrdinalIgnoreCase));
-        if (patternMatch != "none" && labelElements.Any())
-        {
-            string bestMatch = GetBestMatch(labelElements, patternMatch);
-            ExtractedResult<string> bestTypeMatch = Process.ExtractOne(bestMatch, enumList);
-            if (bestTypeMatch != null) returnValue = bestTypeMatch.Value;
-        }
-        return returnValue;
-    }
-    #endregion
-
+    private readonly IHeuristicExtensions _heuristicExtensions = heuristicExtensions ?? throw new ArgumentNullException(nameof(heuristicExtensions));
 
     #region Title
     public string ExtractTitle(IDocument document)
@@ -135,7 +86,7 @@ public partial class FallbackHeuristics : IFallbackHeuristics
                         e.TextContent.Any(char.IsDigit));
         if (labelElements.Any())
         {
-            bestMatch = GetBestMatch(labelElements, labelPattern);
+            bestMatch = _heuristicExtensions.GetBestMatch(labelElements, labelPattern);
             // trim using regex to only include the time and unit
             var matchTrim = TimeRegex().Match(bestMatch);
             if (matchTrim.Success)
@@ -156,7 +107,7 @@ public partial class FallbackHeuristics : IFallbackHeuristics
         // Access document text
         string documentText = document.Body?.TextContent ?? string.Empty;
 
-        // Match the classNames to established patterns
+        // Match the document text to established patterns
         var patternMatch = terms.FirstOrDefault(t => documentText.Contains(t, StringComparison.OrdinalIgnoreCase)) ?? "none";
 
         string regexPattern = "[^0-9-]";
@@ -168,7 +119,7 @@ public partial class FallbackHeuristics : IFallbackHeuristics
 
         if (patternMatch != "none" && labelElements.Any())
         {
-            string bestMatch = GetBestMatch(labelElements, patternMatch);
+            string bestMatch = _heuristicExtensions.GetBestMatch(labelElements, patternMatch);
             // return bestMatch;
             // trim using regex to only include the servings number
             var matchTrim = Regex.Replace(bestMatch, regexPattern, string.Empty).Trim();
@@ -191,31 +142,33 @@ public partial class FallbackHeuristics : IFallbackHeuristics
         if (documentText == string.Empty) return new TagStringsDTO();
 
         // recipe type/course
-        string recipe_type = MatchEnum<RecipeTypeTag>(document);
+        string recipe_type = _heuristicExtensions.MatchEnum<RecipeTypeTag>(document);
 
         // cuisine
-        string cuisine = MatchEnum<CuisineTag>(document);
+        string cuisine = _heuristicExtensions.MatchEnum<CuisineTag>(document);
 
         // meal type
-        string meal = MatchEnum<MealTag>(document);
+        string meal = _heuristicExtensions.MatchEnum<MealTag>(document);
 
         // dietary
-        List<string> dietary = ExtractDietaryTags(documentText);
+        // List<string> dietary = ExtractDietaryTags(documentText);
 
         var recipeTags = new TagStringsDTO
         {
             Recipe_type = recipe_type,
             Cuisine = cuisine,
             Meal = meal,
-            Dietary = dietary
+            // Dietary = dietary
         };
 
         return recipeTags;
     }
     #endregion
-    
 
-    #region Dietary
+
+
+    // #region Dietary
+    [ExcludeFromCodeCoverage]
     public List<string> ExtractDietaryTags(string documentText)
     {
         List<string> dietary = [];
@@ -228,10 +181,11 @@ public partial class FallbackHeuristics : IFallbackHeuristics
         {
             ExtractedResult<string> bestTypeMatch = Process.ExtractOne(item, dietaryList);
             if (bestTypeMatch != null) dietary.Add(bestTypeMatch.Value);
-        };
+        }
+        ;
         return dietary;
     }
-    #endregion
+    // #endregion
 
 
     #region Instructions
@@ -322,7 +276,7 @@ public partial class FallbackHeuristics : IFallbackHeuristics
         // Access document text
         string documentText = document.Body?.TextContent ?? string.Empty;
 
-        // Match the classNames to established patterns
+        // Match the document text to established patterns
         var patternMatch = terms.FirstOrDefault(t => documentText.Contains(t, StringComparison.OrdinalIgnoreCase)) ?? "none";
 
         var regexPattern = @"(\d{3})(\s*)?(°|degrees)?\s*([FC])?";
@@ -363,7 +317,7 @@ public partial class FallbackHeuristics : IFallbackHeuristics
 
     #region Regex
     // Regex generation
-    [GeneratedRegex(@"\b\d+\s*(min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b", RegexOptions.IgnoreCase, "en-US")]
+    [GeneratedRegex(@"\b\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b(?:\s+\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b)?", RegexOptions.IgnoreCase, "en-US")]
     private static partial Regex TimeRegex();
 
     [GeneratedRegex(@"recipe.*title", RegexOptions.IgnoreCase, "en-US")]

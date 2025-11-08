@@ -1,9 +1,8 @@
 using System.Text.RegularExpressions;
 using AngleSharp.Dom;
-using savorfolio_backend.Models.DTOs;
 using savorfolio_backend.Interfaces;
 using FuzzySharp;
-using savorfolio_backend.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace savorfolio_backend.LogicLayer.WebScraper;
 
@@ -89,7 +88,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
 
 
 
-    // TODO - get ingredient elements by fallback heuristic
+    // Get ingredient elements by fallback heuristic
     #region Fallback
     public List<string> IngredientFallback(IDocument document)
     {
@@ -116,8 +115,8 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
                 if (cleaned == string.Empty) continue;
                 if (cleaned.Length < 400) extractIngredients.Add(cleaned.Trim());
             }
-        } 
-        
+        }
+
         if (extractIngredients.Count == 0 || extractIngredients.Count > 35)
         {
             extractIngredients = [];
@@ -186,6 +185,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
 
     #region Split
     // TODO - split a single ingredient term into its tokens
+    [ExcludeFromCodeCoverage]
     public List<string> SplitIngredientIntoTokens(string rawIngredient)
     {
         var splitIngredients = rawIngredient.Split(" ");
@@ -197,6 +197,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
 
     #region Quantity
     // TODO - extract quantity
+    [ExcludeFromCodeCoverage]
     public (string quantity, string ingMinusQuant) ExtractQuantity(string ingredient)
     {
         string quantity = "none";
@@ -221,6 +222,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
 
     #region Unit
     // TODO - extract unit
+    [ExcludeFromCodeCoverage]
     public async Task<(string unitName, /* int unitId, */ string remainder)> ExtractUnit(string rawIngredient)
     {
         string unit = "none";
@@ -254,7 +256,8 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
             Regex rawUnitRegex = new(unitTerm);
             // remove the unit from the ingredient line
             ingAndQualifier = rawUnitRegex.Replace(rawIngredient, string.Empty, 1).Trim();
-        } catch (RegexParseException)
+        }
+        catch (RegexParseException)
         {
             unit = "none";
         }
@@ -268,6 +271,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
 
     #region Ingredient/Qualifier
     // TODO - extract ingredient and qualifier
+    [ExcludeFromCodeCoverage]
     public async Task<(string ingredientName, /* int ingredientId,  */string qualifier)> ExtractIngredientQualifier(string ingAndQualifier)
     {
         if (string.IsNullOrWhiteSpace(ingAndQualifier))
@@ -372,6 +376,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
     // TODO - best match
     #region GetBestMatch
     // public static (string, int) GetBestMatch<TDTO>(List<TDTO> dtoList, string input) where TDTO : IDTOInterface
+    [ExcludeFromCodeCoverage]
     public /* ( */string/* , int) */ GetBestMatch(List<string> dtoList, string input)
     {
         // initialize integer list for fuzz ratios

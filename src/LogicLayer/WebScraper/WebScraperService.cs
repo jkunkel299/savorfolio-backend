@@ -12,9 +12,11 @@ namespace savorfolio_backend.LogicLayer.WebScraper;
 
 public class WebScraperService(
     IFallbackHeuristics fallbackHeuristics,
-    IIngredientParseService ingredientParseService) : IWebScraperService
+    IIngredientParseService ingredientParseService,
+    IHeuristicExtensions heuristicExtensions) : IWebScraperService
 {
     private readonly IFallbackHeuristics _fallbackHeuristics = fallbackHeuristics;
+    private readonly IHeuristicExtensions _heuristicExtensions = heuristicExtensions;
     private readonly IIngredientParseService _ingredientParseService = ingredientParseService;
 
     #region Run Scraper
@@ -440,7 +442,7 @@ public class WebScraperService(
         }
 
         // meal type
-        meal = _fallbackHeuristics.MatchEnum<MealTag>(document);
+        meal = _heuristicExtensions.MatchEnum<MealTag>(document);
 
         /*  The dietary tags extraction would be best served using natural language processing, 
             and with the current fallback heuristic is wrong more than it is correct. The 
