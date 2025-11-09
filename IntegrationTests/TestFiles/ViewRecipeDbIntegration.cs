@@ -4,6 +4,7 @@ using Tests.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using savorfolio_backend.DataAccess;
+using System.Threading.Tasks;
 
 namespace IntegrationTests.TestFiles;
 
@@ -12,11 +13,14 @@ public class ViewRecipeDbTests(DatabaseFixture databaseFixture) : IClassFixture<
 {
     private readonly DatabaseFixture _databaseFixture = databaseFixture;
     private static readonly JObject _expectedViewRecipe;
+    private static readonly JObject _expectedViewRecipeSections;
 
     static ViewRecipeDbTests()
     {
         string viewRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeDTO.json");
+        string viewRecipeSectionsFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeSectionsDTO.json");
         _expectedViewRecipe = JObject.Parse(File.ReadAllText(viewRecipeFilePath));
+        _expectedViewRecipeSections = JObject.Parse(File.ReadAllText(viewRecipeSectionsFilePath));
     }
 
 
@@ -133,5 +137,34 @@ public class ViewRecipeDbTests(DatabaseFixture databaseFixture) : IClassFixture<
 
         // Assert equal
         Assert.True(JToken.DeepEquals(expectedTags, actualToken));
+    }
+
+
+
+    [Fact]
+    public async Task DbGetSectionsById()
+    {
+        // Ensure connection to the Database
+        Assert.False(string.IsNullOrEmpty(_databaseFixture.ConnectionString));
+
+        // initialize test recipe ID
+        int recipeId = 3;
+        // instantiate repository
+        var sectionsRepository = new SectionsRepository(_databaseFixture.Context);
+
+        // initialize expected tags as a SectionDTO for case matching
+        var expectedSectionsDTO = _expectedViewRecipeSections["RecipeSections"]?.ToObject<List<SectionDTO>>();
+        // convert to JSON
+        var expectedJson = JsonConvert.SerializeObject(expectedSectionsDTO);
+        JToken expectedSections = JToken.Parse(expectedJson);
+
+        // Call GetSectionsByRecipeAsync with the expected recipe Id - should return Fall Spice Choc. Chip
+        var result = await sectionsRepository.GetSectionsByRecipeAsync(recipeId);
+        // Convert result to JSON Token
+        var actualJson = JsonConvert.SerializeObject(result);
+        JToken actualToken = JToken.Parse(actualJson);
+
+        // Assert equal
+        Assert.True(JToken.DeepEquals(expectedSections, actualToken));
     }
 }

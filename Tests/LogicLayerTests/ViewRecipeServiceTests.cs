@@ -11,40 +11,55 @@ namespace Tests.LogicLayerTests;
 public class ViewRecipeServiceTests()
 {
     private static readonly JObject _expectedViewRecipe;
+    private static readonly JObject _expectedViewRecipeSections;
+    // mock recipe repository interface
+    private static readonly Mock<IRecipeRepository> mockRecipeRepo = new();
+    // mock ingredient list repository interface
+    private static readonly Mock<IIngListRepository> mockIngListRepo = new();
+    // mock instructions repository interface
+    private static readonly Mock<IInstructionsRepository> mockInstructionsRepo = new();
+    // mock tags repository interface
+    private static readonly Mock<ITagsRepository> mockTagsRepo = new();
+    // mock sections repository interface
+    private static readonly Mock<ISectionsRepository> mockSectionsRepo = new();
+    // mock ViewRecipeService
+    private static readonly ViewRecipeService viewRecipeService;
 
     static ViewRecipeServiceTests()
     {
         string viewRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeDTO.json");
+        string viewRecipeSectionsFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeSectionsDTO.json");
         _expectedViewRecipe = JObject.Parse(File.ReadAllText(viewRecipeFilePath));
-    }
+        _expectedViewRecipeSections = JObject.Parse(File.ReadAllText(viewRecipeSectionsFilePath));
 
-
-
-    // test that CompileRecipeAsync calls its dependent functions
-    [Fact]
-    public async Task CompileRecipeAsync_CallsFunctionsTest()
-    {
-        // initialize test recipe ID
-        int recipeId = 2;
-
-        // mock recipe repository interface
-        var mockRecipeRepo = new Mock<IRecipeRepository>();
-        // mock ingredient list repository interface
-        var mockIngListRepo = new Mock<IIngListRepository>();
-        // mock instructions repository interface
-        var mockInstructionsRepo = new Mock<IInstructionsRepository>();
-        // mock tags repository interface
-        var mockTagsRepo = new Mock<ITagsRepository>();
-        // mock sections repository interface
-        var mockSectionsRepo = new Mock<ISectionsRepository>();
-        // mock ViewRecipeService
-        var viewRecipeService = new ViewRecipeService(
+        viewRecipeService = new(
             mockRecipeRepo.Object,
             mockSectionsRepo.Object,
             mockIngListRepo.Object,
             mockInstructionsRepo.Object,
             mockTagsRepo.Object
         );
+    }
+
+
+
+    // test that CompileRecipeAsync calls its dependent functions
+    [Fact]
+    public async Task CompileRecipeAsync_CallsFunctions()
+    {
+        // initialize test recipe ID
+        int recipeId = 2;
+
+        mockRecipeRepo.Setup(r => r.ReturnRecipeByIdAsync(recipeId))
+            .ReturnsAsync(It.IsAny<RecipeDTO>());
+        mockSectionsRepo.Setup(r => r.GetSectionsByRecipeAsync(recipeId))
+            .ReturnsAsync(It.IsAny<List<SectionDTO>>());
+        mockIngListRepo.Setup(r => r.GetIngredientsByRecipeAsync(recipeId))
+            .ReturnsAsync(It.IsAny<List<IngredientListDTO>>());
+        mockInstructionsRepo.Setup(r => r.GetInstructionsByRecipeAsync(recipeId))
+            .ReturnsAsync(It.IsAny<List<InstructionDTO>>());
+        mockTagsRepo.Setup(r => r.GetTagsByRecipe(recipeId))
+            .Returns(It.IsAny<TagStringsDTO>());
 
         // call CompileRecipeAsync from mocked ViewRecipeService
         _ = await viewRecipeService.CompileRecipeAsync(recipeId);
@@ -62,29 +77,10 @@ public class ViewRecipeServiceTests()
 
 
     [Fact]
-    public async Task CompileRecipesAsyncCreatesDTO()
+    public async Task CompileRecipesAsync_CreatesDTO_NoSections()
     {
         // initialize test recipe ID
         int recipeId = 2;
-
-        // mock recipe repository interface
-        var mockRecipeRepo = new Mock<IRecipeRepository>();
-        // mock ingredient list repository interface
-        var mockIngListRepo = new Mock<IIngListRepository>();
-        // mock instructions repository interface
-        var mockInstructionsRepo = new Mock<IInstructionsRepository>();
-        // mock tags repository interface
-        var mockTagsRepo = new Mock<ITagsRepository>();
-        // mock sections repository interface
-        var mockSectionsRepo = new Mock<ISectionsRepository>();
-        // mock ViewRecipeService
-        var viewRecipeService = new ViewRecipeService(
-            mockRecipeRepo.Object,
-            mockSectionsRepo.Object,
-            mockIngListRepo.Object,
-            mockInstructionsRepo.Object,
-            mockTagsRepo.Object
-        );
 
         // set up expected DTO return from recipe repository
         var mockRecipeSummary = _expectedViewRecipe["RecipeSummary"]?.ToObject<RecipeDTO>() ?? new RecipeDTO();
@@ -102,6 +98,58 @@ public class ViewRecipeServiceTests()
                         .ReturnsAsync(mockInsList);
         // set up expected DTO return from tags repository
         var mockTags = _expectedViewRecipe["RecipeTags"]?.ToObject<TagStringsDTO>() ?? new TagStringsDTO();
+        mockTagsRepo.Setup(d => d.GetTagsByRecipe(recipeId))
+                        .Returns(mockTags);
+
+        // initialize expected FullRecipeDTO return
+        FullRecipeDTO expectedReturn = new()
+        {
+            RecipeId = recipeId,
+            RecipeSummary = mockRecipeSummary,
+            RecipeTags = mockTags,
+            RecipeSections = mockSections,
+            Ingredients = mockIngList,
+            Instructions = mockInsList
+        };
+        // convert to JSON
+        var expectedJson = JsonConvert.SerializeObject(expectedReturn);
+        JToken expectedFullRecipe = JToken.Parse(expectedJson);
+
+        // call CompileRecipesAsync with the test recipe ID
+        var result = await viewRecipeService.CompileRecipeAsync(recipeId);
+        // convert to JSON
+        var actualJson = JsonConvert.SerializeObject(result);
+        JToken actualToken = JToken.Parse(actualJson);
+
+        // Assert equal
+        Assert.True(JToken.DeepEquals(expectedFullRecipe, actualToken));
+    }
+
+
+    [Fact]
+    public async Task CompileRecipesAsync_CreatesDTO_Sections()
+    {
+        // initialize test recipe ID
+        int recipeId = 3;
+
+        // set up expected DTO return from recipe repository
+        var mockRecipeSummary = _expectedViewRecipeSections["RecipeSummary"]?.ToObject<RecipeDTO>() ?? new RecipeDTO();
+        mockRecipeRepo.Setup(d => d.ReturnRecipeByIdAsync(recipeId))
+                        .ReturnsAsync(mockRecipeSummary);
+        // set up expected DTO return from sections repository
+        var mockSections = _expectedViewRecipeSections["RecipeSections"]?.ToObject<List<SectionDTO>>() ?? [];
+        mockSectionsRepo.Setup(d => d.GetSectionsByRecipeAsync(recipeId))
+                        .ReturnsAsync(mockSections);
+        // set up expected DTO return from ingredient list repository
+        var mockIngList = _expectedViewRecipeSections["Ingredients"]?.ToObject<List<IngredientListDTO>>() ?? [];
+        mockIngListRepo.Setup(d => d.GetIngredientsByRecipeAsync(recipeId))
+                        .ReturnsAsync(mockIngList);
+        // set up expected DTO return from instructions repository
+        var mockInsList = _expectedViewRecipeSections["Instructions"]?.ToObject<List<InstructionDTO>>() ?? [];
+        mockInstructionsRepo.Setup(d => d.GetInstructionsByRecipeAsync(recipeId))
+                        .ReturnsAsync(mockInsList);
+        // set up expected DTO return from tags repository
+        var mockTags = _expectedViewRecipeSections["RecipeTags"]?.ToObject<TagStringsDTO>() ?? new TagStringsDTO();
         mockTagsRepo.Setup(d => d.GetTagsByRecipe(recipeId))
                         .Returns(mockTags);
 

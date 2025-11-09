@@ -1,6 +1,5 @@
 /* Data access layer to Sections entity */
 
-using System.Reflection.Metadata.Ecma335;
 using Microsoft.EntityFrameworkCore;
 using savorfolio_backend.Data;
 using savorfolio_backend.Interfaces;

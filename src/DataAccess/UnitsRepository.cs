@@ -52,7 +52,7 @@ public class UnitsRepository(AppDbContext context) : IUnitsRepository
             .ToListAsync();
     }
     
-    public async Task<string> UnitSearchReturnString(string? searchTerm)
+    public async Task<string> UnitSearchReturnStringAsync(string? searchTerm)
     {
         if (searchTerm == null || searchTerm == "") return "none";
         var unitMatch = await SearchUnitTableAsync(searchTerm);

@@ -89,7 +89,7 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
     }
 
     // Add new recipe to database, needs to return at least the recipe ID
-    public async Task<int> AddNewRecipe(RecipeDTO recipeData)
+    public async Task<int> AddNewRecipeAsync(RecipeDTO recipeData)
     {
         // generate new recipe record to be input into Recipe table
         var newRecipe = new Recipe

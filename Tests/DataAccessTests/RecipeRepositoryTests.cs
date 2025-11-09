@@ -168,7 +168,7 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
         var addRecipeDTO = _expectedAddRecipe["recipeSummary"]?.ToObject<RecipeDTO>();
 
         // call AddNewRecipe with the DTO
-        var resultId = await _repository.AddNewRecipe(addRecipeDTO!);
+        var resultId = await _repository.AddNewRecipeAsync(addRecipeDTO!);
 
         // assert the expected recipe ID is equal to the added recipe ID
         Assert.Equal(expectedRecipeId, resultId);

@@ -61,8 +61,8 @@ public class IngredientListRepositoryTests(SqliteDbFixture sqliteDbFixture) : IC
         // initialize the number of records expected to be added to the table: 10
         int expectedRecordCount = 10;
 
-        // call AddNewRecipe with the DTO -- this is necessary to avoid foreign key violations
-        var recipeId = await _recipeRepository.AddNewRecipe(addRecipeDTO!);
+        // call AddNewRecipeAsync with the DTO -- this is necessary to avoid foreign key violations
+        var recipeId = await _recipeRepository.AddNewRecipeAsync(addRecipeDTO!);
         // call AddNewRecipeIng with the ingredient list and recipe ID
         int records = _repository.AddNewRecipeIng(ingList!, recipeId, sectionsData: []);
 

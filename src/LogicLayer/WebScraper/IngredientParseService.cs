@@ -269,7 +269,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
             foreach (var term in splitIngredient)
             {
                 unitTerm = term;
-                tryUnit = await _unitsRepository.UnitSearchReturnString(term);
+                tryUnit = await _unitsRepository.UnitSearchReturnStringAsync(term);
                 if (tryUnit != "none")
                 {
                     unit = tryUnit;
@@ -323,7 +323,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
             {
                 var candidate = string.Join(' ', words.Skip(start).Take(end - start));
 
-                var dtoList = await _ingredientRepository.IngredientSearchReturnString(candidate);
+                var dtoList = await _ingredientRepository.IngredientSearchReturnStringAsync(candidate);
 
                 if (dtoList == null || dtoList.Count == 0)
                     continue;

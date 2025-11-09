@@ -51,7 +51,7 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
             .ToListAsync();
     }
     
-    public async Task<List<string>> IngredientSearchReturnString(string? searchTerm)
+    public async Task<List<string>> IngredientSearchReturnStringAsync(string? searchTerm)
     {
         List<string> ingNames = [];
         if (searchTerm == null || searchTerm == "") return ["none"];

@@ -25,13 +25,13 @@ public class AddRecipeService(
     private readonly IInstructionsRepository _instructionsRepository = instructionsRepository;
     private readonly ITagsRepository _tagsRepository = tagsRepository;
 
-    public async Task<OperationResult<int>> AddRecipeManually(JObject newRecipeContent)
+    public async Task<OperationResult<int>> AddRecipeManuallyAsync(JObject newRecipeContent)
     {
         // extract recipe information: name, servings, cook time, prep time, bake temp, temp unit
         var newRecipe = (newRecipeContent["recipeSummary"]?.ToObject<RecipeDTO>()) ?? throw new InvalidOperationException("RecipeSummary section missing or invalid");
 
-        // call recipeRepository.AddNewRecipe with the new recipe DTO (await)
-        var newRecipeId = await _recipeRepository.AddNewRecipe(newRecipe);
+        // call recipeRepository.AddNewRecipeAsync with the new recipe DTO (await)
+        var newRecipeId = await _recipeRepository.AddNewRecipeAsync(newRecipe);
 
         // build sections list DTO or set as empty list
         var sectionsList = (newRecipeContent["recipeSections"]?.ToObject<List<SectionDTO>>()) ?? [];

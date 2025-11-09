@@ -7,3 +7,4 @@ integrationTests.env
 unitTests.env
 publish/
 .env.test
+TestResults/

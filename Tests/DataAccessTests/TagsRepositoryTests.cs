@@ -62,7 +62,7 @@ public class TagsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixtur
         int expectedRecordCount = 1;
 
         // call AddNewRecipe with the DTO -- this is necessary to avoid foreign key violations
-        var recipeId = await _recipeRepository.AddNewRecipe(addRecipeDTO!);
+        var recipeId = await _recipeRepository.AddNewRecipeAsync(addRecipeDTO!);
         // call AddNewRecipeIng with the ingredient list and recipe ID
         int records = _repository.AddNewRecipeTags(tags!, recipeId);
 
