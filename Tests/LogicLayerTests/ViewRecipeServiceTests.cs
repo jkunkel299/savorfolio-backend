@@ -8,29 +8,40 @@ using Newtonsoft.Json;
 
 namespace Tests.LogicLayerTests;
 
-public class ViewRecipeServiceTests()
+public class ViewRecipeServiceTests
 {
-    private static readonly JObject _expectedViewRecipe;
-    private static readonly JObject _expectedViewRecipeSections;
+    private readonly JObject _expectedViewRecipe;
+    private readonly JObject _expectedViewRecipeSections;
     // mock recipe repository interface
-    private static readonly Mock<IRecipeRepository> mockRecipeRepo = new();
+    private readonly Mock<IRecipeRepository> mockRecipeRepo;
     // mock ingredient list repository interface
-    private static readonly Mock<IIngListRepository> mockIngListRepo = new();
+    private readonly Mock<IIngListRepository> mockIngListRepo;
     // mock instructions repository interface
-    private static readonly Mock<IInstructionsRepository> mockInstructionsRepo = new();
+    private readonly Mock<IInstructionsRepository> mockInstructionsRepo;
     // mock tags repository interface
-    private static readonly Mock<ITagsRepository> mockTagsRepo = new();
+    private readonly Mock<ITagsRepository> mockTagsRepo;
     // mock sections repository interface
-    private static readonly Mock<ISectionsRepository> mockSectionsRepo = new();
+    private readonly Mock<ISectionsRepository> mockSectionsRepo;
     // mock ViewRecipeService
-    private static readonly ViewRecipeService viewRecipeService;
+    private readonly ViewRecipeService viewRecipeService;
 
-    static ViewRecipeServiceTests()
+    public ViewRecipeServiceTests()
     {
         string viewRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeDTO.json");
         string viewRecipeSectionsFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeSectionsDTO.json");
         _expectedViewRecipe = JObject.Parse(File.ReadAllText(viewRecipeFilePath));
         _expectedViewRecipeSections = JObject.Parse(File.ReadAllText(viewRecipeSectionsFilePath));
+
+        // mock recipe repository interface
+        mockRecipeRepo = new();
+        // mock ingredient list repository interface
+        mockIngListRepo = new();
+        // mock instructions repository interface
+        mockInstructionsRepo = new();
+        // mock tags repository interface
+        mockTagsRepo = new();
+        // mock sections repository interface
+        mockSectionsRepo = new();
 
         viewRecipeService = new(
             mockRecipeRepo.Object,

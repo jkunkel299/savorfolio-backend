@@ -22,13 +22,7 @@ public class AddRecipeServiceTests()
     // mock sections repository interface
     private static readonly Mock<ISectionsRepository> mockSectionsRepo = new();
     // mock AddRecipeService
-    private static readonly AddRecipeService addRecipeService = new(
-        mockRecipeRepo.Object,
-        mockSectionsRepo.Object,
-        mockIngListRepo.Object,
-        mockInstructionsRepo.Object,
-        mockTagsRepo.Object
-    );
+    private static readonly AddRecipeService addRecipeService;
 
     static AddRecipeServiceTests()
     {
@@ -36,6 +30,14 @@ public class AddRecipeServiceTests()
         string addRecipeSectionsFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipe.json");
         _expectedAddRecipe = JObject.Parse(File.ReadAllText(addRecipeFilePath));
         _expectedAddRecipeSections = JObject.Parse(File.ReadAllText(addRecipeSectionsFilePath));
+
+        addRecipeService = new(
+            mockRecipeRepo.Object,
+            mockSectionsRepo.Object,
+            mockIngListRepo.Object,
+            mockInstructionsRepo.Object,
+            mockTagsRepo.Object
+        );
     }
 
 
@@ -64,7 +66,7 @@ public class AddRecipeServiceTests()
                     .Returns(1);
 
         // call AddRecipeManually from mocked AddRecipeService
-        _ = await addRecipeService.AddRecipeManually(newRecipeContent);
+        _ = await addRecipeService.AddRecipeManuallyAsync(newRecipeContent);
 
         // assert mocked recipe repo function called once
         mockRecipeRepo.Verify(d => d.AddNewRecipeAsync(It.IsAny<RecipeDTO>()), Times.AtMostOnce);
@@ -102,7 +104,7 @@ public class AddRecipeServiceTests()
                     .Returns(1);
 
         // call AddRecipeManually from mocked AddRecipeService
-        var result = await addRecipeService.AddRecipeManually(newRecipeContent);
+        var result = await addRecipeService.AddRecipeManuallyAsync(newRecipeContent);
 
         // assert result.success is true
         Assert.True(result.Success);
@@ -135,7 +137,7 @@ public class AddRecipeServiceTests()
                     .Returns(1);
 
         // call AddRecipeManually from mocked AddRecipeService
-        var result = await addRecipeService.AddRecipeManually(newRecipeContent);
+        var result = await addRecipeService.AddRecipeManuallyAsync(newRecipeContent);
 
         // assert result.success is true
         Assert.True(result.Success);
@@ -168,7 +170,7 @@ public class AddRecipeServiceTests()
                     .Returns(returnValues[2]);
 
         // call AddRecipeManually from mocked AddRecipeService
-        var result = await addRecipeService.AddRecipeManually(newRecipeContent);
+        var result = await addRecipeService.AddRecipeManuallyAsync(newRecipeContent);
 
         // assert result.success is false
         Assert.False(result.Success);
@@ -199,7 +201,7 @@ public class AddRecipeServiceTests()
                     .Returns(1);
 
         // call AddRecipeManually from mocked AddRecipeService
-        var result = await addRecipeService.AddRecipeManually(newRecipeContent);
+        var result = await addRecipeService.AddRecipeManuallyAsync(newRecipeContent);
 
         // assert result.success is false
         Assert.False(result.Success);

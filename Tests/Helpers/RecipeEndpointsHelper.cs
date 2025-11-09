@@ -38,7 +38,7 @@ public static class RecipeEndpointsHelper
 
         var newRecipe = JObject.Parse(newRecipeBody.RootElement.GetRawText());
 
-        OperationResult<int> result = await service.AddRecipeManually(newRecipe);
+        OperationResult<int> result = await service.AddRecipeManuallyAsync(newRecipe);
         if (result.Success)
         {
             return Results.Ok($"Recipe ID {result.Data} added successfully");

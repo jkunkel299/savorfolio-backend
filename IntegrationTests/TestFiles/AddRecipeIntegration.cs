@@ -52,7 +52,7 @@ public class AddRecipeFullTests(DatabaseFixture databaseFixture, TestServerFixtu
         Assert.NotNull(actualMessage);
 
         // Assert equal
-        Assert.True(JToken.DeepEquals(expectedMessage, actualMessage));
+        Assert.Equal(expectedMessage, actualMessage);
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public class AddRecipeFullTests(DatabaseFixture databaseFixture, TestServerFixtu
         Assert.False(string.IsNullOrEmpty(_databaseFixture.ConnectionString));
 
         // initialize expected recipe ID
-        int expectedId = 4;
+        int expectedId = 5;
         // initialize the expected response message
         string expectedMessage = $"\"Recipe ID {expectedId} added successfully\"";
 
@@ -84,6 +84,6 @@ public class AddRecipeFullTests(DatabaseFixture databaseFixture, TestServerFixtu
         Assert.NotNull(actualMessage);
 
         // Assert equal
-        Assert.True(JToken.DeepEquals(expectedMessage, actualMessage));
+        Assert.Equal(expectedMessage, actualMessage);
     }
 }

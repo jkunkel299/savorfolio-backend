@@ -32,7 +32,7 @@ public class AddRecipeControllerTests()
         var mockAddRecipeService = new Mock<IAddRecipeService>();
         // set up mocked service to return an expected success
         mockAddRecipeService
-            .Setup(d => d.AddRecipeManually(It.IsAny<JObject>()))
+            .Setup(d => d.AddRecipeManuallyAsync(It.IsAny<JObject>()))
             .ReturnsAsync(new OperationResult<int>
             {
                 Success = true,
@@ -44,7 +44,7 @@ public class AddRecipeControllerTests()
         var result = await RecipeEndpointsHelper.InvokeAddManualRecipeEndpoint(jsonBody, mockAddRecipeService.Object);
 
         // assert AddRecipeManually called once
-        mockAddRecipeService.Verify(d => d.AddRecipeManually(It.IsAny<JObject>()), Times.AtMostOnce);
+        mockAddRecipeService.Verify(d => d.AddRecipeManuallyAsync(It.IsAny<JObject>()), Times.AtMostOnce);
 
         // assert result.Ok type
         var okResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.Ok<string>>(result);
@@ -65,7 +65,7 @@ public class AddRecipeControllerTests()
         var mockAddRecipeService = new Mock<IAddRecipeService>();
         // set up mocked service to return an expected failure
         mockAddRecipeService
-            .Setup(d => d.AddRecipeManually(It.IsAny<JObject>()))
+            .Setup(d => d.AddRecipeManuallyAsync(It.IsAny<JObject>()))
             .ReturnsAsync(new OperationResult<int>
             {
                 Success = false,
@@ -76,7 +76,7 @@ public class AddRecipeControllerTests()
         var result = await RecipeEndpointsHelper.InvokeAddManualRecipeEndpoint(jsonBody, mockAddRecipeService.Object);
 
         // assert AddRecipeManually called once
-        mockAddRecipeService.Verify(d => d.AddRecipeManually(It.IsAny<JObject>()), Times.AtMostOnce);
+        mockAddRecipeService.Verify(d => d.AddRecipeManuallyAsync(It.IsAny<JObject>()), Times.AtMostOnce);
 
         // assert result.Problem type
         var badResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult>(result);
