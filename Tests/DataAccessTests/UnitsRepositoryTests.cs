@@ -23,12 +23,14 @@ public class UnitRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixture<Un
             {
                 "Id": 37,
                 "Name": "to taste",
-                "Abbreviation": "to taste"
+                "Abbreviation": "to taste",
+                "PluralName": null
             },
             {
                 "Id": 2,
-                "Name": "Tablespoon",
-                "Abbreviation": "tbsp"
+                "Name": "tablespoon",
+                "Abbreviation": "tbsp",
+                "PluralName": "tablespoons"
             }
         ]
         """;

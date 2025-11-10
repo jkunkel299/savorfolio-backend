@@ -80,6 +80,43 @@ public class InMemoryDbSeeder
         context.SaveChanges();
     }
 
+    // specialized variant seeder for recipe sections
+    public static void SeedSectionsFromJson(AppDbContext context, string sectionFilePath)
+    {
+        if (!File.Exists(sectionFilePath))
+            throw new FileNotFoundException($"Seed file not found: {sectionFilePath}");
+
+        var json = File.ReadAllText(sectionFilePath);
+        if (string.IsNullOrWhiteSpace(json)) return;
+
+        var sectionLists = JsonSerializer.Deserialize<List<RecipeSection>>(json, JsonOptions) ?? [];
+
+        // Clear existing intruction list items
+        var existing = context.RecipeSections.AsQueryable().ToList();
+        if (existing.Count != 0)
+        {
+            context.RecipeSections.RemoveRange(existing);
+            context.SaveChanges();
+        }
+
+        // If JSON included nested Recipe objects, resolve them to RecipeId; resolve sections to SectionId
+        foreach (var i in sectionLists)
+        {
+            if (i.Recipe != null)
+            {
+                // attempt to find by name
+                var matchedRecipe = context.Recipes.FirstOrDefault(r => r.Name == i.Recipe.Name);
+                if (matchedRecipe != null)
+                {
+                    i.RecipeId = matchedRecipe.Id;
+                }
+            }
+        }
+
+        context.RecipeSections.AddRange(sectionLists);
+        context.SaveChanges();
+    }
+
     // specialized variant seeder for ingredient lists
     public static void SeedIngredientListsFromJson(AppDbContext context, string ingListFilePath)
     {
@@ -99,7 +136,7 @@ public class InMemoryDbSeeder
             context.SaveChanges();
         }
 
-        // If JSON included nested Recipe objects, resolve them to RecipeId
+        // If JSON included nested Recipe objects, resolve them to RecipeId; resolve to SectionId
         foreach (var i in ingredientLists)
         {
             if (i.Recipe != null)
@@ -111,6 +148,15 @@ public class InMemoryDbSeeder
                     i.RecipeId = matchedRecipe.Id;
                 }
             }
+            // if (i.SectionId != null)
+            // {
+            //     // attempt to find by name
+            //     var matchedSection = context.RecipeSections.FirstOrDefault(r => r.SectionName == i.Section!.SectionName);
+            //     if (matchedSection != null)
+            //     {
+            //         i.SectionId = matchedSection.Id;
+            //     }
+            // }
         }
 
         context.IngredientLists.AddRange(ingredientLists);
@@ -136,18 +182,27 @@ public class InMemoryDbSeeder
             context.SaveChanges();
         }
 
-        // If JSON included nested Recipe objects, resolve them to RecipeId
+        // If JSON included nested Recipe objects, resolve them to RecipeId; resolve sections to SectionId
         foreach (var i in intructionLists)
         {
             if (i.Recipe != null)
             {
-                // attempt to find by name first
+                // attempt to find by name
                 var matchedRecipe = context.Recipes.FirstOrDefault(r => r.Name == i.Recipe.Name);
                 if (matchedRecipe != null)
                 {
                     i.RecipeId = matchedRecipe.Id;
                 }
             }
+            // if (i.SectionId != null)
+            // {
+            //     // attempt to find by name
+            //     var matchedSection = context.RecipeSections.FirstOrDefault(r => r.SectionName == i.Section!.SectionName);
+            //     if (matchedSection != null)
+            //     {
+            //         i.SectionId = matchedSection.Id;
+            //     }
+            // }
         }
 
         context.Instructions.AddRange(intructionLists);

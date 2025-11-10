@@ -8,6 +8,8 @@ public partial class IngredientVariant
 
     public string Name { get; set; } = null!;
 
+    public string? PluralName { get; set; }
+
     public virtual ICollection<IngredientList> IngredientLists { get; set; } = [];
 
     public virtual IngredientType? Type { get; set; } = null;

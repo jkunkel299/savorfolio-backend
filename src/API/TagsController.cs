@@ -33,7 +33,7 @@ public static class TagsEndpoints
     {
         app.MapGet("api/enum/cuisine-type", () =>
         {
-            var values = Enum.GetNames<CuisineTag>();
+            var values = GetEnumList<CuisineTag>();
             return Results.Ok(values);
         });
 

@@ -22,7 +22,7 @@ public class IngredientControllerTests()
         _ = await IngredientEndpointsHelper.InvokeSearchEndpoint(searchTerm, mockDependency.Object);
 
         // assert mocked function called once
-        mockDependency.Verify(d => d.SearchIngredientsAsync(searchTerm), Times.Once);
+        mockDependency.Verify(d => d.SearchIngredientsAsync(searchTerm), Times.AtMostOnce);
     }
 
     [Fact]

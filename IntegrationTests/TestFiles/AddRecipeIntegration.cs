@@ -12,22 +12,25 @@ public class AddRecipeFullTests(DatabaseFixture databaseFixture, TestServerFixtu
     private readonly DatabaseFixture _databaseFixture = databaseFixture;
     private readonly HttpClient _client = testServerFixture.HttpClient;
     private static readonly JObject _expectedAddRecipe;
+    private static readonly JObject _expectedAddRecipeSections;
 
     static AddRecipeFullTests()
     {
         string addRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipe.json");
+        string addRecipeSectionsFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipeSections.json");
         _expectedAddRecipe = JObject.Parse(File.ReadAllText(addRecipeFilePath));
+        _expectedAddRecipeSections = JObject.Parse(File.ReadAllText(addRecipeSectionsFilePath));
     }
 
 
     [Fact]
-    public async Task AddRecipesTest()
+    public async Task AddRecipesTest_NoSections()
     {
         // Ensure connection to the Database
         Assert.False(string.IsNullOrEmpty(_databaseFixture.ConnectionString));
 
         // initialize expected recipe ID
-        int expectedId = 3;
+        int expectedId = 4;
         // initialize the expected response message
         string expectedMessage = $"\"Recipe ID {expectedId} added successfully\"";
 
@@ -49,6 +52,38 @@ public class AddRecipeFullTests(DatabaseFixture databaseFixture, TestServerFixtu
         Assert.NotNull(actualMessage);
 
         // Assert equal
-        Assert.True(JToken.DeepEquals(expectedMessage, actualMessage));
+        Assert.Equal(expectedMessage, actualMessage);
+    }
+
+    [Fact]
+    public async Task AddRecipesTest_Sections()
+    {
+        // Ensure connection to the Database
+        Assert.False(string.IsNullOrEmpty(_databaseFixture.ConnectionString));
+
+        // initialize expected recipe ID
+        int expectedId = 5;
+        // initialize the expected response message
+        string expectedMessage = $"\"Recipe ID {expectedId} added successfully\"";
+
+        // initialize JSON body
+        string jsonBody = _expectedAddRecipeSections.ToString();
+
+        // Prepare HTTP content with correct JSON headers
+        var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+        // Call MapManualRecipe API with the recipe to add
+        var response = await _client.PostAsync("/api/recipes/add/manual", content);
+        // get the response content/message
+        var actualMessage = await response.Content.ReadAsStringAsync();
+
+        // Assert status code 200
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        // Assert results not null
+        Assert.NotNull(actualMessage);
+
+        // Assert equal
+        Assert.Equal(expectedMessage, actualMessage);
     }
 }

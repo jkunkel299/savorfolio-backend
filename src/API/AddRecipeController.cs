@@ -18,8 +18,8 @@ public static class AddRecipeEndpoints
             IAddRecipeService addRecipeService) =>
         {
             var newRecipe = JObject.Parse(newRecipeBody.RootElement.GetRawText());
-            
-            OperationResult<int> result = await addRecipeService.AddRecipeManually(newRecipe);
+
+            OperationResult<int> result = await addRecipeService.AddRecipeManuallyAsync(newRecipe);
             if (result.Success)
             {
                 return Results.Ok($"Recipe ID {result.Data} added successfully");
@@ -28,7 +28,19 @@ public static class AddRecipeEndpoints
             {
                 return Results.Problem("Recipe not added successfully");
             }
-            
+
+        });
+    }
+    
+    public static void MapDraftRecipe(this WebApplication app)
+    {
+        app.MapPost("/api/recipes/add/scrape", async (
+            [FromBody] string url,
+            IWebScraperService webScraperService
+        ) =>
+        {
+            DraftRecipeDTO results = await webScraperService.RunScraperAsync(url);
+            return Results.Ok(results);
         });
     }
 }

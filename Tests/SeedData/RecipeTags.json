@@ -14,5 +14,15 @@
         "Dietary": [
             "Nut-Free"
         ]
+    },
+    {
+        "RecipeId": 3,
+        "Recipe_type": "Dessert",
+        "Meal": "Dessert",
+        "Cuisine": "American",
+        "Dietary": [
+            "Nut-Free",
+            "Soy-Free"
+        ]
     }
 ]

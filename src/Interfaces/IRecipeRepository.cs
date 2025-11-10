@@ -6,5 +6,5 @@ public interface IRecipeRepository
 {
     Task<RecipeDTO> ReturnRecipeByIdAsync(int recipeId);
     Task<List<RecipeDTO>> ReturnRecipesFiltered(RecipeFilterRequestDTO filter);
-    Task<int> AddNewRecipe(RecipeDTO recipeData);
+    Task<int> AddNewRecipeAsync(RecipeDTO recipeData);
 }

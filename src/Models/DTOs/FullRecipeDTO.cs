@@ -8,6 +8,8 @@ public class FullRecipeDTO
 
     public required TagStringsDTO RecipeTags { get; set; }
 
+    public List<SectionDTO>? RecipeSections { get; set; }
+
     public required List<IngredientListDTO> Ingredients { get; set; }
 
     public required List<InstructionDTO> Instructions { get; set; }

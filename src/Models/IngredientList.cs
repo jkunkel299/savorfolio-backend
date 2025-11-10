@@ -23,4 +23,6 @@ public partial class IngredientList
     public virtual Recipe Recipe { get; set; } = null!;
 
     public virtual Unit Unit { get; set; } = null!;
+
+    public virtual RecipeSection? Section { get; set; }
 }

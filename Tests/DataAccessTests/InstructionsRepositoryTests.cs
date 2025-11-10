@@ -53,17 +53,17 @@ public class IntructionsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClas
     public async Task AddNewInstructions()
     {
         // initialize the recipe DTO to add to the database
-        var addRecipeDTO = _expectedAddRecipe["RecipeSummary"]?.ToObject<RecipeDTO>();
+        var addRecipeDTO = _expectedAddRecipe["recipeSummary"]?.ToObject<RecipeDTO>();
         // initialize the list of ingredient DTOs to add to the table
-        var insList = _expectedAddRecipe["Instructions"]?.ToObject<List<InstructionDTO>>();
+        var insList = _expectedAddRecipe["instructions"]?.ToObject<List<InstructionDTO>>();
 
         // initialize the number of records expected to be added to the table: 4
         int expectedRecordCount = 4;
 
-        // call AddNewRecipe with the DTO -- this is necessary to avoid foreign key violations
-        var recipeId = await _recipeRepository.AddNewRecipe(addRecipeDTO!);
+        // call AddNewRecipeAsync with the DTO -- this is necessary to avoid foreign key violations
+        var recipeId = await _recipeRepository.AddNewRecipeAsync(addRecipeDTO!);
         // call AddNewRecipeIng with the ingredient list and recipe ID
-        int records = _repository.AddNewRecipeIns(insList!, recipeId);
+        int records = _repository.AddNewRecipeIns(insList!, recipeId, sectionsData: []);
 
         // assert the expected record count is equal to the actual record count
         Assert.Equal(expectedRecordCount, records);

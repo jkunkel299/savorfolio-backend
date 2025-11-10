@@ -1,1038 +1,1382 @@
 [
     {
         "TypeId": 3,
-        "Name": "red wine"
+        "Name": "red wine",
+        "PluralName": null
     },
     {
         "TypeId": 3,
-        "Name": "white wine"
+        "Name": "white wine",
+        "PluralName": null
     },
     {
         "TypeId": 3,
-        "Name": "beer"
+        "Name": "beer",
+        "PluralName": null
     },
     {
         "TypeId": 3,
-        "Name": "sake"
+        "Name": "sake",
+        "PluralName": null
     },
     {
         "TypeId": 3,
-        "Name": "brandy"
+        "Name": "brandy",
+        "PluralName": null
     },
     {
         "TypeId": 3,
-        "Name": "rum"
+        "Name": "rum",
+        "PluralName": null
     },
     {
         "TypeId": 8,
-        "Name": "black beans"
+        "Name": "black beans",
+        "PluralName": null
     },
     {
         "TypeId": 8,
-        "Name": "kidney beans"
+        "Name": "kidney beans",
+        "PluralName": null
     },
     {
         "TypeId": 8,
-        "Name": "pinto beans"
+        "Name": "pinto beans",
+        "PluralName": null
     },
     {
         "TypeId": 8,
-        "Name": "navy beans"
+        "Name": "navy beans",
+        "PluralName": null
     },
     {
         "TypeId": 8,
-        "Name": "cannellini beans"
+        "Name": "cannellini beans",
+        "PluralName": null
     },
     {
         "TypeId": 8,
-        "Name": "chickpeas"
+        "Name": "chickpeas",
+        "PluralName": null
     },
     {
         "TypeId": 6,
-        "Name": "bread"
+        "Name": "bread",
+        "PluralName": null
     },
     {
         "TypeId": 6,
-        "Name": "baguette"
+        "Name": "baguette",
+        "PluralName": "baguettes"
     },
     {
         "TypeId": 6,
-        "Name": "pita"
+        "Name": "pita",
+        "PluralName": "pitas"
     },
     {
         "TypeId": 6,
-        "Name": "naan"
+        "Name": "naan",
+        "PluralName": null
     },
     {
         "TypeId": 6,
-        "Name": "tortilla"
+        "Name": "tortilla",
+        "PluralName": "tortillas"
     },
     {
         "TypeId": 6,
-        "Name": "pizza dough"
+        "Name": "pizza dough",
+        "PluralName": null
     },
     {
         "TypeId": 6,
-        "Name": "flatbread"
+        "Name": "flatbread",
+        "PluralName": null
     },
     {
         "TypeId": 4,
-        "Name": "chicken stock"
+        "Name": "chicken stock",
+        "PluralName": null
     },
     {
         "TypeId": 4,
-        "Name": "beef stock"
+        "Name": "beef stock",
+        "PluralName": null
     },
     {
         "TypeId": 4,
-        "Name": "vegetable stock"
+        "Name": "vegetable stock",
+        "PluralName": null
     },
     {
         "TypeId": 4,
-        "Name": "fish stock"
+        "Name": "fish stock",
+        "PluralName": null
     },
     {
         "TypeId": 27,
-        "Name": "butter, salted"
+        "Name": "butter, salted",
+        "PluralName": null
     },
     {
         "TypeId": 27,
-        "Name": "unsalted butter"
+        "Name": "butter, unsalted",
+        "PluralName": null
     },
     {
         "TypeId": 27,
-        "Name": "margarine"
+        "Name": "margarine",
+        "PluralName": null
     },
     {
         "TypeId": 27,
-        "Name": "ghee"
+        "Name": "ghee",
+        "PluralName": null
     },
     {
         "TypeId": 23,
-        "Name": "cheddar cheese"
+        "Name": "cheddar cheese",
+        "PluralName": null
     },
     {
         "TypeId": 23,
-        "Name": "mozzarella cheese"
+        "Name": "mozzarella cheese",
+        "PluralName": null
     },
     {
         "TypeId": 23,
-        "Name": "feta"
+        "Name": "feta",
+        "PluralName": null
     },
     {
         "TypeId": 23,
-        "Name": "parmesan cheese"
+        "Name": "parmesan cheese",
+        "PluralName": null
     },
     {
         "TypeId": 23,
-        "Name": "ricotta"
+        "Name": "ricotta",
+        "PluralName": null
     },
     {
         "TypeId": 23,
-        "Name": "goat cheese"
+        "Name": "goat cheese",
+        "PluralName": null
     },
     {
         "TypeId": 23,
-        "Name": "gorgonzola"
+        "Name": "gorgonzola",
+        "PluralName": null
     },
     {
         "TypeId": 17,
-        "Name": "cocoa powder"
+        "Name": "cocoa powder",
+        "PluralName": null
     },
     {
         "TypeId": 17,
-        "Name": "dark chocolate"
+        "Name": "dark chocolate",
+        "PluralName": null
     },
     {
         "TypeId": 17,
-        "Name": "milk chocolate"
+        "Name": "milk chocolate",
+        "PluralName": null
     },
     {
         "TypeId": 17,
-        "Name": "semi-sweet chocolate chips"
+        "Name": "semi-sweet chocolate chips",
+        "PluralName": null
     },
     {
         "TypeId": 14,
-        "Name": "ketchup"
+        "Name": "ketchup",
+        "PluralName": null
     },
     {
         "TypeId": 14,
-        "Name": "mustard"
+        "Name": "mustard",
+        "PluralName": null
     },
     {
         "TypeId": 14,
-        "Name": "mayonnaise"
+        "Name": "mayonnaise",
+        "PluralName": null
     },
     {
         "TypeId": 14,
-        "Name": "soy sauce"
+        "Name": "soy sauce",
+        "PluralName": null
     },
     {
         "TypeId": 14,
-        "Name": "fish sauce"
+        "Name": "fish sauce",
+        "PluralName": null
     },
     {
         "TypeId": 14,
-        "Name": "worcestershire sauce"
+        "Name": "worcestershire sauce",
+        "PluralName": null
     },
     {
         "TypeId": 14,
-        "Name": "sriracha"
+        "Name": "sriracha",
+        "PluralName": null
     },
     {
         "TypeId": 14,
-        "Name": "harissa"
+        "Name": "harissa",
+        "PluralName": null
     },
     {
         "TypeId": 14,
-        "Name": "hot sauce"
+        "Name": "hot sauce",
+        "PluralName": null
     },
     {
         "TypeId": 14,
-        "Name": "pesto"
+        "Name": "pesto",
+        "PluralName": null
     },
     {
         "TypeId": 14,
-        "Name": "hummus"
+        "Name": "hummus",
+        "PluralName": null
     },
     {
         "TypeId": 2,
-        "Name": "heavy cream"
+        "Name": "heavy cream",
+        "PluralName": null
     },
     {
         "TypeId": 2,
-        "Name": "whipping cream"
+        "Name": "whipping cream",
+        "PluralName": null
     },
     {
         "TypeId": 2,
-        "Name": "sour cream"
+        "Name": "sour cream",
+        "PluralName": null
     },
     {
         "TypeId": 2,
-        "Name": "creme fraiche"
+        "Name": "creme fraiche",
+        "PluralName": null
     },
     {
         "TypeId": 5,
-        "Name": "all-purpose flour"
+        "Name": "all-purpose flour",
+        "PluralName": null
     },
     {
         "TypeId": 5,
-        "Name": "whole wheat flour"
+        "Name": "whole wheat flour",
+        "PluralName": null
     },
     {
         "TypeId": 5,
-        "Name": "bread flour"
+        "Name": "bread flour",
+        "PluralName": null
     },
     {
         "TypeId": 5,
-        "Name": "almond flour"
+        "Name": "almond flour",
+        "PluralName": null
     },
     {
         "TypeId": 5,
-        "Name": "gluten-free flour"
+        "Name": "gluten-free flour",
+        "PluralName": null
     },
     {
         "TypeId": 5,
-        "Name": "coconut flour"
+        "Name": "coconut flour",
+        "PluralName": null
     },
     {
         "TypeId": 11,
-        "Name": "apple"
+        "Name": "apple",
+        "PluralName": "apples"
     },
     {
         "TypeId": 11,
-        "Name": "pear"
+        "Name": "pear",
+        "PluralName": "pears"
     },
     {
         "TypeId": 11,
-        "Name": "banana"
+        "Name": "banana",
+        "PluralName": "bananas"
     },
     {
         "TypeId": 11,
-        "Name": "mango"
+        "Name": "mango",
+        "PluralName": "mangos"
     },
     {
         "TypeId": 11,
-        "Name": "pineapple"
+        "Name": "pineapple",
+        "PluralName": "pineapples"
     },
     {
         "TypeId": 11,
-        "Name": "papaya"
+        "Name": "papaya",
+        "PluralName": "papayas"
     },
     {
         "TypeId": 11,
-        "Name": "coconut"
+        "Name": "coconut",
+        "PluralName": "coconuts"
     },
     {
         "TypeId": 11,
-        "Name": "orange"
+        "Name": "orange",
+        "PluralName": "oranges"
     },
     {
         "TypeId": 11,
-        "Name": "lemon"
+        "Name": "lemon",
+        "PluralName": "lemons"
     },
     {
         "TypeId": 11,
-        "Name": "lime"
+        "Name": "lime",
+        "PluralName": "limes"
     },
     {
         "TypeId": 11,
-        "Name": "grapefruit"
+        "Name": "grapefruit",
+        "PluralName": "grapefruits"
     },
     {
         "TypeId": 11,
-        "Name": "strawberry"
+        "Name": "strawberry",
+        "PluralName": "strawberries"
     },
     {
         "TypeId": 11,
-        "Name": "blueberry"
+        "Name": "blueberry",
+        "PluralName": "blueberries"
     },
     {
         "TypeId": 11,
-        "Name": "raspberry"
+        "Name": "raspberry",
+        "PluralName": "raspberries"
     },
     {
         "TypeId": 11,
-        "Name": "blackberry"
+        "Name": "blackberry",
+        "PluralName": "blackberries"
     },
     {
         "TypeId": 11,
-        "Name": "peach"
+        "Name": "peach",
+        "PluralName": "peaches"
     },
     {
         "TypeId": 11,
-        "Name": "plum"
+        "Name": "plum",
+        "PluralName": "plums"
     },
     {
         "TypeId": 11,
-        "Name": "apricot"
+        "Name": "apricot",
+        "PluralName": "apricots"
     },
     {
         "TypeId": 11,
-        "Name": "cherry"
+        "Name": "cherry",
+        "PluralName": "cherries"
     },
     {
         "TypeId": 11,
-        "Name": "grape"
+        "Name": "grape",
+        "PluralName": "grapes"
     },
     {
         "TypeId": 11,
-        "Name": "watermelon"
+        "Name": "watermelon",
+        "PluralName": "watermelons"
     },
     {
         "TypeId": 11,
-        "Name": "cantaloupe"
+        "Name": "cantaloupe",
+        "PluralName": "cantaloupes"
     },
     {
         "TypeId": 11,
-        "Name": "honeydew"
+        "Name": "honeydew",
+        "PluralName": "honeydews"
     },
     {
         "TypeId": 11,
-        "Name": "fig"
+        "Name": "fig",
+        "PluralName": "figs"
     },
     {
         "TypeId": 11,
-        "Name": "pomegranate"
+        "Name": "pomegranate",
+        "PluralName": "pomegranates"
     },
     {
         "TypeId": 22,
-        "Name": "fresh basil"
+        "Name": "fresh basil",
+        "PluralName": null
     },
     {
         "TypeId": 22,
-        "Name": "parsley"
+        "Name": "parsley",
+        "PluralName": null
     },
     {
         "TypeId": 22,
-        "Name": "cilantro"
+        "Name": "cilantro",
+        "PluralName": null
     },
     {
         "TypeId": 22,
-        "Name": "dill"
+        "Name": "dill",
+        "PluralName": null
     },
     {
         "TypeId": 22,
-        "Name": "mint"
+        "Name": "mint",
+        "PluralName": null
     },
     {
         "TypeId": 22,
-        "Name": "oregano"
+        "Name": "oregano",
+        "PluralName": null
     },
     {
         "TypeId": 22,
-        "Name": "thyme"
+        "Name": "thyme",
+        "PluralName": null
     },
     {
         "TypeId": 22,
-        "Name": "rosemary"
+        "Name": "rosemary",
+        "PluralName": null
     },
     {
         "TypeId": 22,
-        "Name": "sage"
+        "Name": "sage",
+        "PluralName": null
     },
     {
         "TypeId": 22,
-        "Name": "chives"
+        "Name": "chives",
+        "PluralName": null
     },
     {
         "TypeId": 19,
-        "Name": "yeast"
+        "Name": "yeast",
+        "PluralName": null
     },
     {
         "TypeId": 19,
-        "Name": "baking powder"
+        "Name": "baking powder",
+        "PluralName": null
     },
     {
         "TypeId": 19,
-        "Name": "baking soda"
+        "Name": "baking soda",
+        "PluralName": null
     },
     {
         "TypeId": 25,
-        "Name": "red lentils"
+        "Name": "red lentils",
+        "PluralName": null
     },
     {
         "TypeId": 25,
-        "Name": "green lentils"
+        "Name": "green lentils",
+        "PluralName": null
     },
     {
         "TypeId": 25,
-        "Name": "brown lentils"
+        "Name": "brown lentils",
+        "PluralName": null
     },
     {
         "TypeId": 9,
-        "Name": "whole milk"
+        "Name": "whole milk",
+        "PluralName": null
     },
     {
         "TypeId": 9,
-        "Name": "skim milk"
+        "Name": "skim milk",
+        "PluralName": null
     },
     {
         "TypeId": 9,
-        "Name": "soy milk"
+        "Name": "soy milk",
+        "PluralName": null
     },
     {
         "TypeId": 9,
-        "Name": "almond milk"
+        "Name": "almond milk",
+        "PluralName": null
     },
     {
         "TypeId": 9,
-        "Name": "oat milk"
+        "Name": "oat milk",
+        "PluralName": null
     },
     {
         "TypeId": 9,
-        "Name": "coconut milk"
+        "Name": "coconut milk",
+        "PluralName": null
     },
     {
         "TypeId": 20,
-        "Name": "almond"
+        "Name": "almond",
+        "PluralName": "almonds"
     },
     {
         "TypeId": 20,
-        "Name": "cashew"
+        "Name": "cashew",
+        "PluralName": "cashews"
     },
     {
         "TypeId": 20,
-        "Name": "peanut"
+        "Name": "peanut",
+        "PluralName": "peanuts"
     },
     {
         "TypeId": 20,
-        "Name": "walnut"
+        "Name": "walnut",
+        "PluralName": "walnuts"
     },
     {
         "TypeId": 20,
-        "Name": "pecan"
+        "Name": "pecan",
+        "PluralName": "pecans"
     },
     {
         "TypeId": 20,
-        "Name": "pistachio"
+        "Name": "pistachio",
+        "PluralName": "pistachios"
     },
     {
         "TypeId": 20,
-        "Name": "hazelnut"
+        "Name": "hazelnut",
+        "PluralName": "hazelnuts"
     },
     {
         "TypeId": 20,
-        "Name": "macadamia"
+        "Name": "macadamia nut",
+        "PluralName": "macadamia nuts"
     },
     {
         "TypeId": 30,
-        "Name": "peanut butter"
+        "Name": "peanut butter",
+        "PluralName": null
     },
     {
         "TypeId": 30,
-        "Name": "almond butter"
+        "Name": "almond butter",
+        "PluralName": null
     },
     {
         "TypeId": 30,
-        "Name": "tahini"
+        "Name": "tahini",
+        "PluralName": null
     },
     {
         "TypeId": 30,
-        "Name": "cashew butter"
+        "Name": "cashew butter",
+        "PluralName": null
     },
     {
         "TypeId": 12,
-        "Name": "spaghetti"
+        "Name": "spaghetti",
+        "PluralName": null
     },
     {
         "TypeId": 12,
-        "Name": "macaroni"
+        "Name": "macaroni",
+        "PluralName": null
     },
     {
         "TypeId": 12,
-        "Name": "penne"
+        "Name": "penne",
+        "PluralName": null
     },
     {
         "TypeId": 12,
-        "Name": "linguine"
+        "Name": "linguine",
+        "PluralName": null
     },
     {
         "TypeId": 12,
-        "Name": "fettuccine"
+        "Name": "fettuccine",
+        "PluralName": null
     },
     {
         "TypeId": 12,
-        "Name": "lasagna noodles"
+        "Name": "lasagna noodles",
+        "PluralName": null
     },
     {
         "TypeId": 12,
-        "Name": "orzo"
+        "Name": "orzo",
+        "PluralName": null
     },
     {
         "TypeId": 12,
-        "Name": "ravioli"
+        "Name": "ravioli",
+        "PluralName": null
     },
     {
         "TypeId": 12,
-        "Name": "tortellini"
+        "Name": "tortellini",
+        "PluralName": null
     },
     {
         "TypeId": 12,
-        "Name": "fusilli"
+        "Name": "fusilli",
+        "PluralName": null
     },
     {
         "TypeId": 12,
-        "Name": "rigatoni"
+        "Name": "rigatoni",
+        "PluralName": null
     },
     {
         "TypeId": 12,
-        "Name": "farfalle"
+        "Name": "farfalle",
+        "PluralName": null
     },
     {
         "TypeId": 1,
-        "Name": "green peas"
+        "Name": "green peas",
+        "PluralName": null
     },
     {
         "TypeId": 1,
-        "Name": "snow peas"
+        "Name": "snow peas",
+        "PluralName": null
     },
     {
         "TypeId": 1,
-        "Name": "sugar snap peas"
+        "Name": "sugar snap peas",
+        "PluralName": null
     },
     {
         "TypeId": 1,
-        "Name": "split peas"
+        "Name": "split peas",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "beef"
+        "Name": "beef",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "steak"
+        "Name": "steak",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "ground beef"
+        "Name": "ground beef",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "pork"
+        "Name": "pork",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "ham"
+        "Name": "ham",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "bacon"
+        "Name": "bacon",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "lamb"
+        "Name": "lamb",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "venison"
+        "Name": "venison",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "chicken"
+        "Name": "chicken",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "chicken breast"
+        "Name": "chicken breast",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "chicken thigh"
+        "Name": "chicken thigh",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "turkey"
+        "Name": "turkey",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "duck"
+        "Name": "duck",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "goose"
+        "Name": "goose",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "salmon"
+        "Name": "salmon",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "cod"
+        "Name": "cod",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "tuna"
+        "Name": "tuna",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "trout"
+        "Name": "trout",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "shrimp"
+        "Name": "shrimp",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "lobster"
+        "Name": "lobster",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "crab"
+        "Name": "crab",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "mussels"
+        "Name": "mussels",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "clams"
+        "Name": "clams",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "octopus"
+        "Name": "octopus",
+        "PluralName": null
     },
     {
         "TypeId": 31,
-        "Name": "egg"
+        "Name": "egg",
+        "PluralName": "eggs"
     },
     {
         "TypeId": 31,
-        "Name": "duck egg"
+        "Name": "duck egg",
+        "PluralName": "duck eggs"
     },
     {
         "TypeId": 31,
-        "Name": "egg white"
+        "Name": "egg white",
+        "PluralName": "egg whites"
     },
     {
         "TypeId": 31,
-        "Name": "egg yolk"
+        "Name": "egg yolk",
+        "PluralName": "egg yolks"
     },
     {
         "TypeId": 31,
-        "Name": "quail egg"
+        "Name": "quail egg",
+        "PluralName": "quail eggs"
     },
     {
         "TypeId": 7,
-        "Name": "tofu"
+        "Name": "tofu",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "tempeh"
+        "Name": "tempeh",
+        "PluralName": null
     },
     {
         "TypeId": 7,
-        "Name": "seitan"
+        "Name": "seitan",
+        "PluralName": null
     },
     {
         "TypeId": 18,
-        "Name": "white rice"
+        "Name": "white rice",
+        "PluralName": null
     },
     {
         "TypeId": 18,
-        "Name": "brown rice"
+        "Name": "brown rice",
+        "PluralName": null
     },
     {
         "TypeId": 18,
-        "Name": "basmati rice"
+        "Name": "basmati rice",
+        "PluralName": null
     },
     {
         "TypeId": 18,
-        "Name": "jasmine rice"
+        "Name": "jasmine rice",
+        "PluralName": null
     },
     {
         "TypeId": 18,
-        "Name": "wild rice"
+        "Name": "wild rice",
+        "PluralName": null
     },
     {
         "TypeId": 18,
-        "Name": "sushi rice"
+        "Name": "sushi rice",
+        "PluralName": null
     },
     {
         "TypeId": 16,
-        "Name": "sesame seeds"
+        "Name": "sesame seeds",
+        "PluralName": null
     },
     {
         "TypeId": 16,
-        "Name": "sunflower seeds"
+        "Name": "sunflower seeds",
+        "PluralName": null
     },
     {
         "TypeId": 16,
-        "Name": "pumpkin seeds"
+        "Name": "pumpkin seeds",
+        "PluralName": null
     },
     {
         "TypeId": 16,
-        "Name": "chia seeds"
+        "Name": "chia seeds",
+        "PluralName": null
     },
     {
         "TypeId": 16,
-        "Name": "flax seeds"
+        "Name": "flax seeds",
+        "PluralName": null
     },
     {
         "TypeId": 26,
-        "Name": "evaporated milk"
+        "Name": "evaporated milk",
+        "PluralName": null
     },
     {
         "TypeId": 26,
-        "Name": "condensed milk"
+        "Name": "condensed milk",
+        "PluralName": null
     },
     {
         "TypeId": 26,
-        "Name": "buttermilk"
+        "Name": "buttermilk",
+        "PluralName": null
     },
     {
         "TypeId": 26,
-        "Name": "stock concentrate"
+        "Name": "stock concentrate",
+        "PluralName": null
     },
     {
         "TypeId": 28,
-        "Name": "cumin"
+        "Name": "cumin",
+        "PluralName": null
     },
     {
         "TypeId": 28,
-        "Name": "paprika"
+        "Name": "paprika",
+        "PluralName": null
     },
     {
         "TypeId": 28,
-        "Name": "turmeric"
+        "Name": "turmeric",
+        "PluralName": null
     },
     {
         "TypeId": 28,
-        "Name": "cinnamon"
+        "Name": "cinnamon",
+        "PluralName": null
     },
     {
         "TypeId": 28,
-        "Name": "nutmeg"
+        "Name": "nutmeg",
+        "PluralName": null
     },
     {
         "TypeId": 28,
-        "Name": "cloves"
+        "Name": "cloves",
+        "PluralName": null
     },
     {
         "TypeId": 28,
-        "Name": "ginger, ground"
+        "Name": "ginger, ground",
+        "PluralName": null
     },
     {
         "TypeId": 28,
-        "Name": "black pepper"
+        "Name": "black pepper",
+        "PluralName": null
     },
     {
         "TypeId": 28,
-        "Name": "white pepper"
+        "Name": "white pepper",
+        "PluralName": null
     },
     {
         "TypeId": 28,
-        "Name": "cardamom"
+        "Name": "cardamom",
+        "PluralName": null
     },
     {
         "TypeId": 28,
-        "Name": "lemon pepper"
+        "Name": "lemon pepper",
+        "PluralName": null
     },
     {
         "TypeId": 21,
-        "Name": "curry powder"
+        "Name": "curry powder",
+        "PluralName": null
     },
     {
         "TypeId": 21,
-        "Name": "chili powder"
+        "Name": "chili powder",
+        "PluralName": null
     },
     {
         "TypeId": 21,
-        "Name": "garam masala"
+        "Name": "garam masala",
+        "PluralName": null
     },
     {
         "TypeId": 21,
-        "Name": "zaatar"
+        "Name": "zaatar",
+        "PluralName": null
     },
     {
         "TypeId": 21,
-        "Name": "herbes de provence"
+        "Name": "herbes de provence",
+        "PluralName": null
     },
     {
         "TypeId": 21,
-        "Name": "five spice"
+        "Name": "five spice",
+        "PluralName": null
     },
     {
         "TypeId": 24,
-        "Name": "white sugar"
+        "Name": "white sugar",
+        "PluralName": null
     },
     {
         "TypeId": 24,
-        "Name": "brown sugar"
+        "Name": "brown sugar",
+        "PluralName": null
     },
     {
         "TypeId": 24,
-        "Name": "powdered sugar"
+        "Name": "powdered sugar",
+        "PluralName": null
     },
     {
         "TypeId": 24,
-        "Name": "cane sugar"
+        "Name": "cane sugar",
+        "PluralName": null
     },
     {
         "TypeId": 13,
-        "Name": "honey"
+        "Name": "honey",
+        "PluralName": null
     },
     {
         "TypeId": 13,
-        "Name": "maple syrup"
+        "Name": "maple syrup",
+        "PluralName": null
     },
     {
         "TypeId": 13,
-        "Name": "molasses"
+        "Name": "molasses",
+        "PluralName": null
     },
     {
         "TypeId": 13,
-        "Name": "agave nectar"
+        "Name": "agave nectar",
+        "PluralName": null
     },
     {
         "TypeId": 10,
-        "Name": "spinach"
+        "Name": "spinach",
+        "PluralName": null
     },
     {
         "TypeId": 10,
-        "Name": "kale"
+        "Name": "kale",
+        "PluralName": null
     },
     {
         "TypeId": 10,
-        "Name": "lettuce"
+        "Name": "lettuce",
+        "PluralName": null
     },
     {
         "TypeId": 10,
-        "Name": "arugula"
+        "Name": "arugula",
+        "PluralName": null
     },
     {
         "TypeId": 10,
-        "Name": "cabbage"
+        "Name": "cabbage",
+        "PluralName": null
     },
     {
         "TypeId": 10,
-        "Name": "broccoli"
+        "Name": "broccoli",
+        "PluralName": null
     },
     {
         "TypeId": 10,
-        "Name": "cauliflower"
+        "Name": "cauliflower",
+        "PluralName": null
     },
     {
         "TypeId": 10,
-        "Name": "brussels sprouts"
+        "Name": "brussels sprouts",
+        "PluralName": null
     },
     {
         "TypeId": 10,
-        "Name": "carrot"
+        "Name": "carrot",
+        "PluralName": "carrots"
     },
     {
         "TypeId": 10,
-        "Name": "beet"
+        "Name": "beet",
+        "PluralName": "beets"
     },
     {
         "TypeId": 10,
-        "Name": "radish"
+        "Name": "radish",
+        "PluralName": "radishes"
     },
     {
         "TypeId": 10,
-        "Name": "turnip"
+        "Name": "turnip",
+        "PluralName": "turnips"
     },
     {
         "TypeId": 10,
-        "Name": "potato"
+        "Name": "potato",
+        "PluralName": "potatoes"
     },
     {
         "TypeId": 10,
-        "Name": "sweet potato"
+        "Name": "sweet potato",
+        "PluralName": "sweet potatoes"
     },
     {
         "TypeId": 10,
-        "Name": "onion"
+        "Name": "onion",
+        "PluralName": "onions"
     },
     {
         "TypeId": 10,
-        "Name": "red onion"
+        "Name": "red onion",
+        "PluralName": "red onions"
     },
     {
         "TypeId": 10,
-        "Name": "shallot"
+        "Name": "shallot",
+        "PluralName": "shallots"
     },
     {
         "TypeId": 10,
-        "Name": "green onion"
+        "Name": "green onion",
+        "PluralName": "green onions"
     },
     {
         "TypeId": 10,
-        "Name": "garlic"
+        "Name": "garlic",
+        "PluralName": null
     },
     {
         "TypeId": 10,
-        "Name": "leek"
+        "Name": "leek",
+        "PluralName": "leeks"
     },
     {
         "TypeId": 10,
-        "Name": "eggplant"
+        "Name": "eggplant",
+        "PluralName": "eggplants"
     },
     {
         "TypeId": 10,
-        "Name": "zucchini"
+        "Name": "zucchini",
+        "PluralName": "zucchinis"
     },
     {
         "TypeId": 10,
-        "Name": "cucumber"
+        "Name": "cucumber",
+        "PluralName": "cucumbers"
     },
     {
         "TypeId": 10,
-        "Name": "pumpkin"
+        "Name": "pumpkin",
+        "PluralName": "pumpkins"
     },
     {
         "TypeId": 10,
-        "Name": "butternut squash"
+        "Name": "butternut squash",
+        "PluralName": null
     },
     {
         "TypeId": 10,
-        "Name": "red bell pepper"
+        "Name": "red bell pepper",
+        "PluralName": "red bell peppers"
     },
     {
         "TypeId": 10,
-        "Name": "chili pepper"
+        "Name": "chili pepper",
+        "PluralName": "chili peppers"
     },
     {
         "TypeId": 10,
-        "Name": "jalapeno"
+        "Name": "jalapeno",
+        "PluralName": "jalapenos"
     },
     {
         "TypeId": 10,
-        "Name": "serrano"
+        "Name": "serrano pepper",
+        "PluralName": "serrano peppers"
     },
     {
         "TypeId": 10,
-        "Name": "habanero"
+        "Name": "habanero pepper",
+        "PluralName": "habanero peppers"
     },
     {
         "TypeId": 10,
-        "Name": "mushroom"
+        "Name": "mushroom",
+        "PluralName": "mushrooms"
     },
     {
         "TypeId": 10,
-        "Name": "portobello"
+        "Name": "portobello mushroom",
+        "PluralName": "portobello mushroooms"
     },
     {
         "TypeId": 10,
-        "Name": "shiitake"
+        "Name": "shiitake mushroom",
+        "PluralName": "shiitake"
     },
     {
         "TypeId": 10,
-        "Name": "oyster mushroom"
+        "Name": "oyster mushroom",
+        "PluralName": "oyster mushrooms"
     },
     {
         "TypeId": 15,
-        "Name": "balsamic vinegar"
+        "Name": "balsamic vinegar",
+        "PluralName": null
     },
     {
         "TypeId": 15,
-        "Name": "apple cider vinegar"
+        "Name": "apple cider vinegar",
+        "PluralName": null
     },
     {
         "TypeId": 15,
-        "Name": "red wine vinegar"
+        "Name": "red wine vinegar",
+        "PluralName": null
     },
     {
         "TypeId": 15,
-        "Name": "white vinegar"
+        "Name": "white vinegar",
+        "PluralName": null
     },
     {
         "TypeId": 15,
-        "Name": "rice vinegar"
+        "Name": "rice vinegar",
+        "PluralName": null
     },
     {
         "TypeId": 29,
-        "Name": "greek yogurt"
+        "Name": "greek yogurt",
+        "PluralName": null
     },
     {
         "TypeId": 29,
-        "Name": "plain yogurt"
+        "Name": "plain yogurt",
+        "PluralName": null
     },
     {
         "TypeId": 29,
-        "Name": "soy yogurt"
+        "Name": "soy yogurt",
+        "PluralName": null
     },
     {
         "TypeId": 29,
-        "Name": "coconut yogurt"
+        "Name": "coconut yogurt",
+        "PluralName": null
     },
     {
         "TypeId": 28,
-        "Name": "salt"
+        "Name": "salt",
+        "PluralName": null
     },
     {
         "TypeId": 4,
-        "Name": "chicken broth"
+        "Name": "chicken broth",
+        "PluralName": null
     },
     {
         "TypeId": 26,
-        "Name": "lemon juice"
+        "Name": "lemon juice",
+        "PluralName": null
     },
     {
         "TypeId": 32,
-        "Name": "corn starch"
+        "Name": "corn starch",
+        "PluralName": null
     },
     {
         "TypeId": 22,
-        "Name": "dried basil"
+        "Name": "dried basil",
+        "PluralName": null
     },
     {
         "TypeId": 6,
-        "Name": "11 oz French bread dough"
+        "Name": "11 oz French bread dough",
+        "PluralName": null
     },
     {
         "TypeId": 21,
-        "Name": "Italian seasoning mix"
+        "Name": "Italian seasoning mix",
+        "PluralName": null
     },
     {
         "TypeId": 10,
-        "Name": "green bell pepper"
+        "Name": "green bell pepper",
+        "PluralName": "green bell peppers"
     },
     {
         "TypeId": 2,
-        "Name": "half & half"
+        "Name": "half & half",
+        "PluralName": null
     },
     {
         "TypeId": 2,
-        "Name": "milk"
+        "Name": "milk",
+        "PluralName": null
+    },
+    {
+        "TypeId": 10,
+        "Name": "tomato",
+        "PluralName": "tomatoes"
+    },
+    {
+        "TypeId": 12,
+        "Name": "wide egg noodle",
+        "PluralName": "wide egg noodles"
+    },
+    {
+        "TypeId": 10,
+        "Name": "white onion",
+        "PluralName": "white onions"
+    },
+    {
+        "TypeId": 10,
+        "Name": "baby bella mushroom",
+        "PluralName": "baby bella mushrooms"
+    },
+    {
+        "TypeId": 33,
+        "Name": "canola oil",
+        "PluralName": null
+    },
+    {
+        "TypeId": 33,
+        "Name": "olive oil",
+        "PluralName": null
+    },
+    {
+        "TypeId": 33,
+        "Name": "extra-virgin olive oil",
+        "PluralName": null
+    },
+    {
+        "TypeId": 33,
+        "Name": "vegetable oil",
+        "PluralName": null
+    },
+    {
+        "TypeId": 10,
+        "Name": "creamed corn",
+        "PluralName": null
+    },
+    {
+        "TypeId": 28,
+        "Name": "smoked paprika",
+        "PluralName": null
+    },
+    {
+        "TypeId": 34,
+        "Name": "Jiffy Corn Muffin Mix",
+        "PluralName": null
+    },
+    {
+        "TypeId": 28,
+        "Name": "garlic powder",
+        "PluralName": null
+    },
+    {
+        "TypeId": 28,
+        "Name": "seasoning salt",
+        "PluralName": null
+    },
+    {
+        "TypeId": 28,
+        "Name": "onion powder",
+        "PluralName": null
+    },
+    {
+        "TypeId": 28,
+        "Name": "cayenne pepper",
+        "PluralName": null
+    },
+    {
+        "TypeId": 24,
+        "Name": "dark brown sugar",
+        "PluralName": null
+    },
+    {
+        "TypeId": 26,
+        "Name": "vanilla extract",
+        "PluralName": null
     }
 ]

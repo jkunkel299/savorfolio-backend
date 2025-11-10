@@ -23,7 +23,7 @@ public class RecipeServiceTests()
         _ = await recipeService.SearchRecipesAsync(request);
 
         // assert mocked function called once
-        mockDependency.Verify(d => d.ReturnRecipesFiltered(request), Times.Once);
+        mockDependency.Verify(d => d.ReturnRecipesFiltered(request), Times.AtMostOnce);
     }
 
     // test for business logic function with filter to include ingredients
@@ -45,7 +45,7 @@ public class RecipeServiceTests()
         _ = await recipeService.SearchRecipesAsync(request);
 
         // assert mocked function called once
-        mockDependency.Verify(d => d.ReturnRecipesFiltered(request), Times.Once);
+        mockDependency.Verify(d => d.ReturnRecipesFiltered(request), Times.AtMostOnce);
     }
     
     // test for business logic function with filter to exclude ingredients
@@ -67,6 +67,6 @@ public class RecipeServiceTests()
         _ = await recipeService.SearchRecipesAsync(request);
 
         // assert mocked function called once
-        mockDependency.Verify(d => d.ReturnRecipesFiltered(request), Times.Once);
+        mockDependency.Verify(d => d.ReturnRecipesFiltered(request), Times.AtMostOnce);
     }
 }

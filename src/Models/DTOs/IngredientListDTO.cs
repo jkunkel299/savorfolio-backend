@@ -6,7 +6,9 @@ public class IngredientListDTO
 
     public int RecipeId { get; set; }
 
-    // public int? SectionId { get; set; }
+    public int? SectionId { get; set; }
+
+    public string? SectionName { get; set; }
 
     public int IngredientOrder { get; set; }
 
@@ -14,11 +16,15 @@ public class IngredientListDTO
 
     public string IngredientName { get; set; } = null!;
 
+    public string? IngNamePlural { get; set; }
+
     public string? Quantity { get; set; }
 
     public int UnitId { get; set; }
 
     public string UnitName { get; set; } = null!;
+
+    public string? UnitNamePlural { get; set; }
 
     public string? Qualifier { get; set; } = "";
 }

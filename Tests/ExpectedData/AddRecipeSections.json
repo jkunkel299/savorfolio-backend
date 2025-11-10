@@ -1,0 +1,268 @@
+{
+    "recipeSummary": {
+        "name": "Caramelized Onion Focaccia",
+        "servings": "12",
+        "cookTime": "15 minutes",
+        "prepTime": "3 hrs 30 mins",
+        "bakeTemp": 425,
+        "temp_unit": "F",
+        "description": "Caramelized onion focaccia – super fluffy focaccia topped with caramelized onions, fresh thyme, and garlic. This easy no-knead yeast bread makes a delicious appetizer or as a side dish to your favorite meal!",
+        "ingredients": []
+    },
+    "recipeTags": {
+        "meal": "Dinner",
+        "recipe_type": "Side",
+        "cuisine": "Italian",
+        "dietary": [
+            "Vegetarian"
+        ]
+    },
+    "recipeSections": [
+        {
+            "sectionName": "Caramelized Onions",
+            "sortOrder": 1
+        },
+        {
+            "sectionName": "Dough",
+            "sortOrder": 2
+        },
+        {
+            "sectionName": "Garlic Oil",
+            "sortOrder": 3
+        }
+    ],
+    "ingredients": [
+        {
+            "sectionName": "Caramelized Onions",
+            "ingredientOrder": 1,
+            "ingredientId": 265,
+            "ingredientName": "olive oil",
+            "ingNamePlural": null,
+            "quantity": "2",
+            "unitId": 2,
+            "unitName": "tablespoon",
+            "unitNamePlural": "tablespoons",
+            "qualifier": null
+        },
+        {
+            "sectionName": "Caramelized Onions",
+            "ingredientOrder": 2,
+            "ingredientId": 24,
+            "ingredientName": "butter, salted",
+            "ingNamePlural": null,
+            "quantity": "1",
+            "unitId": 2,
+            "unitName": "tablespoon",
+            "unitNamePlural": "tablespoons",
+            "qualifier": null
+        },
+        {
+            "sectionName": "Caramelized Onions",
+            "ingredientOrder": 3,
+            "ingredientId": 277,
+            "ingredientName": "yellow onion",
+            "ingNamePlural": "yellow onions",
+            "quantity": "4",
+            "unitId": 4,
+            "unitName": "cup",
+            "unitNamePlural": "cups",
+            "qualifier": "diced"
+        },
+        {
+            "sectionName": "Caramelized Onions",
+            "ingredientOrder": 4,
+            "ingredientId": 279,
+            "ingredientName": "water",
+            "ingNamePlural": null,
+            "quantity": "1/4",
+            "unitId": 4,
+            "unitName": "cup",
+            "unitNamePlural": "cups",
+            "qualifier": null
+        },
+        {
+            "sectionName": "Caramelized Onions",
+            "ingredientOrder": 5,
+            "ingredientId": 91,
+            "ingredientName": "thyme",
+            "ingNamePlural": null,
+            "quantity": "2",
+            "unitId": 2,
+            "unitName": "tablespoon",
+            "unitNamePlural": "tablespoons",
+            "qualifier": "fresh, chopped"
+        },
+        {
+            "sectionName": "Dough",
+            "ingredientOrder": 6,
+            "ingredientId": 54,
+            "ingredientName": "all-purpose flour",
+            "ingNamePlural": null,
+            "quantity": "2 1/2",
+            "unitId": 4,
+            "unitName": "cup",
+            "unitNamePlural": "cups",
+            "qualifier": null
+        },
+        {
+            "sectionName": "Dough",
+            "ingredientOrder": 7,
+            "ingredientId": 279,
+            "ingredientName": "water",
+            "ingNamePlural": null,
+            "quantity": "1 1/4",
+            "unitId": 4,
+            "unitName": "cup",
+            "unitNamePlural": "cups",
+            "qualifier": "lukewarm"
+        },
+        {
+            "sectionName": "Dough",
+            "ingredientOrder": 8,
+            "ingredientId": 31,
+            "ingredientName": "parmesan cheese",
+            "ingNamePlural": null,
+            "quantity": "1/4",
+            "unitId": 4,
+            "unitName": "cup",
+            "unitNamePlural": "cups",
+            "qualifier": "finely shredded"
+        },
+        {
+            "sectionName": "Dough",
+            "ingredientOrder": 9,
+            "ingredientId": 265,
+            "ingredientName": "olive oil",
+            "ingNamePlural": null,
+            "quantity": "2",
+            "unitId": 2,
+            "unitName": "tablespoon",
+            "unitNamePlural": "tablespoons",
+            "qualifier": ""
+        },
+        {
+            "sectionName": "Dough",
+            "ingredientOrder": 10,
+            "ingredientId": 199,
+            "ingredientName": "white sugar",
+            "ingNamePlural": null,
+            "quantity": "1",
+            "unitId": 2,
+            "unitName": "tablespoon",
+            "unitNamePlural": "tablespoons",
+            "qualifier": null
+        },
+        {
+            "sectionName": "Dough",
+            "ingredientOrder": 11,
+            "ingredientId": 95,
+            "ingredientName": "yeast",
+            "ingNamePlural": null,
+            "quantity": "2",
+            "unitId": 1,
+            "unitName": "teaspoon",
+            "unitNamePlural": "teaspoons",
+            "qualifier": "instant"
+        },
+        {
+            "sectionName": "Dough",
+            "ingredientOrder": 12,
+            "ingredientId": 250,
+            "ingredientName": "salt",
+            "ingNamePlural": null,
+            "quantity": "3/4",
+            "unitId": 1,
+            "unitName": "teaspoon",
+            "unitNamePlural": "teaspoons",
+            "qualifier": ""
+        },
+        {
+            "sectionName": "Dough",
+            "ingredientOrder": 13,
+            "ingredientId": 91,
+            "ingredientName": "thyme",
+            "ingNamePlural": null,
+            "quantity": "1-2",
+            "unitId": 2,
+            "unitName": "tablespoon",
+            "unitNamePlural": "tablespoons",
+            "qualifier": "fresh"
+        },
+        {
+            "sectionName": "Garlic Oil",
+            "ingredientOrder": 14,
+            "ingredientId": 265,
+            "ingredientName": "olive oil",
+            "ingNamePlural": null,
+            "quantity": "1/4",
+            "unitId": 4,
+            "unitName": "cup",
+            "unitNamePlural": "cups",
+            "qualifier": null
+        },
+        {
+            "sectionName": "Garlic Oil",
+            "ingredientOrder": 15,
+            "ingredientId": 225,
+            "ingredientName": "garlic",
+            "ingNamePlural": null,
+            "quantity": "3",
+            "unitId": 24,
+            "unitName": "clove",
+            "unitNamePlural": "cloves",
+            "qualifier": "crushed"
+        }
+    ],
+    "instructions": [
+        {
+            "sectionName": null,
+            "stepNumber": 1,
+            "instructionText": "Melt the butter and olive oil in a large skillet over medium heat, then stir in the onions. Add the water and cover until the onions have softened, about 5 minutes. Remove the cover and reduce the heat to medium-low. Stir the onions frequently (you don't want them to burn!) for about 1 hour, or until the onions are deeply caramelized. When ready, scrape them into a bowl and stir in the fresh thyme."
+        },
+        {
+            "sectionName": null,
+            "stepNumber": 2,
+            "instructionText": "In a large bowl, combine the flour, water, parmesan cheese, olive oil, sugar, yeast, and salt. Use a wooden spoon to mix everything until completely combined."
+        },
+        {
+            "sectionName": null,
+            "stepNumber": 3,
+            "instructionText": "Lightly oil your hands and a separate large bowl. Place the dough in the bowl and cover it with plastic wrap. Set it in a warm place to rise until doubled in size, about 1 hour."
+        },
+        {
+            "sectionName": null,
+            "stepNumber": 4,
+            "instructionText": "Meanwhile, make the garlic oil. Heat the olive oil in a skillet, then stir in the garlic. Cook for 5 minutes, until the garlic is fragrant and starting to brown. Then remove the garlic and discard. Set the oil aside to cool before using."
+        },
+        {
+            "sectionName": null,
+            "stepNumber": 5,
+            "instructionText": "Preheat the oven to 425°F/220°C. Pour half of the garlic oil into an unlined metal 9×9 baking pan and set it aside."
+        },
+        {
+            "sectionName": null,
+            "stepNumber": 6,
+            "instructionText": "Once the dough has doubled, lightly oil your hands. Grab the top section of the dough and stretch it upwards, then fold it toward the center onto itself. Repeat with the other 3 sides of the dough, pulling and stretching the dough up and over itself. Transfer the dough seam side down into the oiled baking pan. Cover the top of the pan with plastic wrap and set it in a warm place to rise again for 1 hour, or until doubled in size."
+        },
+        {
+            "sectionName": null,
+            "stepNumber": 7,
+            "instructionText": "After 1 hour, the focaccia should be jiggly, have large bubbles, and should almost fill the pan when it's ready."
+        },
+        {
+            "sectionName": null,
+            "stepNumber": 8,
+            "instructionText": "Pour the remaining garlic oil over the top of the dough, and, using your fingers, press straight down into it to create deep dimples. Sprinkle with the fresh thyme, then transfer the pan to the oven and bake immediately for 12-18 minutes. You'll know it's ready when the top is golden brown and the internal temperature is at least 190°F/88 °C."
+        },
+        {
+            "sectionName": null,
+            "stepNumber": 9,
+            "instructionText": "Once out of the oven, spoon the caramelized onions onto the bread, then let the pan cool on a wire cooling rack. Once cool, sprinkle with flaky sea salt and extra fresh thyme if desired, cut into servings and enjoy!"
+        },
+        {
+            "sectionName": null,
+            "stepNumber": 10,
+            "instructionText": "Focaccia is definitely best served the day it's made. However, you can store any leftovers in an airtight container in the fridge. You can also wrap it tightly in plastic wrap, then in foil, and freeze it for about a month. To reheat it, warm it in the microwave or oven until warmed through."
+        }
+    ]
+}

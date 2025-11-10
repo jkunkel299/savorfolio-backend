@@ -27,5 +27,6 @@ public enum CuisineTag
     [EnumMember(Value = "Middle Eastern")] MiddleEastern,
     Turkish,
     Hungarian,
-    Bavarian
+    Bavarian,
+    Mediterranean
 }

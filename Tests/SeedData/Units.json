@@ -1,187 +1,260 @@
 [
     {
         "Id": 1,
-        "Name": "Teaspoon",
-        "Abbreviation": "tsp"
+        "Name": "teaspoon",
+        "Abbreviation": "tsp",
+        "PluralName": "teaspoons"
     },
     {
         "Id": 2,
-        "Name": "Tablespoon",
-        "Abbreviation": "tbsp"
+        "Name": "tablespoon",
+        "Abbreviation": "tbsp",
+        "PluralName": "tablespoons"
     },
     {
         "Id": 3,
-        "Name": "Fluid Ounce",
-        "Abbreviation": "fl oz"
+        "Name": "fluid ounce",
+        "Abbreviation": "fl oz",
+        "PluralName": "fluid ounces"
     },
     {
         "Id": 4,
-        "Name": "Cup",
-        "Abbreviation": "c"
+        "Name": "cup",
+        "Abbreviation": "c",
+        "PluralName": "cups"
     },
     {
         "Id": 5,
-        "Name": "Pint",
-        "Abbreviation": "pt"
+        "Name": "pint",
+        "Abbreviation": "pt",
+        "PluralName": "pints"
     },
     {
         "Id": 6,
-        "Name": "Quart",
-        "Abbreviation": "qt"
+        "Name": "quart",
+        "Abbreviation": "qt",
+        "PluralName": "quarts"
     },
     {
         "Id": 7,
-        "Name": "Gallon",
-        "Abbreviation": "gal"
+        "Name": "gallon",
+        "Abbreviation": "gal",
+        "PluralName": "gallons"
     },
     {
         "Id": 8,
-        "Name": "Milliliter",
-        "Abbreviation": "mL"
+        "Name": "milliliter",
+        "Abbreviation": "mL",
+        "PluralName": "milliliters"
     },
     {
         "Id": 9,
-        "Name": "Liter",
-        "Abbreviation": "L"
+        "Name": "liter",
+        "Abbreviation": "L",
+        "PluralName": "liters"
     },
     {
         "Id": 10,
-        "Name": "Deciliter",
-        "Abbreviation": "dL"
+        "Name": "deciliter",
+        "Abbreviation": "dL",
+        "PluralName": "deciliters"
     },
     {
         "Id": 11,
-        "Name": "Ounce",
-        "Abbreviation": "oz"
+        "Name": "ounce",
+        "Abbreviation": "oz",
+        "PluralName": "ounces"
     },
     {
         "Id": 12,
-        "Name": "Pound",
-        "Abbreviation": "lb"
+        "Name": "pound",
+        "Abbreviation": "lb",
+        "PluralName": "pounds"
     },
     {
         "Id": 13,
-        "Name": "Gram",
-        "Abbreviation": "g"
+        "Name": "gram",
+        "Abbreviation": "g",
+        "PluralName": "grams"
     },
     {
         "Id": 14,
-        "Name": "Kilogram",
-        "Abbreviation": "kg"
+        "Name": "kilogram",
+        "Abbreviation": "kg",
+        "PluralName": "kilograms"
     },
     {
         "Id": 15,
-        "Name": "Milligram",
-        "Abbreviation": "mg"
+        "Name": "milligram",
+        "Abbreviation": "mg",
+        "PluralName": "milligrams"
     },
     {
         "Id": 16,
-        "Name": "Inch",
-        "Abbreviation": "in"
+        "Name": "inch",
+        "Abbreviation": "in",
+        "PluralName": "inches"
     },
     {
         "Id": 17,
-        "Name": "Centimeter",
-        "Abbreviation": "cm"
+        "Name": "centimeter",
+        "Abbreviation": "cm",
+        "PluralName": "centimeters"
     },
     {
         "Id": 18,
-        "Name": "Pinch",
-        "Abbreviation": "pinch"
+        "Name": "pinch",
+        "Abbreviation": "pinch",
+        "PluralName": "pinches"
     },
     {
         "Id": 19,
-        "Name": "Dash",
-        "Abbreviation": "dash"
+        "Name": "dash",
+        "Abbreviation": "dash",
+        "PluralName": "dashes"
     },
     {
         "Id": 20,
-        "Name": "Drop",
-        "Abbreviation": "drop"
+        "Name": "drop",
+        "Abbreviation": "drop",
+        "PluralName": "drops"
     },
     {
         "Id": 21,
-        "Name": "Smidgen",
-        "Abbreviation": "sm"
+        "Name": "smidgen",
+        "Abbreviation": "sm",
+        "PluralName": null
     },
     {
         "Id": 22,
-        "Name": "Handful",
-        "Abbreviation": "handful"
+        "Name": "handful",
+        "Abbreviation": "handful",
+        "PluralName": "handfuls"
     },
     {
         "Id": 23,
-        "Name": "Splash",
-        "Abbreviation": "splash"
+        "Name": "splash",
+        "Abbreviation": "splash",
+        "PluralName": "splashes"
     },
     {
         "Id": 24,
-        "Name": "Clove",
-        "Abbreviation": "clove"
+        "Name": "clove",
+        "Abbreviation": "clove",
+        "PluralName": "cloves"
     },
     {
         "Id": 25,
-        "Name": "Stick",
-        "Abbreviation": "stick"
+        "Name": "stick",
+        "Abbreviation": "stick",
+        "PluralName": "sticks"
     },
     {
         "Id": 26,
-        "Name": "Can",
-        "Abbreviation": "can"
+        "Name": "can",
+        "Abbreviation": "can",
+        "PluralName": "cans"
     },
     {
         "Id": 27,
-        "Name": "Jar",
-        "Abbreviation": "jar"
+        "Name": "jar",
+        "Abbreviation": "jar",
+        "PluralName": "jars"
     },
     {
         "Id": 28,
-        "Name": "Package",
-        "Abbreviation": "pkg"
+        "Name": "package",
+        "Abbreviation": "pkg",
+        "PluralName": "packages"
     },
     {
         "Id": 29,
-        "Name": "Bunch",
-        "Abbreviation": "bunch"
+        "Name": "bunch",
+        "Abbreviation": "bunch",
+        "PluralName": "bunches"
     },
     {
         "Id": 30,
-        "Name": "Slice",
-        "Abbreviation": "slice"
+        "Name": "slice",
+        "Abbreviation": "slice",
+        "PluralName": "slices"
     },
     {
         "Id": 31,
-        "Name": "Piece",
-        "Abbreviation": "piece"
+        "Name": "piece",
+        "Abbreviation": "piece",
+        "PluralName": "pieces"
     },
     {
         "Id": 32,
-        "Name": "Fillet",
-        "Abbreviation": "fillet"
+        "Name": "fillet",
+        "Abbreviation": "fillet",
+        "PluralName": "fillets"
     },
     {
         "Id": 33,
-        "Name": "Sheet",
-        "Abbreviation": "sheet"
+        "Name": "sheet",
+        "Abbreviation": "sheet",
+        "PluralName": "sheets"
     },
     {
         "Id": 34,
-        "Name": "Leaf",
-        "Abbreviation": "leaf"
+        "Name": "leaf",
+        "Abbreviation": "leaf",
+        "PluralName": "leaves"
     },
     {
         "Id": 35,
-        "Name": "Whole",
-        "Abbreviation": "whole"
+        "Name": "whole",
+        "Abbreviation": "whole",
+        "PluralName": null
     },
     {
         "Id": 36,
-        "Name": "Head",
-        "Abbreviation": "head"
+        "Name": "head",
+        "Abbreviation": "head",
+        "PluralName": "heads"
     },
     {
         "Id": 37,
         "Name": "to taste",
-        "Abbreviation": "to taste"
+        "Abbreviation": "to taste",
+        "PluralName": null
+    },
+    {
+        "Id": 39,
+        "Name": "loaf",
+        "Abbreviation": "loaf",
+        "PluralName": "loaves"
+    },
+    {
+        "Id": 40,
+        "Name": "box",
+        "Abbreviation": "box",
+        "PluralName": "boxes"
+    },
+    {
+        "Id": 41,
+        "Name": "sprig",
+        "Abbreviation": "sprig",
+        "PluralName": "sprigs"
+    },
+    {
+        "Id": 42,
+        "Name": "large",
+        "Abbreviation": "lg",
+        "PluralName": null
+    },
+    {
+        "Id": 43,
+        "Name": "small",
+        "Abbreviation": "sm",
+        "PluralName": null
+    },
+    {
+        "Id": 44,
+        "Name": "medium",
+        "Abbreviation": "md",
+        "PluralName": null
     }
 ]

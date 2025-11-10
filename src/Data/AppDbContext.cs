@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore;
 using savorfolio_backend.Models;
 using savorfolio_backend.Models.enums;
 
@@ -154,8 +151,11 @@ public partial class AppDbContext : DbContext
                 .UseIdentityAlwaysColumn()
                 .HasColumnName("id");
             entity.Property(e => e.Name)
-                .HasMaxLength(100)
+                .HasMaxLength(400)
                 .HasColumnName("name");
+            entity.Property(e => e.PluralName)
+                .HasMaxLength(400)
+                .HasColumnName("plural_name");
             entity.Property(e => e.TypeId).HasColumnName("type_id");
 
             entity.HasOne(d => d.Type).WithMany(p => p.IngredientVariants)
@@ -224,9 +224,12 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.PrepTime)
                 .HasMaxLength(20)
                 .HasColumnName("prep_time");
-            entity.Property(e => e.Servings).HasColumnName("servings");
+            entity.Property(e => e.Servings)
+                .HasMaxLength(20)
+                .HasColumnName("servings");
             entity.Property(e => e.Temp_unit).HasColumnName("temp_unit")
                 .HasConversion<string>();
+            entity.Property(e => e.Description).HasColumnName("description");
         });
 
         modelBuilder.Entity<RecipeSection>(entity =>
@@ -252,7 +255,6 @@ public partial class AppDbContext : DbContext
         modelBuilder.Entity<RecipeTag>(entity =>
         {
             entity
-                // .HasNoKey()
                 .ToTable("Recipe_Tags")
                 .HasKey(e => new { e.RecipeId, e.Recipe_type });
 
@@ -285,6 +287,9 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(20)
                 .HasColumnName("name");
+            entity.Property(e => e.PluralName)
+                .HasMaxLength(20)
+                .HasColumnName("plural_name");
         });
 
         modelBuilder.Entity<User>(entity =>
