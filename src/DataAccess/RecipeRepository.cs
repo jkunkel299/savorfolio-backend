@@ -57,6 +57,43 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
                     r.IngredientLists.Any(ri => ri.IngredientId == ingId)));
         }
 
+        // filter by recipe type tag
+        if (filter.Recipe_type != null)
+        {
+            var recipe_type = filter.Recipe_type;
+
+            query = query.Where(r =>
+                r.RecipeTags!.Recipe_type == recipe_type);
+        }
+
+        // filter by meal tag
+        if (filter.Meal != null)
+        {
+            var meal = filter.Meal;
+
+            query = query.Where(r =>
+                r.RecipeTags!.Meal == meal);
+        }
+
+        // filter by cuisine tag
+        if (filter.Cuisine != null)
+        {
+            var cuisine = filter.Cuisine;
+
+            query = query.Where(r =>
+                r.RecipeTags!.Cuisine == cuisine);
+        }
+
+        // filter by dietary tags
+        if (filter.Dietary is { Count: > 0 })
+        {
+            var dietaryTags = filter.Dietary;
+
+            query = query.Where(r => 
+                dietaryTags.All(diet => 
+                    r.RecipeTags!.Dietary.Contains(diet)));
+        }
+
         // Shape into RecipeDTO and IngredientListDTO
         var result = query
             .Select(r => new RecipeDTO

@@ -256,7 +256,7 @@ public partial class AppDbContext : DbContext
         {
             entity
                 .ToTable("Recipe_Tags")
-                .HasKey(e => new { e.RecipeId, e.Recipe_type });
+                .HasKey(e => e.RecipeId);
 
             entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
             entity.Property(e => e.Meal).HasColumnName("meal_tag")
@@ -268,8 +268,8 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Dietary).HasColumnName("dietary_tag")
                 .HasColumnType("text[]");
 
-            entity.HasOne(d => d.Recipe).WithMany()
-                .HasForeignKey(d => d.RecipeId)
+            entity.HasOne(d => d.Recipe).WithOne(r => r.RecipeTags)
+                .HasForeignKey<RecipeTag>(d => d.RecipeId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("recipe_fk");
         });
