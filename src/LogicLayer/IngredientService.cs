@@ -1,7 +1,7 @@
 /* Business logic layer for ingredient variants */
 
-using savorfolio_backend.Models.DTOs;
 using savorfolio_backend.Interfaces;
+using savorfolio_backend.Models.DTOs;
 
 namespace savorfolio_backend.LogicLayer;
 

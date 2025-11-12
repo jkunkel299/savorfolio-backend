@@ -14,7 +14,7 @@ public partial class Recipe
 
     public int? BakeTemp { get; set; }
 
-    public string? Temp_unit { get; set; } 
+    public string? Temp_unit { get; set; }
 
     public string? Description { get; set; }
 

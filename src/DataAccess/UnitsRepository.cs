@@ -13,50 +13,55 @@ public class UnitsRepository(AppDbContext context) : IUnitsRepository
 
     public async Task<List<UnitDTO>> SearchUnitTableAsync(string searchTerm)
     {
-        var query = from u in _context.Units
-                    select new UnitDTO
-                    {
-                        Id = u.Id,
-                        Name = u.Name,
-                        Abbreviation = u.Abbreviation,
-                        PluralName = u.PluralName!
-                    };
+        var query =
+            from u in _context.Units
+            select new UnitDTO
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Abbreviation = u.Abbreviation,
+                PluralName = u.PluralName!,
+            };
 
         if (_context.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
         {
             // fallback for testing
-            query = query.Where(u =>
-                u.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                u.Abbreviation.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                u.PluralName!.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
-            )
-            .OrderByDescending(u =>
-                u.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
-            .ThenByDescending(u =>
-                u.Abbreviation.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+            query = query
+                .Where(u =>
+                    u.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                    || u.Abbreviation.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                    || u.PluralName!.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                )
+                .OrderByDescending(u =>
+                    u.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                )
+                .ThenByDescending(u =>
+                    u.Abbreviation.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                );
         }
         else
         {
-            query = query.Where(u =>
-                EF.Functions.ILike(u.Name, $"%{searchTerm}%") ||
-                EF.Functions.ILike(u.Abbreviation, $"%{searchTerm}%") ||
-                EF.Functions.ILike(u.PluralName!, $"%{searchTerm}%")
-            )
+            query = query
+                .Where(u =>
+                    EF.Functions.ILike(u.Name, $"%{searchTerm}%")
+                    || EF.Functions.ILike(u.Abbreviation, $"%{searchTerm}%")
+                    || EF.Functions.ILike(u.PluralName!, $"%{searchTerm}%")
+                )
                 .OrderByDescending(e => EF.Functions.ILike(e.Name, $"%{searchTerm}%"))
                 .ThenByDescending(e => EF.Functions.ILike(e.Abbreviation, $"%{searchTerm}%"));
         }
         ;
 
-        return await query
-            .Take(10)
-            .ToListAsync();
+        return await query.Take(10).ToListAsync();
     }
-    
+
     public async Task<string> UnitSearchReturnStringAsync(string? searchTerm)
     {
-        if (searchTerm == null || searchTerm == "") return "none";
+        if (searchTerm == null || searchTerm == "")
+            return "none";
         var unitMatch = await SearchUnitTableAsync(searchTerm);
-        if (unitMatch.Count == 0) return "none";
+        if (unitMatch.Count == 0)
+            return "none";
         return unitMatch.First().Name;
     }
 }

@@ -18,6 +18,13 @@ public interface IWebScraperService
         string servingsPattern = ""
     );
     List<string> BuildRecipeIngredients(IDocument document, string ingredientsPattern = "");
-    List<InstructionDTO> BuildRecipeInstructions(IDocument document, string instructionsPattern = "");
-    TagStringsDTO BuildRecipeTags(IDocument document, string coursePattern = "", string cuisinePattern = "");
+    List<InstructionDTO> BuildRecipeInstructions(
+        IDocument document,
+        string instructionsPattern = ""
+    );
+    TagStringsDTO BuildRecipeTags(
+        IDocument document,
+        string coursePattern = "",
+        string cuisinePattern = ""
+    );
 }

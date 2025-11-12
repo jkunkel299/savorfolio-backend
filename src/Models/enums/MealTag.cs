@@ -6,5 +6,5 @@ public enum MealTag
     Lunch,
     Dinner,
     Dessert,
-    Snack
+    Snack,
 }

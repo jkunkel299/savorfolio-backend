@@ -8,6 +8,10 @@ public partial class UserDTO
 
     public string Email { get; set; } = null!;
 
+    public string PasswordHash { get; set; } = null!;
+
+    public string PasswordSalt { get; set; } = null!;
+
     // public virtual ICollection<CustomTagDTO> CustomTags { get; set; } = [];
 
     // public virtual ICollection<NoteDTO> Notes { get; set; } = [];

@@ -1,35 +1,41 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 using AngleSharp.Dom;
 using FuzzySharp;
 using FuzzySharp.Extractor;
-using savorfolio_backend.Models.DTOs;
-using savorfolio_backend.Utils;
-using savorfolio_backend.Models.enums;
-using System.Text.RegularExpressions;
-using savorfolio_backend.Interfaces;
 using Microsoft.IdentityModel.Tokens;
-using System.Diagnostics.CodeAnalysis;
+using savorfolio_backend.Interfaces;
+using savorfolio_backend.Models.DTOs;
+using savorfolio_backend.Models.enums;
+using savorfolio_backend.Utils;
 
 namespace savorfolio_backend.LogicLayer.WebScraper;
 
-public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions) : IFallbackHeuristics
+public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions)
+    : IFallbackHeuristics
 {
-    private readonly IHeuristicExtensions _heuristicExtensions = heuristicExtensions ?? throw new ArgumentNullException(nameof(heuristicExtensions));
+    private readonly IHeuristicExtensions _heuristicExtensions =
+        heuristicExtensions ?? throw new ArgumentNullException(nameof(heuristicExtensions));
 
     #region Title
     public string ExtractTitle(IDocument document)
     {
         string recipeTitle = "";
 
-        var tryTitle = document.All
-            .FirstOrDefault(e => e.ClassList.Any(c => TitleRegex.IsMatch(c)));
+        var tryTitle = document.All.FirstOrDefault(e =>
+            e.ClassList.Any(c => TitleRegex.IsMatch(c))
+        );
         if (tryTitle != null)
         {
             recipeTitle = tryTitle?.TextContent.Trim() ?? "";
         }
         else
         {
-            var metaTitle = document.QuerySelector("meta[property='og:title']")?.GetAttribute("content");
-            if (!string.IsNullOrEmpty(metaTitle)) recipeTitle = metaTitle;
+            var metaTitle = document
+                .QuerySelector("meta[property='og:title']")
+                ?.GetAttribute("content");
+            if (!string.IsNullOrEmpty(metaTitle))
+                recipeTitle = metaTitle;
         }
         return recipeTitle;
     }
@@ -40,8 +46,9 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
     public string ExtractDescription(IDocument document)
     {
         string recipeDescription = "";
-        var tryTitle = document.All
-            .FirstOrDefault(e => e.ClassList.Any(c => TitleRegex.IsMatch(c)));
+        var tryTitle = document.All.FirstOrDefault(e =>
+            e.ClassList.Any(c => TitleRegex.IsMatch(c))
+        );
         var tryDescriptionElement = document.Body?.QuerySelector("[class*='recipe-description']");
         var trySummary = document.Body?.QuerySelector("[class*='summary']");
 
@@ -57,7 +64,7 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
         }
         // if still no match, try to find elements close to the recipe title long enough to be a description
         // added does not contain "!" as the summaries usually contain this character
-        if (recipeDescription == "" || !recipeDescription.Contains('!') && tryTitle != null) 
+        if (recipeDescription == "" || !recipeDescription.Contains('!') && tryTitle != null)
         {
             for (int i = 0; i < 10; i++)
             {
@@ -80,10 +87,11 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
         string bestMatch;
 
         // find all elements that contain the label pattern
-        var labelElements = document.All
-            .Where(e => e.TextContent != null &&
-                        e.TextContent.Contains(labelPattern, StringComparison.CurrentCultureIgnoreCase) &&
-                        e.TextContent.Any(char.IsDigit));
+        var labelElements = document.All.Where(e =>
+            e.TextContent != null
+            && e.TextContent.Contains(labelPattern, StringComparison.CurrentCultureIgnoreCase)
+            && e.TextContent.Any(char.IsDigit)
+        );
         if (labelElements.Any())
         {
             bestMatch = _heuristicExtensions.GetBestMatch(labelElements, labelPattern);
@@ -93,7 +101,7 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
             {
                 return matchTrim.Value.Trim();
             }
-        } 
+        }
         return "";
     }
     #endregion
@@ -108,14 +116,17 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
         string documentText = document.Body?.TextContent ?? string.Empty;
 
         // Match the document text to established patterns
-        var patternMatch = terms.FirstOrDefault(t => documentText.Contains(t, StringComparison.OrdinalIgnoreCase)) ?? "none";
+        var patternMatch =
+            terms.FirstOrDefault(t => documentText.Contains(t, StringComparison.OrdinalIgnoreCase))
+            ?? "none";
 
         string regexPattern = "[^0-9-]";
 
-        var labelElements = document.All
-                    .Where(e => e.TextContent != null &&
-                        e.TextContent.Contains(patternMatch, StringComparison.OrdinalIgnoreCase) &&
-                        e.TextContent.Any(char.IsDigit));
+        var labelElements = document.All.Where(e =>
+            e.TextContent != null
+            && e.TextContent.Contains(patternMatch, StringComparison.OrdinalIgnoreCase)
+            && e.TextContent.Any(char.IsDigit)
+        );
 
         if (patternMatch != "none" && labelElements.Any())
         {
@@ -126,7 +137,8 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
             if (!string.IsNullOrEmpty(matchTrim))
             {
                 // return matchTrim;
-                if (matchTrim!.Length < 4) return matchTrim!;
+                if (matchTrim!.Length < 4)
+                    return matchTrim!;
             }
         }
 
@@ -139,7 +151,8 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
     public TagStringsDTO ExtractTags(IDocument document)
     {
         string documentText = document.Body?.TextContent ?? string.Empty;
-        if (documentText == string.Empty) return new TagStringsDTO();
+        if (documentText == string.Empty)
+            return new TagStringsDTO();
 
         // recipe type/course
         string recipe_type = _heuristicExtensions.MatchEnum<RecipeTypeTag>(document);
@@ -166,7 +179,6 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
     #endregion
 
 
-
     // #region Dietary
     [ExcludeFromCodeCoverage]
     public List<string> ExtractDietaryTags(string documentText)
@@ -180,13 +192,14 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
         foreach (var item in dietaryDraft)
         {
             ExtractedResult<string> bestTypeMatch = Process.ExtractOne(item, dietaryList);
-            if (bestTypeMatch != null) dietary.Add(bestTypeMatch.Value);
+            if (bestTypeMatch != null)
+                dietary.Add(bestTypeMatch.Value);
         }
         ;
         return dietary;
     }
-    // #endregion
 
+    // #endregion
 
     #region Instructions
     public List<InstructionDTO> ExtractInstructions(IDocument document)
@@ -195,14 +208,16 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
         List<string> draftInstructions = [];
         List<InstructionDTO> instructionDTOs = [];
         // look for items with "instruction" in the class name
-        var tryInstructionsElements = document.Body?.QuerySelectorAll("[class*='instruction'] li, [class*='instruction'] ol li, [class*='instruction'] ul li, [class*='instruction'] p");
+        var tryInstructionsElements = document.Body?.QuerySelectorAll(
+            "[class*='instruction'] li, [class*='instruction'] ol li, [class*='instruction'] ul li, [class*='instruction'] p"
+        );
         if (tryInstructionsElements != null)
         {
             draftInstructions.AddRange(
-               tryInstructionsElements
-                   .Select(li => li.TextContent.Trim())
-                   .Where(text => !string.IsNullOrWhiteSpace(text))
-           );
+                tryInstructionsElements
+                    .Select(li => li.TextContent.Trim())
+                    .Where(text => !string.IsNullOrWhiteSpace(text))
+            );
         }
 
         if (draftInstructions.Count == 0)
@@ -213,26 +228,27 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
 
             // Match the content to one of the established terms
             var instructionLabel = document.All.FirstOrDefault(e =>
-                terms.Any(t => e.TextContent.Trim().Equals(t, StringComparison.OrdinalIgnoreCase)));
+                terms.Any(t => e.TextContent.Trim().Equals(t, StringComparison.OrdinalIgnoreCase))
+            );
             // if there's a match for the label
             if (instructionLabel != null)
             {
                 // get the elements that follow the label
                 var followingElements = instructionLabel
-                    .ParentElement?
-                    .Children
-                    .SkipWhile(c => c != instructionLabel)
+                    .ParentElement?.Children.SkipWhile(c => c != instructionLabel)
                     .Skip(1) // skip the label itself
                     .TakeWhile(c => c.Matches("div, ol, ul, li"));
                 // join the elements into a string
-                string insString = string.Join(", ", followingElements!.Select(e => e.TextContent.Trim()));
-                // trim whitespace 
+                string insString = string.Join(
+                    ", ",
+                    followingElements!.Select(e => e.TextContent.Trim())
+                );
+                // trim whitespace
                 string insStringWhitespace = WhitespaceRegex.Replace(insString, "\n");
                 // remove "Step #" labels
                 string insStringTrim = StepRegex.Replace(insStringWhitespace, "\n").Trim();
                 // split into individual steps
                 draftInstructions = [.. insStringTrim.Split("\n")];
-
             }
             else
             { // last resort, look for any ordered list
@@ -248,14 +264,15 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
             }
         }
         // if still no draft instructions, return empty list
-        if (draftInstructions.Count == 0) return [];
+        if (draftInstructions.Count == 0)
+            return [];
         // build the instruction DTO list
         for (int i = 0; i < draftInstructions.Count; i++)
         {
             var instructionItem = new InstructionDTO
             {
                 StepNumber = i + 1,
-                InstructionText = draftInstructions[i]
+                InstructionText = draftInstructions[i],
             };
             instructionDTOs.Add(instructionItem);
         }
@@ -263,7 +280,6 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
         return instructionDTOs;
     }
     #endregion
-
 
 
     #region Bake Temp
@@ -277,13 +293,18 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
         string documentText = document.Body?.TextContent ?? string.Empty;
 
         // Match the document text to established patterns
-        var patternMatch = terms.FirstOrDefault(t => documentText.Contains(t, StringComparison.OrdinalIgnoreCase)) ?? "none";
+        var patternMatch =
+            terms.FirstOrDefault(t => documentText.Contains(t, StringComparison.OrdinalIgnoreCase))
+            ?? "none";
 
         var regexPattern = @"(\d{3})(\s*)?(°|degrees)?\s*([FC])?";
         var regex = new Regex(regexPattern, RegexOptions.IgnoreCase);
         var bakeTempLine = document.All.FirstOrDefault(e =>
-                terms.Any(t => e.TextContent.Trim().Contains(t, StringComparison.OrdinalIgnoreCase) &&
-                        e.TextContent.Any(char.IsDigit)));
+            terms.Any(t =>
+                e.TextContent.Trim().Contains(t, StringComparison.OrdinalIgnoreCase)
+                && e.TextContent.Any(char.IsDigit)
+            )
+        );
         if (bakeTempLine?.TextContent != null)
         {
             var bakeTempLineText = bakeTempLine.TextContent;
@@ -294,7 +315,10 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
             foreach (Match match in matches)
             {
                 var index = match.Index;
-                var nearbyText = bakeTempLineText.Substring(Math.Max(0, index - 50), Math.Min(100, bakeTempLineText.Length - index));
+                var nearbyText = bakeTempLineText.Substring(
+                    Math.Max(0, index - 50),
+                    Math.Min(100, bakeTempLineText.Length - index)
+                );
 
                 if (terms.Any(t => nearbyText.Contains(t, StringComparison.OrdinalIgnoreCase)))
                 {
@@ -314,24 +338,38 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
     #endregion
 
 
-
     #region Regex
     // Regex generation
     // [GeneratedRegex(@"\b\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b(?:\s+\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b)?", RegexOptions.IgnoreCase, "en-US")]
     // [ExcludeFromCodeCoverage]
     // private static partial Regex TimeRegex();
-    private static readonly Regex TimeRegex = new(@"\b\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b(?:\s+\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b)?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex TimeRegex = new(
+        @"\b\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b(?:\s+\d+\s*(?:min|mins|minute|minutes|hr|hrs|hour|hours|sec|secs|second|seconds)\b)?",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase
+    );
+
     // [GeneratedRegex(@"recipe.*title", RegexOptions.IgnoreCase, "en-US")]
     // [ExcludeFromCodeCoverage]
     // private static partial Regex TitleRegex();
-    private static readonly Regex TitleRegex = new(@"recipe.*title", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex TitleRegex = new(
+        @"recipe.*title",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase
+    );
+
     // [GeneratedRegex(@"\s{2,}")]
     // [ExcludeFromCodeCoverage]
     // private static partial Regex WhitespaceRegex();
-    private static readonly Regex WhitespaceRegex = new(@"\s{2,}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex WhitespaceRegex = new(
+        @"\s{2,}",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase
+    );
+
     // [GeneratedRegex(@"Step\s+\d+", RegexOptions.IgnoreCase, "en-US")]
     // [ExcludeFromCodeCoverage]
     // private static partial Regex StepRegex();
-    private static readonly Regex StepRegex = new(@"Step\s+\d+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex StepRegex = new(
+        @"Step\s+\d+",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase
+    );
     #endregion
 }

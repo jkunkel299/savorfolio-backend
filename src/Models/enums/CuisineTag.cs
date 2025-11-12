@@ -1,6 +1,7 @@
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+
 namespace savorfolio_backend.Models.enums;
 
 [JsonConverter(typeof(StringEnumConverter))]
@@ -24,9 +25,11 @@ public enum CuisineTag
     Argentinian,
     Caribbean,
     American,
-    [EnumMember(Value = "Middle Eastern")] MiddleEastern,
+
+    [EnumMember(Value = "Middle Eastern")]
+    MiddleEastern,
     Turkish,
     Hungarian,
     Bavarian,
-    Mediterranean
+    Mediterranean,
 }

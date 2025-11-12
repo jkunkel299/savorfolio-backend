@@ -34,7 +34,7 @@ public class RecipeService(IRecipeRepository recipeRepository) : IRecipeService
             var cuisineTag = EnumExtensions.ParseEnumMember<CuisineTag>(cuisineString);
             filter.Cuisine = cuisineTag;
         }
-        
+
         var recipes = await _recipeRepository.ReturnRecipesFiltered(filter);
         return recipes;
     }

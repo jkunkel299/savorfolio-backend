@@ -1,4 +1,3 @@
-
 namespace savorfolio_backend.Models.DTOs;
 
 public class RecipeDTO

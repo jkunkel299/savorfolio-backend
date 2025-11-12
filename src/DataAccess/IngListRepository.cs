@@ -12,7 +12,11 @@ public class IngListRepository(AppDbContext context) : IIngListRepository
 {
     private readonly AppDbContext _context = context;
 
-    public int AddNewRecipeIng(List<IngredientListDTO> ingredientsData, int recipeId, List<SectionDTO>? sectionsData)
+    public int AddNewRecipeIng(
+        List<IngredientListDTO> ingredientsData,
+        int recipeId,
+        List<SectionDTO>? sectionsData
+    )
     {
         // for each ingredient in the list, create a new row in the IngredientList table
         foreach (IngredientListDTO ingredient in ingredientsData)
@@ -21,13 +25,17 @@ public class IngListRepository(AppDbContext context) : IIngListRepository
 
             if (sectionsData!.Count != 0 && !string.IsNullOrEmpty(ingredient.SectionName))
             {
-                var matchedSection = sectionsData
-                    .FirstOrDefault(s =>
-                        string.Equals(s.SectionName, ingredient.SectionName, StringComparison.OrdinalIgnoreCase));
+                var matchedSection = sectionsData.FirstOrDefault(s =>
+                    string.Equals(
+                        s.SectionName,
+                        ingredient.SectionName,
+                        StringComparison.OrdinalIgnoreCase
+                    )
+                );
 
                 sectionId = matchedSection?.Id;
             }
-                
+
             var newIngredient = new IngredientList
             {
                 RecipeId = recipeId,
@@ -36,7 +44,7 @@ public class IngListRepository(AppDbContext context) : IIngListRepository
                 Quantity = ingredient.Quantity,
                 UnitId = ingredient.UnitId,
                 IngredientId = ingredient.IngredientId,
-                Qualifier = ingredient.Qualifier
+                Qualifier = ingredient.Qualifier,
             };
 
             _context.IngredientLists.Add(newIngredient);
@@ -48,8 +56,8 @@ public class IngListRepository(AppDbContext context) : IIngListRepository
 
     public Task<List<IngredientListDTO>> GetIngredientsByRecipeAsync(int recipeId)
     {
-        var result = _context.IngredientLists
-            .Where(i => i.RecipeId == recipeId)
+        var result = _context
+            .IngredientLists.Where(i => i.RecipeId == recipeId)
             .Select(e => new IngredientListDTO
             {
                 Id = e.Id,
@@ -64,7 +72,7 @@ public class IngListRepository(AppDbContext context) : IIngListRepository
                 UnitNamePlural = e.Unit.PluralName!,
                 Qualifier = e.Qualifier,
                 SectionId = e.SectionId,
-                SectionName = e.Section != null ? e.Section.SectionName : null
+                SectionName = e.Section != null ? e.Section.SectionName : null,
             })
             .OrderBy(e => e.IngredientOrder)
             .ToListAsync();

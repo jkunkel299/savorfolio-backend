@@ -13,5 +13,4 @@ public class TagStringsDTO
     public string? Cuisine { get; set; }
 
     public List<string> Dietary { get; set; } = [];
-
 }

@@ -3,8 +3,8 @@
 using Microsoft.EntityFrameworkCore;
 using savorfolio_backend.Data;
 using savorfolio_backend.Interfaces;
-using savorfolio_backend.Models.DTOs;
 using savorfolio_backend.Models;
+using savorfolio_backend.Models.DTOs;
 
 namespace savorfolio_backend.DataAccess;
 
@@ -15,8 +15,8 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
     // queries recipe database for recipe by ID
     public async Task<RecipeDTO> ReturnRecipeByIdAsync(int recipeId)
     {
-        var result = await _context.Recipes
-            .Where(r => r.Id == recipeId)
+        var result = await _context
+            .Recipes.Where(r => r.Id == recipeId)
             .Select(r => new RecipeDTO
             {
                 Id = r.Id,
@@ -26,8 +26,9 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
                 PrepTime = r.PrepTime,
                 BakeTemp = r.BakeTemp,
                 Temp_unit = r.Temp_unit,
-                Description = r.Description
-            }).SingleOrDefaultAsync();
+                Description = r.Description,
+            })
+            .SingleOrDefaultAsync();
 
         return result!;
     }
@@ -43,8 +44,8 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
             var ingredientIds = filter.IncludeIngredients;
 
             query = query.Where(r =>
-                ingredientIds.All(ingId =>
-                    r.IngredientLists.Any(ri => ri.IngredientId == ingId)));
+                ingredientIds.All(ingId => r.IngredientLists.Any(ri => ri.IngredientId == ingId))
+            );
         }
 
         // filter to exclude ingredients
@@ -53,8 +54,8 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
             var ingredientIds = filter.ExcludeIngredients;
 
             query = query.Where(r =>
-                !ingredientIds.All(ingId =>
-                    r.IngredientLists.Any(ri => ri.IngredientId == ingId)));
+                !ingredientIds.All(ingId => r.IngredientLists.Any(ri => ri.IngredientId == ingId))
+            );
         }
 
         // filter by recipe type tag
@@ -62,8 +63,7 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
         {
             var recipe_type = filter.Recipe_type;
 
-            query = query.Where(r =>
-                r.RecipeTags!.Recipe_type == recipe_type);
+            query = query.Where(r => r.RecipeTags!.Recipe_type == recipe_type);
         }
 
         // filter by meal tag
@@ -71,8 +71,7 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
         {
             var meal = filter.Meal;
 
-            query = query.Where(r =>
-                r.RecipeTags!.Meal == meal);
+            query = query.Where(r => r.RecipeTags!.Meal == meal);
         }
 
         // filter by cuisine tag
@@ -80,8 +79,7 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
         {
             var cuisine = filter.Cuisine;
 
-            query = query.Where(r =>
-                r.RecipeTags!.Cuisine == cuisine);
+            query = query.Where(r => r.RecipeTags!.Cuisine == cuisine);
         }
 
         // filter by dietary tags
@@ -89,38 +87,36 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
         {
             var dietaryTags = filter.Dietary;
 
-            query = query.Where(r => 
-                dietaryTags.All(diet => 
-                    r.RecipeTags!.Dietary.Contains(diet)));
+            query = query.Where(r => dietaryTags.All(diet => r.RecipeTags!.Dietary.Contains(diet)));
         }
 
         // Shape into RecipeDTO and IngredientListDTO
-        var result = query
-            .Select(r => new RecipeDTO
-            {
-                Id = r.Id,
-                Name = r.Name,
-                Servings = r.Servings,
-                CookTime = r.CookTime,
-                PrepTime = r.PrepTime,
-                BakeTemp = r.BakeTemp,
-                Temp_unit = r.Temp_unit,
-                Description = r.Description,
-                Ingredients = r.IngredientLists
-                    .OrderBy(ri => ri.IngredientOrder)
-                    .Select(ri => new IngredientListDTO
-                    {
-                        Id = ri.Id,
-                        RecipeId = ri.RecipeId,
-                        IngredientId = ri.Ingredient.Id,
-                        IngredientOrder = ri.IngredientOrder,
-                        IngredientName = ri.Ingredient.Name,
-                        Quantity = ri.Quantity,
-                        Qualifier = ri.Qualifier,
-                        UnitId = ri.UnitId,
-                        UnitName = ri.Unit.Name,
-                    }).ToList()
-            });
+        var result = query.Select(r => new RecipeDTO
+        {
+            Id = r.Id,
+            Name = r.Name,
+            Servings = r.Servings,
+            CookTime = r.CookTime,
+            PrepTime = r.PrepTime,
+            BakeTemp = r.BakeTemp,
+            Temp_unit = r.Temp_unit,
+            Description = r.Description,
+            Ingredients = r
+                .IngredientLists.OrderBy(ri => ri.IngredientOrder)
+                .Select(ri => new IngredientListDTO
+                {
+                    Id = ri.Id,
+                    RecipeId = ri.RecipeId,
+                    IngredientId = ri.Ingredient.Id,
+                    IngredientOrder = ri.IngredientOrder,
+                    IngredientName = ri.Ingredient.Name,
+                    Quantity = ri.Quantity,
+                    Qualifier = ri.Qualifier,
+                    UnitId = ri.UnitId,
+                    UnitName = ri.Unit.Name,
+                })
+                .ToList(),
+        });
 
         return await result.ToListAsync();
     }
@@ -137,7 +133,7 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
             PrepTime = recipeData.PrepTime,
             BakeTemp = recipeData.BakeTemp,
             Temp_unit = recipeData.Temp_unit,
-            Description = recipeData.Description
+            Description = recipeData.Description,
         };
 
         // add new recipe to Recipe table and save changes
