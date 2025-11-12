@@ -123,7 +123,7 @@ public partial class FallbackHeuristics(IHeuristicExtensions heuristicExtensions
             // return bestMatch;
             // trim using regex to only include the servings number
             var matchTrim = Regex.Replace(bestMatch, regexPattern, string.Empty).Trim();
-            if (!matchTrim.IsNullOrEmpty())
+            if (!string.IsNullOrEmpty(matchTrim))
             {
                 // return matchTrim;
                 if (matchTrim!.Length < 4) return matchTrim!;
