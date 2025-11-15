@@ -24,7 +24,7 @@ public static class AddRecipeEndpoints
             ) =>
             {
                 var newRecipe = JObject.Parse(newRecipeBody.RootElement.GetRawText());
-                var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var userIdClaim = httpContext.User.FindFirst("id")?.Value;
                 var userId = int.Parse(userIdClaim!);
 
                 OperationResult<int> result = await addRecipeService.AddRecipeManuallyAsync(
