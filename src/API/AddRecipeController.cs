@@ -1,6 +1,8 @@
 /* API layer to add recipe manually, may also include adding recipe via scraping */
 
+using System.Security.Claims;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using savorfolio_backend.Interfaces;
@@ -14,12 +16,20 @@ public static class AddRecipeEndpoints
     {
         app.MapPost(
             "/api/recipes/add/manual",
-            async ([FromBody] JsonDocument newRecipeBody, IAddRecipeService addRecipeService) =>
+            [Authorize]
+            async (
+                [FromBody] JsonDocument newRecipeBody,
+                HttpContext httpContext,
+                IAddRecipeService addRecipeService
+            ) =>
             {
                 var newRecipe = JObject.Parse(newRecipeBody.RootElement.GetRawText());
+                var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var userId = int.Parse(userIdClaim!);
 
                 OperationResult<int> result = await addRecipeService.AddRecipeManuallyAsync(
-                    newRecipe
+                    newRecipe,
+                    userId
                 );
                 if (result.Success)
                 {

@@ -27,4 +27,6 @@ public partial class Recipe
     public virtual ICollection<RecipeSection> RecipeSections { get; set; } = [];
 
     public virtual RecipeTag? RecipeTags { get; set; }
+
+    public virtual UserRecipe? UserRecipe { get; set; }
 }

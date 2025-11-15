@@ -13,4 +13,6 @@ public class RecipeFilterRequestDTO
     public string? CuisineString { get; set; }
     public CuisineTag? Cuisine { get; set; }
     public List<string>? Dietary { get; set; }
+    public int? UserId { get; set; }
+    public string? RecipeName { get; set; }
 }

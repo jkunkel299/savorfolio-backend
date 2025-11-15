@@ -12,4 +12,5 @@ public interface IUserRepository
         string password_hash,
         string password_salt
     );
+    Task<int> AddUserRecipeAsync(int userId, int recipeId);
 }

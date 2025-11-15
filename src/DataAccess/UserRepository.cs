@@ -1,3 +1,5 @@
+/* Data access layer to User and UserRecipe entities */
+
 using Microsoft.EntityFrameworkCore;
 using savorfolio_backend.Data;
 using savorfolio_backend.Interfaces;
@@ -38,5 +40,13 @@ public class UserRepository(AppDbContext context) : IUserRepository
         await _context.SaveChangesAsync();
 
         return newUser.Id;
+    }
+
+    public async Task<int> AddUserRecipeAsync(int userId, int recipeId)
+    {
+        var newUserRecipe = new UserRecipe { UserId = userId, RecipeId = recipeId };
+        _context.UserRecipes.Add(newUserRecipe);
+        int record = await _context.SaveChangesAsync();
+        return record;
     }
 }

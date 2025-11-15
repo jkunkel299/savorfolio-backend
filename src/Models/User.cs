@@ -15,4 +15,6 @@ public partial class User
     public virtual ICollection<CustomTag> CustomTags { get; set; } = [];
 
     public virtual ICollection<Note> Notes { get; set; } = [];
+
+    public virtual UserRecipe? UserRecipe { get; set; }
 }

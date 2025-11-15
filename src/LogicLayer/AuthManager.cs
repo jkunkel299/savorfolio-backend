@@ -1,5 +1,6 @@
+/* Business logic layer for managing login and registration */
+
 using savorfolio_backend.Interfaces;
-using savorfolio_backend.Models;
 using savorfolio_backend.Models.DTOs;
 
 namespace savorfolio_backend.LogicLayer;

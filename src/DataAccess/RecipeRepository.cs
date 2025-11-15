@@ -20,6 +20,7 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
             .Select(r => new RecipeDTO
             {
                 Id = r.Id,
+                UserId = r.UserRecipe!.UserId,
                 Name = r.Name,
                 Servings = r.Servings,
                 CookTime = r.CookTime,
@@ -90,10 +91,51 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
             query = query.Where(r => dietaryTags.All(diet => r.RecipeTags!.Dietary.Contains(diet)));
         }
 
+        // filter by user ID (i.e., only view my recipes)
+        if (filter.UserId != null)
+        {
+            var userId = filter.UserId;
+
+            query = query.Where(r => r.UserRecipe!.UserId == userId);
+        }
+
+        // filter by recipe name
+        if (filter.RecipeName != null)
+        {
+            var recipeName = filter.RecipeName;
+            if (_context.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
+            {
+                query = query
+                    .Where(r => r.Name.Contains(recipeName, StringComparison.OrdinalIgnoreCase))
+                    .OrderByDescending(r =>
+                        r.Name == recipeName ? 3
+                        : r.Name.StartsWith(recipeName + ",", StringComparison.OrdinalIgnoreCase)
+                        || r.Name.StartsWith(recipeName + " ", StringComparison.OrdinalIgnoreCase)
+                            ? 2
+                        : r.Name.Contains(recipeName, StringComparison.OrdinalIgnoreCase) ? 1
+                        : 0
+                    );
+            }
+            else
+            {
+                query = query
+                    .Where(r => EF.Functions.ILike(r.Name, $"%{recipeName}%"))
+                    .OrderByDescending(r =>
+                        r.Name == recipeName ? 3
+                        : EF.Functions.ILike(r.Name, $"{recipeName},%")
+                        || EF.Functions.ILike(r.Name, $"{recipeName} %")
+                            ? 2
+                        : EF.Functions.ILike(r.Name, $"%{recipeName}%") ? 1
+                        : 0
+                    );
+            }
+        }
+
         // Shape into RecipeDTO and IngredientListDTO
         var result = query.Select(r => new RecipeDTO
         {
             Id = r.Id,
+            UserId = r.UserRecipe!.UserId,
             Name = r.Name,
             Servings = r.Servings,
             CookTime = r.CookTime,

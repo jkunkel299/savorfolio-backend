@@ -1,3 +1,5 @@
+/* Business logic layer for managing JWT-based authentication, encryption of password data */
+
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -42,8 +44,9 @@ public class AuthService(JwtSettings jwtSettings) : IAuthService
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Username),
+            new Claim("id", user.Id.ToString()),
+            new Claim("username", user.Username),
+            new Claim("email", user.Email),
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));

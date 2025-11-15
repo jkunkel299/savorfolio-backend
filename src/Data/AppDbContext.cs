@@ -286,22 +286,24 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<UserRecipe>(entity =>
         {
-            entity.HasNoKey().ToTable("User_Recipes");
+            entity.HasKey(ur => new { ur.UserId, ur.RecipeId });
+
+            entity.ToTable("User_Recipes");
 
             entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity
-                .HasOne(d => d.Recipe)
-                .WithMany()
-                .HasForeignKey(d => d.RecipeId)
+                .HasOne(ur => ur.Recipe)
+                .WithOne(r => r.UserRecipe)
+                .HasForeignKey<UserRecipe>(ur => ur.RecipeId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("recipe_fk");
 
             entity
-                .HasOne(d => d.User)
-                .WithMany()
-                .HasForeignKey(d => d.UserId)
+                .HasOne(ur => ur.User)
+                .WithOne(u => u.UserRecipe)
+                .HasForeignKey<UserRecipe>(d => d.UserId)
                 .HasConstraintName("user_fk");
         });
 

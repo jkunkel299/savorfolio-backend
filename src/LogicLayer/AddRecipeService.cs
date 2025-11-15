@@ -16,7 +16,8 @@ public class AddRecipeService(
     ISectionsRepository sectionsRepository,
     IIngListRepository ingListRepository,
     IInstructionsRepository instructionsRepository,
-    ITagsRepository tagsRepository
+    ITagsRepository tagsRepository,
+    IUserRepository userRepository
 ) : IAddRecipeService
 {
     private readonly IRecipeRepository _recipeRepository = recipeRepository;
@@ -24,8 +25,12 @@ public class AddRecipeService(
     private readonly IIngListRepository _ingListRepository = ingListRepository;
     private readonly IInstructionsRepository _instructionsRepository = instructionsRepository;
     private readonly ITagsRepository _tagsRepository = tagsRepository;
+    private readonly IUserRepository _userRepository = userRepository;
 
-    public async Task<OperationResult<int>> AddRecipeManuallyAsync(JObject newRecipeContent)
+    public async Task<OperationResult<int>> AddRecipeManuallyAsync(
+        JObject newRecipeContent,
+        int userId
+    )
     {
         // extract recipe information: name, servings, cook time, prep time, bake temp, temp unit
         var newRecipe =
@@ -34,7 +39,8 @@ public class AddRecipeService(
 
         // call recipeRepository.AddNewRecipeAsync with the new recipe DTO (await)
         var newRecipeId = await _recipeRepository.AddNewRecipeAsync(newRecipe);
-
+        // call userRepository.AddUserRecipeAsync with the user ID and new recipe ID (await)
+        var addedUserRecipe = await _userRepository.AddUserRecipeAsync(userId, newRecipeId);
         // build sections list DTO or set as empty list
         var sectionsList = (newRecipeContent["recipeSections"]?.ToObject<List<SectionDTO>>()) ?? [];
 
@@ -86,6 +92,7 @@ public class AddRecipeService(
             & ingAdded > 0
             & insAdded > 0
             & tagsAdded > 0
+            & addedUserRecipe > 0
         )
         {
             result.Success = true;
@@ -93,7 +100,13 @@ public class AddRecipeService(
             result.Message = "Recipe added successfully";
         }
         // check if all entries were added successfully without sections
-        else if (sectionsList.Count == 0 & ingAdded > 0 & insAdded > 0 & tagsAdded > 0)
+        else if (
+            sectionsList.Count == 0
+            & ingAdded > 0
+            & insAdded > 0
+            & tagsAdded > 0
+            & addedUserRecipe > 0
+        )
         {
             result.Success = true;
             result.Data = newRecipeId;
