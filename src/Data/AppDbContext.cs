@@ -269,11 +269,11 @@ public partial class AppDbContext : DbContext
 
             entity.HasIndex(e => e.Email, "User_email_key").IsUnique();
 
-            entity.HasIndex(e => e.Username, "User_username_key").IsUnique();
+            // entity.HasIndex(e => e.Username, "User_username_key").IsUnique();
 
             entity.Property(e => e.Id).UseIdentityAlwaysColumn().HasColumnName("id");
             entity.Property(e => e.Email).HasMaxLength(50).HasColumnName("email");
-            entity.Property(e => e.Username).HasMaxLength(30).HasColumnName("username");
+            // entity.Property(e => e.Username).HasMaxLength(30).HasColumnName("username");
             entity
                 .Property(u => u.PasswordHash)
                 .HasColumnType("text")

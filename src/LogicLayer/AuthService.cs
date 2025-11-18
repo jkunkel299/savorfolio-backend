@@ -45,7 +45,7 @@ public class AuthService(JwtSettings jwtSettings) : IAuthService
         var claims = new[]
         {
             new Claim("id", user.Id.ToString()),
-            new Claim("username", user.Username),
+            // new Claim("username", user.Username),
             new Claim("email", user.Email),
         };
 

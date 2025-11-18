@@ -12,10 +12,10 @@ public class UserRepository(AppDbContext context) : IUserRepository
 {
     private readonly AppDbContext _context = context;
 
-    public async Task<User?> GetByUsernameAsync(string username)
-    {
-        return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
-    }
+    // public async Task<User?> GetByUsernameAsync(string username)
+    // {
+    //     return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+    // }
 
     public async Task<User?> GetByEmailAsync(string email)
     {
@@ -31,7 +31,7 @@ public class UserRepository(AppDbContext context) : IUserRepository
         // generate new user record to be input into User table
         var newUser = new User
         {
-            Username = userRegister.Username,
+            // Username = userRegister.Username,
             Email = userRegister.Email,
             PasswordHash = password_hash,
             PasswordSalt = password_salt,

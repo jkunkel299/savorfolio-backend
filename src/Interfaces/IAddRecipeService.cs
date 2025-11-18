@@ -5,5 +5,5 @@ namespace savorfolio_backend.Interfaces;
 
 public interface IAddRecipeService
 {
-    Task<OperationResult<int>> AddRecipeManuallyAsync(JObject newRecipeContent, int userId);
+    Task<OperationResult<int>> AddRecipeManuallyAsync(JObject newRecipeContent);
 }

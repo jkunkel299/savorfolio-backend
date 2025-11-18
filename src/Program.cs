@@ -106,7 +106,7 @@ var jwtSettings = new JwtSettings
 {
     Key = jwtKey!,
     Issuer = jwtIssuer!,
-    Audience = jwtAudience!
+    Audience = jwtAudience!,
 };
 builder.Services.AddSingleton(jwtSettings);
 

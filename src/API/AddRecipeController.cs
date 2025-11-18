@@ -17,19 +17,12 @@ public static class AddRecipeEndpoints
         app.MapPost(
             "/api/recipes/add/manual",
             [Authorize]
-            async (
-                [FromBody] JsonDocument newRecipeBody,
-                HttpContext httpContext,
-                IAddRecipeService addRecipeService
-            ) =>
+            async ([FromBody] JsonDocument newRecipeBody, IAddRecipeService addRecipeService) =>
             {
                 var newRecipe = JObject.Parse(newRecipeBody.RootElement.GetRawText());
-                var userIdClaim = httpContext.User.FindFirst("id")?.Value;
-                var userId = int.Parse(userIdClaim!);
 
                 OperationResult<int> result = await addRecipeService.AddRecipeManuallyAsync(
-                    newRecipe,
-                    userId
+                    newRecipe
                 );
                 if (result.Success)
                 {

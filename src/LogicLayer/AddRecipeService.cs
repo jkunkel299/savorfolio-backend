@@ -27,23 +27,24 @@ public class AddRecipeService(
     private readonly ITagsRepository _tagsRepository = tagsRepository;
     private readonly IUserRepository _userRepository = userRepository;
 
-    public async Task<OperationResult<int>> AddRecipeManuallyAsync(
-        JObject newRecipeContent,
-        int userId
-    )
+    public async Task<OperationResult<int>> AddRecipeManuallyAsync(JObject newRecipeContent)
     {
         // extract recipe information: name, servings, cook time, prep time, bake temp, temp unit
         var newRecipe =
             (newRecipeContent["recipeSummary"]?.ToObject<RecipeDTO>())
             ?? throw new InvalidOperationException("RecipeSummary section missing or invalid");
-
         // call recipeRepository.AddNewRecipeAsync with the new recipe DTO (await)
         var newRecipeId = await _recipeRepository.AddNewRecipeAsync(newRecipe);
+
+        // extract user ID from the recipe content
+        var userId =
+            (newRecipeContent["userId"]?.ToObject<int>())
+            ?? throw new InvalidOperationException("UserId section missing or invalid");
         // call userRepository.AddUserRecipeAsync with the user ID and new recipe ID (await)
         var addedUserRecipe = await _userRepository.AddUserRecipeAsync(userId, newRecipeId);
+
         // build sections list DTO or set as empty list
         var sectionsList = (newRecipeContent["recipeSections"]?.ToObject<List<SectionDTO>>()) ?? [];
-
         // if sections, call sectionsRepository.AddNewRecipeSection with the new section DTO list
         int sectionsRecords = 0;
         List<SectionDTO> addedSections = [];
@@ -59,7 +60,6 @@ public class AddRecipeService(
         var ingList =
             (newRecipeContent["ingredients"]?.ToObject<List<IngredientListDTO>>())
             ?? throw new InvalidOperationException("Ingredients section missing or invalid");
-
         // call ingListRepository.AddNewRecipeIng with the new ingredient list DTO
         int ingAdded = _ingListRepository.AddNewRecipeIng(ingList, newRecipeId, addedSections);
 
@@ -67,7 +67,6 @@ public class AddRecipeService(
         var instructions =
             (newRecipeContent["instructions"]?.ToObject<List<InstructionDTO>>())
             ?? throw new InvalidOperationException("Instructions section missing or invalid");
-
         // call instructionsRepository.AddNewRecipeIns with the new instruction DTO
         int insAdded = _instructionsRepository.AddNewRecipeIns(
             instructions,
@@ -79,7 +78,6 @@ public class AddRecipeService(
         var recipeTags =
             (newRecipeContent["recipeTags"]?.ToObject<RecipeTagDTO>())
             ?? throw new InvalidOperationException("RecipeTags section missing or invalid");
-
         // call tagsRepository.AddNewRecipeTags with the new tags DTO
         int tagsAdded = _tagsRepository.AddNewRecipeTags(recipeTags, newRecipeId);
 

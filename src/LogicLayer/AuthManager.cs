@@ -14,20 +14,20 @@ public class AuthManager(IUserRepository userRepository, IAuthService authServic
     {
         var result = new OperationResult<IResult>();
 
-        string username = userRegister.Username;
+        // string username = userRegister.Username;
         string email = userRegister.Email;
         string password = userRegister.Password;
 
-        var existingUserUName = await _userRepository.GetByUsernameAsync(username);
-        var existingUserEmail = await _userRepository.GetByUsernameAsync(email);
+        // var existingUserUName = await _userRepository.GetByUsernameAsync(username);
+        var existingUserEmail = await _userRepository.GetByEmailAsync(email);
 
-        if (existingUserUName != null)
-        {
-            result.Success = false;
-            result.Message = "A user with that username already exists.";
-            result.Data = Results.Ok();
-            return result;
-        }
+        // if (existingUserUName != null)
+        // {
+        //     result.Success = false;
+        //     result.Message = "A user with that username already exists.";
+        //     result.Data = Results.Ok();
+        //     return result;
+        // }
 
         if (existingUserEmail != null)
         {
@@ -54,7 +54,7 @@ public class AuthManager(IUserRepository userRepository, IAuthService authServic
     public async Task<OperationResult<IResult>> LoginUserAsync(UserLoginDTO userLogin)
     {
         var result = new OperationResult<IResult>();
-        var user = await _userRepository.GetByUsernameAsync(userLogin.Username);
+        var user = await _userRepository.GetByEmailAsync(userLogin.Email);
         if (user == null)
         {
             result.Success = false;
