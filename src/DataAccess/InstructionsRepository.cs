@@ -12,7 +12,11 @@ public class InstructionsRepository(AppDbContext context) : IInstructionsReposit
 {
     private readonly AppDbContext _context = context;
 
-    public int AddNewRecipeIns(List<InstructionDTO> instructionsData, int recipeId, List<SectionDTO>? sectionsData)
+    public int AddNewRecipeIns(
+        List<InstructionDTO> instructionsData,
+        int recipeId,
+        List<SectionDTO>? sectionsData
+    )
     {
         // for each instruction in the list, create a new row in the Instructions table
         foreach (InstructionDTO instruction in instructionsData)
@@ -21,9 +25,13 @@ public class InstructionsRepository(AppDbContext context) : IInstructionsReposit
 
             if (sectionsData!.Count != 0 && !string.IsNullOrEmpty(instruction.SectionName))
             {
-                var matchedSection = sectionsData
-                    .FirstOrDefault(s =>
-                        string.Equals(s.SectionName, instruction.SectionName, StringComparison.OrdinalIgnoreCase));
+                var matchedSection = sectionsData.FirstOrDefault(s =>
+                    string.Equals(
+                        s.SectionName,
+                        instruction.SectionName,
+                        StringComparison.OrdinalIgnoreCase
+                    )
+                );
 
                 sectionId = matchedSection?.Id;
             }
@@ -32,9 +40,11 @@ public class InstructionsRepository(AppDbContext context) : IInstructionsReposit
                 RecipeId = recipeId,
                 SectionId = sectionId,
                 StepNumber = instruction.StepNumber,
-                InstructionText = instruction.InstructionText
+                InstructionText = instruction.InstructionText,
             };
-            Console.WriteLine($"Adding instruction step {newInstruction.StepNumber} with RecipeId {recipeId}");
+            Console.WriteLine(
+                $"Adding instruction step {newInstruction.StepNumber} with RecipeId {recipeId}"
+            );
 
             _context.Instructions.Add(newInstruction);
         }
@@ -45,8 +55,8 @@ public class InstructionsRepository(AppDbContext context) : IInstructionsReposit
 
     public Task<List<InstructionDTO>> GetInstructionsByRecipeAsync(int recipeId)
     {
-        var result = _context.Instructions
-            .Where(i => i.RecipeId == recipeId)
+        var result = _context
+            .Instructions.Where(i => i.RecipeId == recipeId)
             .Select(e => new InstructionDTO
             {
                 Id = e.Id,
@@ -54,7 +64,7 @@ public class InstructionsRepository(AppDbContext context) : IInstructionsReposit
                 StepNumber = e.StepNumber,
                 InstructionText = e.InstructionText,
                 SectionId = e.SectionId,
-                SectionName = e.Section != null ? e.Section.SectionName : null
+                SectionName = e.Section != null ? e.Section.SectionName : null,
             })
             .OrderBy(e => e.StepNumber)
             .ToListAsync();

@@ -3,8 +3,8 @@
 using Microsoft.EntityFrameworkCore;
 using savorfolio_backend.Data;
 using savorfolio_backend.Interfaces;
-using savorfolio_backend.Models.DTOs;
 using savorfolio_backend.Models;
+using savorfolio_backend.Models.DTOs;
 
 namespace savorfolio_backend.DataAccess;
 
@@ -15,19 +15,21 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
     // queries recipe database for recipe by ID
     public async Task<RecipeDTO> ReturnRecipeByIdAsync(int recipeId)
     {
-        var result = await _context.Recipes
-            .Where(r => r.Id == recipeId)
+        var result = await _context
+            .Recipes.Where(r => r.Id == recipeId)
             .Select(r => new RecipeDTO
             {
                 Id = r.Id,
+                UserId = r.UserRecipe!.UserId,
                 Name = r.Name,
                 Servings = r.Servings,
                 CookTime = r.CookTime,
                 PrepTime = r.PrepTime,
                 BakeTemp = r.BakeTemp,
                 Temp_unit = r.Temp_unit,
-                Description = r.Description
-            }).SingleOrDefaultAsync();
+                Description = r.Description,
+            })
+            .SingleOrDefaultAsync();
 
         return result!;
     }
@@ -43,8 +45,8 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
             var ingredientIds = filter.IncludeIngredients;
 
             query = query.Where(r =>
-                ingredientIds.All(ingId =>
-                    r.IngredientLists.Any(ri => ri.IngredientId == ingId)));
+                ingredientIds.All(ingId => r.IngredientLists.Any(ri => ri.IngredientId == ingId))
+            );
         }
 
         // filter to exclude ingredients
@@ -53,37 +55,110 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
             var ingredientIds = filter.ExcludeIngredients;
 
             query = query.Where(r =>
-                !ingredientIds.All(ingId =>
-                    r.IngredientLists.Any(ri => ri.IngredientId == ingId)));
+                !ingredientIds.All(ingId => r.IngredientLists.Any(ri => ri.IngredientId == ingId))
+            );
+        }
+
+        // filter by recipe type tag
+        if (filter.Recipe_type != null)
+        {
+            var recipe_type = filter.Recipe_type;
+
+            query = query.Where(r => r.RecipeTags!.Recipe_type == recipe_type);
+        }
+
+        // filter by meal tag
+        if (filter.Meal != null)
+        {
+            var meal = filter.Meal;
+
+            query = query.Where(r => r.RecipeTags!.Meal == meal);
+        }
+
+        // filter by cuisine tag
+        if (filter.Cuisine != null)
+        {
+            var cuisine = filter.Cuisine;
+
+            query = query.Where(r => r.RecipeTags!.Cuisine == cuisine);
+        }
+
+        // filter by dietary tags
+        if (filter.Dietary is { Count: > 0 })
+        {
+            var dietaryTags = filter.Dietary;
+
+            query = query.Where(r => dietaryTags.All(diet => r.RecipeTags!.Dietary.Contains(diet)));
+        }
+
+        // filter by user ID (i.e., only view my recipes)
+        if (filter.UserId != null)
+        {
+            var userId = filter.UserId;
+
+            query = query.Where(r => r.UserRecipe!.UserId == userId);
+        }
+
+        // filter by recipe name
+        if (filter.RecipeName != null)
+        {
+            var recipeName = filter.RecipeName;
+            if (_context.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
+            {
+                query = query
+                    .Where(r => r.Name.Contains(recipeName, StringComparison.OrdinalIgnoreCase))
+                    .OrderByDescending(r =>
+                        r.Name == recipeName ? 3
+                        : r.Name.StartsWith(recipeName + ",", StringComparison.OrdinalIgnoreCase)
+                        || r.Name.StartsWith(recipeName + " ", StringComparison.OrdinalIgnoreCase)
+                            ? 2
+                        : r.Name.Contains(recipeName, StringComparison.OrdinalIgnoreCase) ? 1
+                        : 0
+                    );
+            }
+            else
+            {
+                query = query
+                    .Where(r => EF.Functions.ILike(r.Name, $"%{recipeName}%"))
+                    .OrderByDescending(r =>
+                        r.Name == recipeName ? 3
+                        : EF.Functions.ILike(r.Name, $"{recipeName},%")
+                        || EF.Functions.ILike(r.Name, $"{recipeName} %")
+                            ? 2
+                        : EF.Functions.ILike(r.Name, $"%{recipeName}%") ? 1
+                        : 0
+                    );
+            }
         }
 
         // Shape into RecipeDTO and IngredientListDTO
-        var result = query
-            .Select(r => new RecipeDTO
-            {
-                Id = r.Id,
-                Name = r.Name,
-                Servings = r.Servings,
-                CookTime = r.CookTime,
-                PrepTime = r.PrepTime,
-                BakeTemp = r.BakeTemp,
-                Temp_unit = r.Temp_unit,
-                Description = r.Description,
-                Ingredients = r.IngredientLists
-                    .OrderBy(ri => ri.IngredientOrder)
-                    .Select(ri => new IngredientListDTO
-                    {
-                        Id = ri.Id,
-                        RecipeId = ri.RecipeId,
-                        IngredientId = ri.Ingredient.Id,
-                        IngredientOrder = ri.IngredientOrder,
-                        IngredientName = ri.Ingredient.Name,
-                        Quantity = ri.Quantity,
-                        Qualifier = ri.Qualifier,
-                        UnitId = ri.UnitId,
-                        UnitName = ri.Unit.Name,
-                    }).ToList()
-            });
+        var result = query.Select(r => new RecipeDTO
+        {
+            Id = r.Id,
+            UserId = r.UserRecipe!.UserId,
+            Name = r.Name,
+            Servings = r.Servings,
+            CookTime = r.CookTime,
+            PrepTime = r.PrepTime,
+            BakeTemp = r.BakeTemp,
+            Temp_unit = r.Temp_unit,
+            Description = r.Description,
+            Ingredients = r
+                .IngredientLists.OrderBy(ri => ri.IngredientOrder)
+                .Select(ri => new IngredientListDTO
+                {
+                    Id = ri.Id,
+                    RecipeId = ri.RecipeId,
+                    IngredientId = ri.Ingredient.Id,
+                    IngredientOrder = ri.IngredientOrder,
+                    IngredientName = ri.Ingredient.Name,
+                    Quantity = ri.Quantity,
+                    Qualifier = ri.Qualifier,
+                    UnitId = ri.UnitId,
+                    UnitName = ri.Unit.Name,
+                })
+                .ToList(),
+        });
 
         return await result.ToListAsync();
     }
@@ -100,7 +175,7 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
             PrepTime = recipeData.PrepTime,
             BakeTemp = recipeData.BakeTemp,
             Temp_unit = recipeData.Temp_unit,
-            Description = recipeData.Description
+            Description = recipeData.Description,
         };
 
         // add new recipe to Recipe table and save changes

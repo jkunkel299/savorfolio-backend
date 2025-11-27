@@ -14,4 +14,5 @@ public class RecipeTagDTO
 
     public List<DietaryTag> Dietary { get; set; } = [];
 
+    public virtual Recipe Recipe { get; set; } = null!;
 }

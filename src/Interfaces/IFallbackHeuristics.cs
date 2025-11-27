@@ -12,6 +12,7 @@ public interface IFallbackHeuristics
     string ExtractTimeNearLabel(IDocument document, string labelPattern);
     string ExtractServings(IDocument document);
     TagStringsDTO ExtractTags(IDocument document);
+
     // List<string> ExtractDietaryTags(string documentText);
     List<InstructionDTO> ExtractInstructions(IDocument document);
     (int? temp, string? temp_unit) ExtractBakeTemp(IDocument document);

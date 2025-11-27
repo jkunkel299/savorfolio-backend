@@ -28,7 +28,8 @@ public class HeuristicExtensions() : IHeuristicExtensions
         return bestMatch;
     }
 
-    public virtual string MatchEnum<TEnum>(IDocument document) where TEnum : Enum
+    public virtual string MatchEnum<TEnum>(IDocument document)
+        where TEnum : Enum
     {
         var documentContent = document.Body?.QuerySelector("[class*='content']");
 
@@ -37,18 +38,24 @@ public class HeuristicExtensions() : IHeuristicExtensions
         // {
         //     documentText = documentContent?.QuerySelector("[class*='post-terms']")?.TextContent ?? document.Body?.TextContent;
         // }
-        
+
         string returnValue = "";
         var enumList = EnumExtensions.GetEnumList<TEnum>();
-        var patternMatch = enumList.FirstOrDefault(t => documentContent!.TextContent.Contains(t, StringComparison.OrdinalIgnoreCase), "none") ?? "none";
-        var labelElements = document.All
-                    .Where(e => e.TextContent != null &&
-                        e.TextContent.Contains(patternMatch, StringComparison.OrdinalIgnoreCase));
+        var patternMatch =
+            enumList.FirstOrDefault(
+                t => documentContent!.TextContent.Contains(t, StringComparison.OrdinalIgnoreCase),
+                "none"
+            ) ?? "none";
+        var labelElements = document.All.Where(e =>
+            e.TextContent != null
+            && e.TextContent.Contains(patternMatch, StringComparison.OrdinalIgnoreCase)
+        );
         if (patternMatch != "none" && labelElements.Any())
         {
             string bestMatch = GetBestMatch(labelElements, patternMatch);
             ExtractedResult<string> bestTypeMatch = Process.ExtractOne(bestMatch, enumList);
-            if (bestTypeMatch != null) returnValue = bestTypeMatch.Value;
+            if (bestTypeMatch != null)
+                returnValue = bestTypeMatch.Value;
         }
         return returnValue;
     }

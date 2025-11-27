@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Newtonsoft.Json.Converters;
-using savorfolio_backend.Models.enums;
+﻿using savorfolio_backend.Models.enums;
 
 namespace savorfolio_backend.Models;
 
@@ -14,8 +12,7 @@ public partial class RecipeTag
 
     public CuisineTag? Cuisine { get; set; }
 
-    // [JsonConverter(typeof(StringEnumConverter))]
-    public /* List<string> */ string[] Dietary { get; set; } = [];
+    public string[] Dietary { get; set; } = [];
 
-    public virtual Recipe? Recipe { get; set; }
+    public virtual Recipe Recipe { get; set; } = null!;
 }

@@ -14,7 +14,7 @@ public partial class Recipe
 
     public int? BakeTemp { get; set; }
 
-    public string? Temp_unit { get; set; } 
+    public string? Temp_unit { get; set; }
 
     public string? Description { get; set; }
 
@@ -25,4 +25,8 @@ public partial class Recipe
     public virtual ICollection<Note> Notes { get; set; } = [];
 
     public virtual ICollection<RecipeSection> RecipeSections { get; set; } = [];
+
+    public virtual RecipeTag? RecipeTags { get; set; }
+
+    public virtual UserRecipe? UserRecipe { get; set; }
 }

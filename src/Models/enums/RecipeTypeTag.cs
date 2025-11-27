@@ -7,5 +7,5 @@ public enum RecipeTypeTag
     Dessert,
     Sauce,
     Appetizer,
-    Drink
+    Drink,
 }

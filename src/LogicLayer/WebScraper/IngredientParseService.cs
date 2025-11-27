@@ -1,17 +1,21 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using AngleSharp.Dom;
-using savorfolio_backend.Interfaces;
 using FuzzySharp;
-using System.Diagnostics.CodeAnalysis;
+using savorfolio_backend.Interfaces;
 
 namespace savorfolio_backend.LogicLayer.WebScraper;
 
-public partial class IngredientParseService(IUnitsRepository unitsRepository, IIngredientRepository ingredientRepository) : IIngredientParseService
+public partial class IngredientParseService(
+    IUnitsRepository unitsRepository,
+    IIngredientRepository ingredientRepository
+) : IIngredientParseService
 {
     private readonly IUnitsRepository _unitsRepository = unitsRepository;
     private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
 
-    public /* async Task<List<string>> */ List<string> ExtractIngredients(IDocument document, string ingredientsPattern = "")
+    public /* async Task<List<string>> */
+    List<string> ExtractIngredients(IDocument document, string ingredientsPattern = "")
     {
         List<string> rawIngredients = [];
         // List<IngredientListDTO> ingredientsList = [];
@@ -103,14 +107,14 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
             // remove excessive whitespace
             cleaned = WhitespaceRegex.Replace(cleaned, string.Empty);
             // if the string is empty, skip it
-            if (string.IsNullOrEmpty(cleaned)) continue;
+            if (string.IsNullOrEmpty(cleaned))
+                continue;
             // otherwise add the string to the final ingredient string list
             ingredients.Add(cleaned);
         }
         return ingredients;
     }
     #endregion
-
 
 
     // Get ingredient elements by fallback heuristic
@@ -123,11 +127,10 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
         var contentRoot = document.QuerySelector("[class*='entry-content']") ?? document.Body;
 
         // look for items with "ingredient" in the class name or id
-        var tryIngredientsElements = contentRoot?
-            .QuerySelectorAll(
-                @"[class*='ingredient'] li, [class*='ingredient'] div, 
+        var tryIngredientsElements = contentRoot?.QuerySelectorAll(
+            @"[class*='ingredient'] li, [class*='ingredient'] div, 
                 [id*='ingredient'] li, [id*='ingredient'] div"
-            );
+        );
         if (tryIngredientsElements != null)
         {
             foreach (var item in tryIngredientsElements)
@@ -136,9 +139,16 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
                 var cleaned = CheckboxRegex.Replace(addIng, string.Empty);
                 cleaned = SpaceRegex.Replace(cleaned, " ");
                 cleaned = Regex.Replace(cleaned, @"\*", string.Empty);
-                cleaned = Regex.Replace(cleaned, @"^\s*\d+\s*$(\r?\n)?", string.Empty, RegexOptions.Multiline);
-                if (cleaned == string.Empty) continue;
-                if (cleaned.Length < 400) extractIngredients.Add(cleaned.Trim());
+                cleaned = Regex.Replace(
+                    cleaned,
+                    @"^\s*\d+\s*$(\r?\n)?",
+                    string.Empty,
+                    RegexOptions.Multiline
+                );
+                if (cleaned == string.Empty)
+                    continue;
+                if (cleaned.Length < 400)
+                    extractIngredients.Add(cleaned.Trim());
             }
         }
 
@@ -149,22 +159,23 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
             // then look for lists and div after that element
 
             // Match the content the established term
-            var ingredientLabel = document.All
-                .FirstOrDefault(e => e.TextContent.Trim()
-                .Equals(term, StringComparison.OrdinalIgnoreCase));
+            var ingredientLabel = document.All.FirstOrDefault(e =>
+                e.TextContent.Trim().Equals(term, StringComparison.OrdinalIgnoreCase)
+            );
             // if there's a match for the label
             if (ingredientLabel != null)
             {
                 // get the elements that follow the label
                 var followingElements = ingredientLabel
-                    .ParentElement?
-                    .Children
-                    .SkipWhile(c => c != ingredientLabel)
+                    .ParentElement?.Children.SkipWhile(c => c != ingredientLabel)
                     .Skip(1) // skip the label itself
                     .TakeWhile(c => c.Matches("li") || c.Matches("ul"));
                 // join the elements into a string
-                string ingString = string.Join(", ", followingElements!.Select(e => e.TextContent.Trim()));
-                // trim whitespace 
+                string ingString = string.Join(
+                    ", ",
+                    followingElements!.Select(e => e.TextContent.Trim())
+                );
+                // trim whitespace
                 string ingStringWhitespace = WhitespaceRegex.Replace(ingString, "\n");
                 // split into individual ingredients
                 extractIngredients = [.. ingStringWhitespace.Split("\n")];
@@ -181,19 +192,21 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
                             .Where(text => !string.IsNullOrWhiteSpace(text))
                     );
                 }
-
             }
         }
         // if still no draft instructions, return empty list
-        if (extractIngredients.Count == 0) return ["Could not find ingredients"];
+        if (extractIngredients.Count == 0)
+            return ["Could not find ingredients"];
         List<string> flagged = [];
         foreach (var ing in extractIngredients)
         {
             // (var unit, _) = await ExtractUnit(ing);
             // (var quantity, _) = ExtractQuantity(ing);
             // if (unit == "none") flagged.Add(ing);
-            if (ing.Contains("Ingredients") || ing.Contains("ingredients")) flagged.Add(ing);
-            if (ing.Contains('\t')) flagged.Add(ing);
+            if (ing.Contains("Ingredients") || ing.Contains("ingredients"))
+                flagged.Add(ing);
+            if (ing.Contains('\t'))
+                flagged.Add(ing);
         }
         foreach (var ing in flagged)
         {
@@ -205,13 +218,6 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
     #endregion
 
 
-
-
-
-
-
-
-
     #region Split
     // TODO - split a single ingredient term into its tokens
     [ExcludeFromCodeCoverage]
@@ -221,7 +227,6 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
         return [.. splitIngredients];
     }
     #endregion
-
 
 
     #region Quantity
@@ -248,11 +253,13 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
     #endregion
 
 
-
     #region Unit
     // TODO - extract unit
     [ExcludeFromCodeCoverage]
-    public async Task<(string unitName, /* int unitId, */ string remainder)> ExtractUnit(string rawIngredient)
+    public async Task<(
+        string unitName, /* int unitId, */
+        string remainder
+    )> ExtractUnit(string rawIngredient)
     {
         string unit = "none";
         string tryUnit;
@@ -291,17 +298,23 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
             unit = "none";
         }
         // if no unit keep whole line
-        if (unit == "none") ingAndQualifier = rawIngredient.Trim();
-        return (unit, /* unitId,  */ingAndQualifier);
+        if (unit == "none")
+            ingAndQualifier = rawIngredient.Trim();
+        return (
+            unit, /* unitId,  */
+            ingAndQualifier
+        );
     }
     #endregion
-
 
 
     #region Ingredient/Qualifier
     // TODO - extract ingredient and qualifier
     [ExcludeFromCodeCoverage]
-    public async Task<(string ingredientName, /* int ingredientId,  */string qualifier)> ExtractIngredientQualifier(string ingAndQualifier)
+    public async Task<(
+        string ingredientName, /* int ingredientId,  */
+        string qualifier
+    )> ExtractIngredientQualifier(string ingAndQualifier)
     {
         if (string.IsNullOrWhiteSpace(ingAndQualifier))
             return ("", "");
@@ -323,7 +336,9 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
             {
                 var candidate = string.Join(' ', words.Skip(start).Take(end - start));
 
-                var dtoList = await _ingredientRepository.IngredientSearchReturnStringAsync(candidate);
+                var dtoList = await _ingredientRepository.IngredientSearchReturnStringAsync(
+                    candidate
+                );
 
                 if (dtoList == null || dtoList.Count == 0)
                     continue;
@@ -388,7 +403,7 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
 
         // foreach (string word in qualifierToMatch)
         // {
-        //     if (ingMinusQual.Contains(word)) 
+        //     if (ingMinusQual.Contains(word))
         //     ingMinusQual = ingredientRaw.Replace(word, string.Empty); // Replace the word with an empty string
         // }
 
@@ -401,19 +416,24 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
     #endregion
 
 
-
     // TODO - best match
     #region GetBestMatch
     // public static (string, int) GetBestMatch<TDTO>(List<TDTO> dtoList, string input) where TDTO : IDTOInterface
     [ExcludeFromCodeCoverage]
-    public /* ( */string/* , int) */ GetBestMatch(List<string> dtoList, string input)
+    public /* ( */
+    string /* , int) */
+    GetBestMatch(List<string> dtoList, string input)
     {
         // initialize integer list for fuzz ratios
         List<int> fuzzRatio = [];
         // for each value in the returned list, score how well they match the given input
         foreach (var item in dtoList)
         {
-            int wRatioScore = Fuzz.WeightedRatio(item/* .Name */, input);
+            int wRatioScore = Fuzz.WeightedRatio(
+                item /* .Name */
+                ,
+                input
+            );
             fuzzRatio.Add(wRatioScore);
         }
         // get the max ratio match
@@ -421,31 +441,49 @@ public partial class IngredientParseService(IUnitsRepository unitsRepository, II
         // get the index of the best match
         var bestRatioIndex = fuzzRatio.IndexOf(bestRatio);
         // get the element from the list that best matches the label, using the max match
-        var bestMatchName = dtoList[bestRatioIndex]/* .Name */;
+        var bestMatchName = dtoList[
+            bestRatioIndex
+        ] /* .Name */
+        ;
         // var bestMatchId = dtoList[bestRatioIndex].Id;
         // return the best match
-        return bestMatchName/* , bestMatchId */;
+        return bestMatchName /* , bestMatchId */
+        ;
     }
     #endregion
-
 
 
     #region Regex
     // [GeneratedRegex(@"^\s*(\d+\s\d+/\d+|\d+/\d+|\d+(\.\d+)?|[¼½¾⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞])", RegexOptions.IgnoreCase, "en-US")]
     // [ExcludeFromCodeCoverage]
     // private static partial Regex QuantityRegex();
-    private static readonly Regex QuantityRegex = new(@"^\s*(\d+\s\d+/\d+|\d+/\d+|\d+(\.\d+)?|[¼½¾⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex QuantityRegex = new(
+        @"^\s*(\d+\s\d+/\d+|\d+/\d+|\d+(\.\d+)?|[¼½¾⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞])",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase
+    );
+
     // [GeneratedRegex(@"▢")]
     // [ExcludeFromCodeCoverage]
     // private static partial Regex CheckboxRegex();
-    private static readonly Regex CheckboxRegex = new(@"▢", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex CheckboxRegex = new(
+        @"▢",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase
+    );
+
     // [GeneratedRegex(@"\u00A0")]
     // [ExcludeFromCodeCoverage]
     // private static partial Regex SpaceRegex();
-    private static readonly Regex SpaceRegex = new(@"\u00A0", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex SpaceRegex = new(
+        @"\u00A0",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase
+    );
+
     // [GeneratedRegex(@"\s{2,}")]
     // [ExcludeFromCodeCoverage]
     // private static partial Regex WhitespaceRegex();
-    private static readonly Regex WhitespaceRegex = new(@"\s{2,}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex WhitespaceRegex = new(
+        @"\s{2,}",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase
+    );
     #endregion
 }

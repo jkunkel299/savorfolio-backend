@@ -12,7 +12,10 @@ public class SectionsRepository(AppDbContext context) : ISectionsRepository
 {
     private readonly AppDbContext _context = context;
 
-    public async Task<(int records, List<SectionDTO> addedSections)> AddNewRecipeSectionsAsync(List<SectionDTO> sectionsData, int recipeId)
+    public async Task<(int records, List<SectionDTO> addedSections)> AddNewRecipeSectionsAsync(
+        List<SectionDTO> sectionsData,
+        int recipeId
+    )
     {
         // for each section in the list, create a new row in the Sections table
         foreach (SectionDTO section in sectionsData)
@@ -21,9 +24,11 @@ public class SectionsRepository(AppDbContext context) : ISectionsRepository
             {
                 RecipeId = recipeId,
                 SectionName = section.SectionName,
-                SortOrder = section.SortOrder
+                SortOrder = section.SortOrder,
             };
-            Console.WriteLine($"Adding section name {newSection.SectionName} with RecipeId {recipeId}");
+            Console.WriteLine(
+                $"Adding section name {newSection.SectionName} with RecipeId {recipeId}"
+            );
 
             _context.RecipeSections.Add(newSection);
         }
@@ -37,14 +42,14 @@ public class SectionsRepository(AppDbContext context) : ISectionsRepository
 
     public Task<List<SectionDTO>> GetSectionsByRecipeAsync(int recipeId)
     {
-        var result = _context.RecipeSections
-            .Where(i => i.RecipeId == recipeId)
+        var result = _context
+            .RecipeSections.Where(i => i.RecipeId == recipeId)
             .Select(e => new SectionDTO
             {
                 Id = e.Id,
                 RecipeId = e.RecipeId,
                 SectionName = e.SectionName,
-                SortOrder = e.SortOrder
+                SortOrder = e.SortOrder,
             })
             .OrderBy(e => e.SortOrder)
             .ToListAsync();

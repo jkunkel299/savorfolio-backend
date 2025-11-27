@@ -9,5 +9,4 @@ public partial class SectionDTO
     public string SectionName { get; set; } = null!;
 
     public int SortOrder { get; set; }
-
 }

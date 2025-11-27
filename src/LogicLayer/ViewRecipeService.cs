@@ -1,5 +1,5 @@
 /* calls upon recipe, ingredients list, instructions, tags, (etc.) repositories
-to search by recipe ID. Combines the results into a conglomerate JSON for the 
+to search by recipe ID. Combines the results into a conglomerate JSON for the
 API controller to send to the frontend for display */
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.Models.DTOs;
@@ -37,7 +37,7 @@ public class ViewRecipeService(
             RecipeSections = sections,
             RecipeTags = recipeTags,
             Ingredients = ingredientsList,
-            Instructions = instructionsList
+            Instructions = instructionsList,
         };
 
         return compiledRecipe;

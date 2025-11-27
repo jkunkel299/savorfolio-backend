@@ -9,5 +9,4 @@ public partial class CustomTagRecipe
     public virtual CustomTag CustomTag { get; set; } = null!;
 
     public virtual Recipe? Recipe { get; set; }
-    
 }
