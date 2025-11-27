@@ -1,8 +1,8 @@
 using System.Text;
 using DotNetEnv;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+// using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+// using Microsoft.IdentityModel.Tokens;
 using savorfolio_backend.API;
 using savorfolio_backend.Data;
 using savorfolio_backend.DataAccess;
@@ -94,45 +94,48 @@ builder.Services.AddScoped<IIngredientParseService, IngredientParseService>();
 
 // user services
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAuthManager, AuthManager>();
-builder.Services.AddScoped<IAuthService, AuthService>();
+
+// builder.Services.AddScoped<IAuthManager, AuthManager>();
+// builder.Services.AddScoped<IAuthService, AuthService>();
 
 // initialize environment JWT variables
-var jwtKey = Environment.GetEnvironmentVariable("Jwt__Key");
-var jwtIssuer = Environment.GetEnvironmentVariable("Jwt__Issuer");
-var jwtAudience = Environment.GetEnvironmentVariable("Jwt__Audience");
+// var jwtKey = Environment.GetEnvironmentVariable("Jwt__Key");
+// var jwtIssuer = Environment.GetEnvironmentVariable("Jwt__Issuer");
+// var jwtAudience = Environment.GetEnvironmentVariable("Jwt__Audience");
 
-var jwtSettings = new JwtSettings
-{
-    Key = jwtKey!,
-    Issuer = jwtIssuer!,
-    Audience = jwtAudience!,
-};
-builder.Services.AddSingleton(jwtSettings);
+// var jwtSettings = new JwtSettings
+// {
+//     Key = jwtKey!,
+//     Issuer = jwtIssuer!,
+//     Audience = jwtAudience!,
+// };
+// builder.Services.AddSingleton(jwtSettings);
 
-builder
-    .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtIssuer,
-            ValidAudience = jwtAudience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey!)),
-        };
-    });
+// builder
+//     .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//     .AddJwtBearer(options =>
+//     {
+//         options.TokenValidationParameters = new TokenValidationParameters
+//         {
+//             ValidateIssuer = false,
+//             ValidateAudience = false,
+//             ValidateLifetime = false,
+//             ValidateIssuerSigningKey = false,
+//             NameClaimType = "id",
+//             ValidIssuer = jwtIssuer,
+//             ValidAudience = jwtAudience,
+//             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey!)),
+//         };
+//     });
 
-builder.Services.AddAuthorization();
+// builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
 app.UseCors("AllowAll");
-app.UseAuthentication();
-app.UseAuthorization();
+
+// app.UseAuthentication();
+// app.UseAuthorization();
 
 // search for ingredients
 app.MapIngredientApi();
@@ -159,7 +162,7 @@ app.MapManualRecipe();
 app.MapDraftRecipe();
 
 // // user auth
-app.MapAuthEndpoints();
+// app.MapAuthEndpoints();
 
 // add health endpoint for E2E testing with Playwright
 app.MapGet("/health", () => Results.Ok("healthy"));
