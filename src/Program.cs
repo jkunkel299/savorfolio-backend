@@ -1,8 +1,9 @@
 using System.Text;
 using DotNetEnv;
-// using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-// using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using savorfolio_backend.API;
 using savorfolio_backend.Data;
 using savorfolio_backend.DataAccess;
@@ -17,12 +18,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
-        "AllowAll",
+        "AllowFrontend",
         policy =>
         {
-            policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            policy
+                .WithOrigins("http://localhost:5173")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
         }
     );
+    // options.AddPolicy(
+    //     "AllowAll",
+    //     policy =>
+    //     {
+    //         policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    //     }
+    // );
 });
 
 // load environment
@@ -95,21 +107,21 @@ builder.Services.AddScoped<IIngredientParseService, IngredientParseService>();
 // user services
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-// builder.Services.AddScoped<IAuthManager, AuthManager>();
-// builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthManager, AuthManager>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // initialize environment JWT variables
-// var jwtKey = Environment.GetEnvironmentVariable("Jwt__Key");
-// var jwtIssuer = Environment.GetEnvironmentVariable("Jwt__Issuer");
-// var jwtAudience = Environment.GetEnvironmentVariable("Jwt__Audience");
+var jwtKey = Environment.GetEnvironmentVariable("Jwt__Key");
+var jwtIssuer = Environment.GetEnvironmentVariable("Jwt__Issuer");
+var jwtAudience = Environment.GetEnvironmentVariable("Jwt__Audience");
 
-// var jwtSettings = new JwtSettings
-// {
-//     Key = jwtKey!,
-//     Issuer = jwtIssuer!,
-//     Audience = jwtAudience!,
-// };
-// builder.Services.AddSingleton(jwtSettings);
+var jwtSettings = new JwtSettings
+{
+    Key = jwtKey!,
+    Issuer = jwtIssuer!,
+    Audience = jwtAudience!,
+};
+builder.Services.AddSingleton(jwtSettings);
 
 // builder
 //     .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -128,14 +140,25 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 //         };
 //     });
 
-// builder.Services.AddAuthorization();
+builder
+    .Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/api/auth/login";
+        options.AccessDeniedPath = "/api/auth/denied";
+
+        options.Cookie.HttpOnly = true;
+        // options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // HTTPS only
+        // options.Cookie.SameSite = SameSiteMode.Strict;
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-app.UseCors("AllowAll");
-
-// app.UseAuthentication();
-// app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseCors("AllowFrontend");
 
 // search for ingredients
 app.MapIngredientApi();
@@ -161,8 +184,8 @@ app.MapManualRecipe();
 // scrape recipe
 app.MapDraftRecipe();
 
-// // user auth
-// app.MapAuthEndpoints();
+// user auth
+app.MapAuthEndpoints();
 
 // add health endpoint for E2E testing with Playwright
 app.MapGet("/health", () => Results.Ok("healthy"));

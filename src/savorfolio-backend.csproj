@@ -22,7 +22,10 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
-    <!-- <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0-preview.4.24267.6" /> -->
+    <PackageReference
+      Include="Microsoft.AspNetCore.Authentication.JwtBearer"
+      Version="9.0.0-preview.4.24267.6"
+    />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.14.0" />
   </ItemGroup>
 

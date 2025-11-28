@@ -2,7 +2,7 @@
 
 // using System.Security.Claims;
 using System.Text.Json;
-// using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using savorfolio_backend.Interfaces;
@@ -34,6 +34,7 @@ public static class AddRecipeEndpoints
                 }
             }
         );
+        // .RequireAuthorization();
     }
 
     public static void MapDraftRecipe(this WebApplication app)
