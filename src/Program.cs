@@ -28,13 +28,6 @@ builder.Services.AddCors(options =>
                 .AllowCredentials();
         }
     );
-    // options.AddPolicy(
-    //     "AllowAll",
-    //     policy =>
-    //     {
-    //         policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-    //     }
-    // );
 });
 
 // load environment
@@ -150,15 +143,36 @@ builder
         options.Cookie.HttpOnly = true;
         // options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // HTTPS only
         // options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Events.OnRedirectToLogin = ctx =>
+        {
+            ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            return Task.CompletedTask;
+        };
+
+        options.Events.OnRedirectToAccessDenied = ctx =>
+        {
+            ctx.Response.StatusCode = StatusCodes.Status403Forbidden;
+            return Task.CompletedTask;
+        };
     });
 
-builder.Services.AddAuthorization();
+builder
+    .Services.AddAuthorizationBuilder()
+    .AddPolicy(
+        "cookies",
+        policy =>
+        {
+            policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+            policy.RequireAuthenticatedUser();
+        }
+    );
 
 var app = builder.Build();
 
+app.UseCors("AllowFrontend");
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("AllowFrontend");
 
 // search for ingredients
 app.MapIngredientApi();
@@ -179,10 +193,10 @@ app.MapRecipeById();
 app.MapRecipeSearch();
 
 // add a new recipe manually
-app.MapManualRecipe();
+app.MapRecipeForm();
 
 // scrape recipe
-app.MapDraftRecipe();
+app.MapScrapeRecipe();
 
 // user auth
 app.MapAuthEndpoints();

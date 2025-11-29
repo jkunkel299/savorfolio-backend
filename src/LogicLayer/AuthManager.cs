@@ -14,11 +14,9 @@ public class AuthManager(IUserRepository userRepository, IAuthService authServic
     {
         var result = new OperationResult<IResult>();
 
-        // string username = userRegister.Username;
         string email = userRegister.Email;
         string password = userRegister.Password;
 
-        // var existingUserUName = await _userRepository.GetByUsernameAsync(username);
         var existingUserEmail = await _userRepository.GetByEmailAsync(email);
 
         if (existingUserEmail != null)
@@ -48,42 +46,32 @@ public class AuthManager(IUserRepository userRepository, IAuthService authServic
         HttpContext context
     )
     {
-        var result = new OperationResult<IResult>();
         var user = await _userRepository.GetByEmailAsync(userLogin.Email);
-        if (user == null)
+
+        if (
+            user == null
+            || !_authService.VerifyPassword(
+                userLogin.Password,
+                user.PasswordHash,
+                user.PasswordSalt
+            )
+        )
         {
-            result.Success = false;
-            result.Message = "User is not authorized";
-            result.Data = Results.Unauthorized();
-            return result;
-        }
-
-        if (!_authService.VerifyPassword(userLogin.Password, user.PasswordHash, user.PasswordSalt))
-        {
-            result.Success = false;
-            result.Message = "Password is not authorized";
-            result.Data = Results.Unauthorized();
-            return result;
-        }
-
-        var token = _authService.GenerateJwtToken(user);
-
-        // Store JWT inside HttpOnly cookie
-        context.Response.Cookies.Append(
-            "auth_token",
-            token,
-            new CookieOptions
+            return new OperationResult<IResult>
             {
-                HttpOnly = true,
-                SameSite = SameSiteMode.Lax,
-                Expires = DateTime.UtcNow.AddHours(18),
-                Secure = false, // for localhost; set true in production
-            }
-        );
+                Success = false,
+                Message = "Invalid login",
+                Data = Results.Unauthorized(),
+            };
+        }
 
-        result.Success = true;
-        result.Data = Results.Ok(new { token });
+        await _authService.GenerateCookies(user, context);
 
-        return result;
+        return new OperationResult<IResult>
+        {
+            Success = true,
+            Message = "Logged in",
+            Data = Results.Ok(),
+        };
     }
 }

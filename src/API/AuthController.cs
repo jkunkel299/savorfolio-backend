@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.Models.DTOs;
@@ -41,11 +43,33 @@ public static class AuthEndpoints
 
         group.MapPost(
             "/logout",
-            (HttpContext context) =>
+            async (HttpContext context) =>
             {
                 context.Response.Cookies.Delete("auth_token");
+                await context.SignOutAsync();
                 return Results.Ok(new { message = "logged out" });
             }
         );
+
+        group
+            .MapGet(
+                "/me",
+                (HttpContext context) =>
+                {
+                    if (context.User.Identity?.IsAuthenticated == true)
+                    {
+                        return Results.Ok(
+                            new
+                            {
+                                id = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                                email = context.User.FindFirst(ClaimTypes.Email)?.Value,
+                            }
+                        );
+                    }
+
+                    return Results.Unauthorized();
+                }
+            )
+            .RequireAuthorization("cookies");
     }
 }

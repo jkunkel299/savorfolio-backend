@@ -1,10 +1,10 @@
-/* Business logic layer for managing JWT-based authentication, encryption of password data */
+/* Business logic layer for managing cookie-based authentication, encryption of password data */
 
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.Models;
 
@@ -39,22 +39,29 @@ public class AuthService(JwtSettings jwtSettings) : IAuthService
         return computedHash.SequenceEqual(hashBytes);
     }
 
-    // Generate JWT token
-    public string GenerateJwtToken(User user)
+    // Generate Cookies
+    public async Task GenerateCookies(User user, HttpContext context)
     {
-        var claims = new List<Claim> { new("id", user.Id.ToString()), new("email", user.Email) };
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: _jwtSettings.Issuer,
-            audience: _jwtSettings.Audience,
-            claims: claims,
-            expires: DateTime.UtcNow.AddHours(18),
-            signingCredentials: credentials
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.Email, user.Email),
+        };
+        var identity = new ClaimsIdentity(
+            claims,
+            CookieAuthenticationDefaults.AuthenticationScheme
         );
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        var principal = new ClaimsPrincipal(identity);
+
+        await context.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            principal,
+            new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTime.UtcNow.AddHours(18),
+            }
+        );
     }
 }
