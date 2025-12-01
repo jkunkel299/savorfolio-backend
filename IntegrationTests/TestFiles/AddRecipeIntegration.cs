@@ -1,13 +1,16 @@
-using IntegrationTests.Fixtures;
-using Tests.Helpers;
-using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text;
+using IntegrationTests.Fixtures;
+using Newtonsoft.Json.Linq;
+using Tests.Helpers;
 
 namespace IntegrationTests.TestFiles;
 
 [Collection("Integration Test Server")]
-public class AddRecipeFullTests(DatabaseFixture databaseFixture, TestServerFixture testServerFixture) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
+public class AddRecipeFullTests(
+    DatabaseFixture databaseFixture,
+    TestServerFixture testServerFixture
+) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
 {
     private readonly DatabaseFixture _databaseFixture = databaseFixture;
     private readonly HttpClient _client = testServerFixture.HttpClient;
@@ -17,11 +20,12 @@ public class AddRecipeFullTests(DatabaseFixture databaseFixture, TestServerFixtu
     static AddRecipeFullTests()
     {
         string addRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipe.json");
-        string addRecipeSectionsFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipeSections.json");
+        string addRecipeSectionsFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/AddRecipeSections.json"
+        );
         _expectedAddRecipe = JObject.Parse(File.ReadAllText(addRecipeFilePath));
         _expectedAddRecipeSections = JObject.Parse(File.ReadAllText(addRecipeSectionsFilePath));
     }
-
 
     [Fact]
     public async Task AddRecipesTest_NoSections()

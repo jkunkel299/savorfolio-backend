@@ -1,9 +1,9 @@
 using IntegrationTests.Fixtures;
-using savorfolio_backend.Models.DTOs;
-using Tests.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using savorfolio_backend.DataAccess;
+using savorfolio_backend.Models.DTOs;
+using Tests.Helpers;
 
 namespace IntegrationTests.TestFiles;
 
@@ -17,7 +17,10 @@ public class RecipeSearchDbTests(DatabaseFixture databaseFixture) : IClassFixtur
     {
         string recipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/RecipeDTOs.json");
 
-        _expectedRecipes = [.. JsonToList.JsonFileToList<RecipeDTO>(recipeFilePath).OrderBy(r => r.Id)];
+        _expectedRecipes =
+        [
+            .. JsonToList.JsonFileToList<RecipeDTO>(recipeFilePath).OrderBy(r => r.Id),
+        ];
     }
 
     [Fact]
@@ -58,10 +61,7 @@ public class RecipeSearchDbTests(DatabaseFixture databaseFixture) : IClassFixtur
         var recipeRepository = new RecipeRepository(_databaseFixture.Context);
 
         // initialize filter to include ingredients in test case
-        var request = new RecipeFilterRequestDTO
-        {
-            IncludeIngredients = [143]
-        };
+        var request = new RecipeFilterRequestDTO { IncludeIngredients = [143] };
 
         // initialize expected result as string, convert to JSON token
         string expectedJson = JsonConvert.SerializeObject(_expectedRecipes[0]);
@@ -88,10 +88,7 @@ public class RecipeSearchDbTests(DatabaseFixture databaseFixture) : IClassFixtur
         var recipeRepository = new RecipeRepository(_databaseFixture.Context);
 
         // initialize filter to include ingredients in test case
-        var request = new RecipeFilterRequestDTO
-        {
-            ExcludeIngredients = [143]
-        };
+        var request = new RecipeFilterRequestDTO { ExcludeIngredients = [143] };
 
         // initialize expected result as string, convert to JSON token
         string expectedJson = JsonConvert.SerializeObject(_expectedRecipes[1]);

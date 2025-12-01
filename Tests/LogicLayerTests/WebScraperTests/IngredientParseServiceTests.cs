@@ -12,7 +12,8 @@ using Tests.TestData;
 namespace Tests.LogicLayerTests.WebScraperTests;
 
 [Collection("Web Scraper collection")]
-public partial class IngredientParseServiceTests(WebScraperFixture webScraperFixture) : IClassFixture<WebScraperFixture>
+public partial class IngredientParseServiceTests(WebScraperFixture webScraperFixture)
+    : IClassFixture<WebScraperFixture>
 {
     private readonly Mock<IIngredientParseService> mockIngParseService = new();
     private readonly Mock<IFallbackHeuristics> mockFallbackHeuristics = new();
@@ -32,7 +33,8 @@ public partial class IngredientParseServiceTests(WebScraperFixture webScraperFix
     public async Task ExtractIngredients_CallsFunctionsAsync(string pattern)
     {
         // initialize HTML snippet
-        string html = @"<!DOCTYPE html>
+        string html =
+            @"<!DOCTYPE html>
         <html><body>
             <h1>Cinnamon Chocolate Babka Muffins</h1>
             <div class='recipe-description'>A rich, buttery babka yeast dough, filled with beautiful swirls of chocolate, baked in muffin tins. Same great babka taste, baked in half the time!</div>
@@ -48,9 +50,11 @@ public partial class IngredientParseServiceTests(WebScraperFixture webScraperFix
         var document = await context.OpenAsync(req => req.Content(html));
 
         // mock dependent functions and returns
-        mockIngParseService.Setup(r => r.GetIngredientsByPattern(document, It.IsAny<string>()))
+        mockIngParseService
+            .Setup(r => r.GetIngredientsByPattern(document, It.IsAny<string>()))
             .Returns(It.IsAny<List<string>>());
-        mockIngParseService.Setup(r => r.IngredientFallback(document))
+        mockIngParseService
+            .Setup(r => r.IngredientFallback(document))
             .Returns(It.IsAny<List<string>>());
 
         // call ExtractIngredients on the document
@@ -59,7 +63,10 @@ public partial class IngredientParseServiceTests(WebScraperFixture webScraperFix
         if (pattern != "")
         {
             // if the pattern is not empty, assert GetIngredientsByPattern was called once
-            mockIngParseService.Verify(f => f.GetIngredientsByPattern(document, It.IsAny<string>()), Times.AtMostOnce);
+            mockIngParseService.Verify(
+                f => f.GetIngredientsByPattern(document, It.IsAny<string>()),
+                Times.AtMostOnce
+            );
         }
         if (pattern == "")
         {
@@ -69,10 +76,17 @@ public partial class IngredientParseServiceTests(WebScraperFixture webScraperFix
     }
     #endregion
 
-    #region GetIngredientsByPattern 
+    #region GetIngredientsByPattern
     [Theory]
-    [MemberData(nameof(GetIngByPatternData.GetIngByPatternTestCases), MemberType = typeof(GetIngByPatternData))]
-    public async Task GetIngredientsByPattern_ReturnsExpectedAsync(string htmlFilePath, string pattern, string[] expected)
+    [MemberData(
+        nameof(GetIngByPatternData.GetIngByPatternTestCases),
+        MemberType = typeof(GetIngByPatternData)
+    )]
+    public async Task GetIngredientsByPattern_ReturnsExpectedAsync(
+        string htmlFilePath,
+        string pattern,
+        string[] expected
+    )
     {
         // initialize document
         var _document = await webScraperFixture.WebScraperSetupAsync(htmlFilePath);
@@ -82,7 +96,6 @@ public partial class IngredientParseServiceTests(WebScraperFixture webScraperFix
         // convert to JSON
         var expectedJson = JsonConvert.SerializeObject(expectedReturn);
         JToken expectedToken = JToken.Parse(expectedJson);
-
 
         // call ExtractInstructions
         var actualReturn = _service.GetIngredientsByPattern(_document, pattern);
@@ -104,9 +117,12 @@ public partial class IngredientParseServiceTests(WebScraperFixture webScraperFix
     }
     #endregion
 
-    #region IngredientsFallback 
+    #region IngredientsFallback
     [Theory]
-    [MemberData(nameof(IngredientFallbackData.IngredientFallbackTestCases), MemberType = typeof(IngredientFallbackData))]
+    [MemberData(
+        nameof(IngredientFallbackData.IngredientFallbackTestCases),
+        MemberType = typeof(IngredientFallbackData)
+    )]
     public async Task IngredientsFallback_ReturnsExpectedAsync(string html, string[] expected)
     {
         // initialize expected ingredients return
@@ -125,5 +141,8 @@ public partial class IngredientParseServiceTests(WebScraperFixture webScraperFix
     }
     #endregion
 
-    private static readonly Regex WhitespaceRegex = new(@"\s{2,}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex WhitespaceRegex = new(
+        @"\s{2,}",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase
+    );
 }

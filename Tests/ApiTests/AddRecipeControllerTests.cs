@@ -16,7 +16,6 @@ public class AddRecipeControllerTests()
         _expectedAddRecipe = JObject.Parse(File.ReadAllText(addRecipeFilePath));
     }
 
-
     // test for MapManualRecipe success
     [Fact]
     public async Task AddRecipeManualSuccess()
@@ -33,18 +32,26 @@ public class AddRecipeControllerTests()
         // set up mocked service to return an expected success
         mockAddRecipeService
             .Setup(d => d.AddRecipeManuallyAsync(It.IsAny<JObject>()))
-            .ReturnsAsync(new OperationResult<int>
-            {
-                Success = true,
-                Data = recipeId,
-                Message = "Recipe added successfully"
-            });
+            .ReturnsAsync(
+                new OperationResult<int>
+                {
+                    Success = true,
+                    Data = recipeId,
+                    Message = "Recipe added successfully",
+                }
+            );
 
         // call emulated API endpoint
-        var result = await RecipeEndpointsHelper.InvokeAddManualRecipeEndpoint(jsonBody, mockAddRecipeService.Object);
+        var result = await RecipeEndpointsHelper.InvokeAddManualRecipeEndpoint(
+            jsonBody,
+            mockAddRecipeService.Object
+        );
 
         // assert AddRecipeManually called once
-        mockAddRecipeService.Verify(d => d.AddRecipeManuallyAsync(It.IsAny<JObject>()), Times.AtMostOnce);
+        mockAddRecipeService.Verify(
+            d => d.AddRecipeManuallyAsync(It.IsAny<JObject>()),
+            Times.AtMostOnce
+        );
 
         // assert result.Ok type
         var okResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.Ok<string>>(result);
@@ -66,20 +73,26 @@ public class AddRecipeControllerTests()
         // set up mocked service to return an expected failure
         mockAddRecipeService
             .Setup(d => d.AddRecipeManuallyAsync(It.IsAny<JObject>()))
-            .ReturnsAsync(new OperationResult<int>
-            {
-                Success = false,
-                Message = "Failed to add recipe"
-            });
+            .ReturnsAsync(
+                new OperationResult<int> { Success = false, Message = "Failed to add recipe" }
+            );
 
         // call emulated API endpoint
-        var result = await RecipeEndpointsHelper.InvokeAddManualRecipeEndpoint(jsonBody, mockAddRecipeService.Object);
+        var result = await RecipeEndpointsHelper.InvokeAddManualRecipeEndpoint(
+            jsonBody,
+            mockAddRecipeService.Object
+        );
 
         // assert AddRecipeManually called once
-        mockAddRecipeService.Verify(d => d.AddRecipeManuallyAsync(It.IsAny<JObject>()), Times.AtMostOnce);
+        mockAddRecipeService.Verify(
+            d => d.AddRecipeManuallyAsync(It.IsAny<JObject>()),
+            Times.AtMostOnce
+        );
 
         // assert result.Problem type
-        var badResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult>(result);
+        var badResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult>(
+            result
+        );
         // assert result.Problem message
         Assert.Equal(expectedMessage, badResult.ProblemDetails.Detail);
     }

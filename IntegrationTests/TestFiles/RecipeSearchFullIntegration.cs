@@ -1,15 +1,18 @@
-using IntegrationTests.Fixtures;
-using savorfolio_backend.Models.DTOs;
-using Tests.Helpers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Http.Json;
+using IntegrationTests.Fixtures;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using savorfolio_backend.Models.DTOs;
+using Tests.Helpers;
 
 namespace IntegrationTests.TestFiles;
 
 [Collection("Integration Test Server")]
-public class RecipeSearchFullTests(DatabaseFixture databaseFixture, TestServerFixture testServerFixture) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
+public class RecipeSearchFullTests(
+    DatabaseFixture databaseFixture,
+    TestServerFixture testServerFixture
+) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
 {
     private readonly DatabaseFixture _databaseFixture = databaseFixture;
     private readonly HttpClient _client = testServerFixture.HttpClient;
@@ -19,10 +22,11 @@ public class RecipeSearchFullTests(DatabaseFixture databaseFixture, TestServerFi
     {
         string recipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/RecipeDTOs.json");
 
-        _expectedRecipes = [.. JsonToList.JsonFileToList<RecipeDTO>(recipeFilePath).OrderBy(r => r.Id)];
+        _expectedRecipes =
+        [
+            .. JsonToList.JsonFileToList<RecipeDTO>(recipeFilePath).OrderBy(r => r.Id),
+        ];
     }
-
-
 
     [Fact]
     public async Task RecipeSearchEmpty()
@@ -58,8 +62,6 @@ public class RecipeSearchFullTests(DatabaseFixture databaseFixture, TestServerFi
         Assert.True(JToken.DeepEquals(expectedToken, actualToken));
     }
 
-
-
     [Fact]
     public async Task RecipeSearchIncludeIngredients()
     {
@@ -67,10 +69,7 @@ public class RecipeSearchFullTests(DatabaseFixture databaseFixture, TestServerFi
         Assert.False(string.IsNullOrEmpty(_databaseFixture.ConnectionString));
 
         // initialize filter to include ingredients in test case
-        var request = new RecipeFilterRequestDTO
-        {
-            IncludeIngredients = [143]
-        };
+        var request = new RecipeFilterRequestDTO { IncludeIngredients = [143] };
 
         // initialize expected result as string, convert to JSON token
         string expectedJson = JsonConvert.SerializeObject(_expectedRecipes[0]);
@@ -95,8 +94,6 @@ public class RecipeSearchFullTests(DatabaseFixture databaseFixture, TestServerFi
         Assert.True(JToken.DeepEquals(expectedToken, actualToken));
     }
 
-
-
     [Fact]
     public async Task RecipeSearchExcludeIngredients()
     {
@@ -104,10 +101,7 @@ public class RecipeSearchFullTests(DatabaseFixture databaseFixture, TestServerFi
         Assert.False(string.IsNullOrEmpty(_databaseFixture.ConnectionString));
 
         // initialize filter to include ingredients in test case
-        var request = new RecipeFilterRequestDTO
-        {
-            ExcludeIngredients = [143]
-        };
+        var request = new RecipeFilterRequestDTO { ExcludeIngredients = [143] };
 
         // initialize expected result as string, convert to JSON token
         string expectedJson = JsonConvert.SerializeObject(_expectedRecipes[1]);

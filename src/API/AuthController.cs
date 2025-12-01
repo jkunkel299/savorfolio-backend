@@ -8,12 +8,10 @@ namespace savorfolio_backend.API;
 
 public static class AuthEndpoints
 {
-    public static void MapAuthEndpoints(this WebApplication app)
+    public static void MapRegister(this WebApplication app)
     {
-        var group = app.MapGroup("/api/auth");
-
-        group.MapPost(
-            "/register",
+        app.MapPost(
+            "/api/auth/register",
             async ([FromBody] UserRegisterDTO userBody, IAuthManager authManager) =>
             {
                 var result = await authManager.RegisterUserAsync(userBody);
@@ -27,9 +25,12 @@ public static class AuthEndpoints
                 }
             }
         );
+    }
 
-        group.MapPost(
-            "/login",
+    public static void MapLogIn(this WebApplication app)
+    {
+        app.MapPost(
+            "/api/auth/login",
             async (
                 HttpContext context,
                 [FromBody] UserLoginDTO userBody,
@@ -40,9 +41,12 @@ public static class AuthEndpoints
                 return result.Data;
             }
         );
+    }
 
-        group.MapPost(
-            "/logout",
+    public static void MapLogOut(this WebApplication app)
+    {
+        app.MapPost(
+            "/api/auth/logout",
             async (HttpContext context) =>
             {
                 context.Response.Cookies.Delete("auth_token");
@@ -50,10 +54,12 @@ public static class AuthEndpoints
                 return Results.Ok(new { message = "logged out" });
             }
         );
+    }
 
-        group
-            .MapGet(
-                "/me",
+    public static void MapFetchUser(this WebApplication app)
+    {
+        app.MapGet(
+                "/api/auth/me",
                 (HttpContext context) =>
                 {
                     if (context.User.Identity?.IsAuthenticated == true)

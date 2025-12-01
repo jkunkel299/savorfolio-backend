@@ -12,6 +12,7 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
 {
     private readonly AppDbContext _context = context;
 
+    #region get recipe by ID
     // queries recipe database for recipe by ID
     public async Task<RecipeDTO> ReturnRecipeByIdAsync(int recipeId)
     {
@@ -33,7 +34,9 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
 
         return result!;
     }
+    #endregion
 
+    #region search recipes
     // queries recipe database for recipes, including filtering
     public async Task<List<RecipeDTO>> ReturnRecipesFiltered(RecipeFilterRequestDTO filter)
     {
@@ -162,7 +165,9 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
 
         return await result.ToListAsync();
     }
+    #endregion
 
+    #region add new recipe
     // Add new recipe to database, needs to return at least the recipe ID
     public async Task<int> AddNewRecipeAsync(RecipeDTO recipeData)
     {
@@ -184,4 +189,5 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
 
         return newRecipe.Id;
     }
+    #endregion
 }

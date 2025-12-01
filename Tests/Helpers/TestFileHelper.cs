@@ -6,7 +6,12 @@ public static class TestFileHelper
     {
         var path = Path.Combine(
             AppContext.BaseDirectory,
-            "..", "..", "..", "..", "Tests", relativePath
+            "..",
+            "..",
+            "..",
+            "..",
+            "Tests",
+            relativePath
         );
 
         return path;

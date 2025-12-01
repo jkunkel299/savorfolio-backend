@@ -9,7 +9,6 @@ namespace Tests.DataAccessTests;
 public class UnitRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixture<UnitDbFixture>
 {
     private readonly UnitsRepository _repository = new(unitDbFixture.Context);
-    
 
     [Fact]
     public async Task UnitSearchTest()
@@ -19,21 +18,21 @@ public class UnitRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixture<Un
 
         // initialize expected result as string, convert to JSON
         string expectedJson = """
-        [
-            {
-                "Id": 37,
-                "Name": "to taste",
-                "Abbreviation": "to taste",
-                "PluralName": null
-            },
-            {
-                "Id": 2,
-                "Name": "tablespoon",
-                "Abbreviation": "tbsp",
-                "PluralName": "tablespoons"
-            }
-        ]
-        """;
+            [
+                {
+                    "Id": 37,
+                    "Name": "to taste",
+                    "Abbreviation": "to taste",
+                    "PluralName": null
+                },
+                {
+                    "Id": 2,
+                    "Name": "tablespoon",
+                    "Abbreviation": "tbsp",
+                    "PluralName": "tablespoons"
+                }
+            ]
+            """;
         JToken expectedToken = JToken.Parse(expectedJson);
 
         // Call SearchByNameAsync with search term
@@ -45,6 +44,5 @@ public class UnitRepositoryTests(UnitDbFixture unitDbFixture) : IClassFixture<Un
 
         // Assert Equal
         Assert.True(JToken.DeepEquals(expectedToken, actualToken));
-
     }
 }

@@ -10,10 +10,8 @@ using savorfolio_backend.Models;
 
 namespace savorfolio_backend.LogicLayer;
 
-public class AuthService(JwtSettings jwtSettings) : IAuthService
+public class AuthService() : IAuthService
 {
-    private readonly JwtSettings _jwtSettings = jwtSettings;
-
     // Create password hash and salt as Base64 strings
     public (string hash, string salt) CreatePasswordHash(string password)
     {

@@ -24,17 +24,12 @@ public class RecipeControllerTests()
         mockDependency.Verify(d => d.SearchRecipesAsync(request), Times.Once);
     }
 
-
-
     // test for MapRecipeSearch controller function with filter to include ingredients
     [Fact]
     public async Task RecipeControllerTestIncludeIngredients()
     {
         // initialize filter to include ingredients in test case
-        var request = new RecipeFilterRequestDTO
-        {
-            IncludeIngredients = [143, 2]
-        };
+        var request = new RecipeFilterRequestDTO { IncludeIngredients = [143, 2] };
 
         // mock recipe service interface
         var mockDependency = new Mock<IRecipeService>();
@@ -45,18 +40,13 @@ public class RecipeControllerTests()
         // assert mocked function called once
         mockDependency.Verify(d => d.SearchRecipesAsync(request), Times.Once);
     }
-
-
 
     // test for MapRecipeSearch controller function with filter to include ingredients
     [Fact]
     public async Task RecipeControllerTestExcludeIngredients()
     {
         // initialize filter to exclude ingredients in test case
-        var request = new RecipeFilterRequestDTO
-        {
-            ExcludeIngredients = [143, 2]
-        };
+        var request = new RecipeFilterRequestDTO { ExcludeIngredients = [143, 2] };
 
         // mock recipe service interface
         var mockDependency = new Mock<IRecipeService>();
@@ -68,10 +58,8 @@ public class RecipeControllerTests()
         mockDependency.Verify(d => d.SearchRecipesAsync(request), Times.Once);
     }
 
-
-
     // test MapRecipeById controller function
-    [Fact] 
+    [Fact]
     public async Task RecipeControllerGetRecipeById()
     {
         // initialize test recipe ID
@@ -81,7 +69,10 @@ public class RecipeControllerTests()
         var mockViewRecipeService = new Mock<IViewRecipeService>();
 
         // call endpoint
-        _ = await RecipeEndpointsHelper.InvokeRecipeViewEndpoint(recipeId, mockViewRecipeService.Object);
+        _ = await RecipeEndpointsHelper.InvokeRecipeViewEndpoint(
+            recipeId,
+            mockViewRecipeService.Object
+        );
 
         // assert mocked function called once
         mockViewRecipeService.Verify(d => d.CompileRecipeAsync(recipeId), Times.Once);

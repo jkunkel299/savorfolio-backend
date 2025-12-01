@@ -199,7 +199,10 @@ app.MapRecipeForm();
 app.MapScrapeRecipe();
 
 // user auth
-app.MapAuthEndpoints();
+app.MapRegister();
+app.MapLogIn();
+app.MapLogOut();
+app.MapFetchUser();
 
 // add health endpoint for E2E testing with Playwright
 app.MapGet("/health", () => Results.Ok("healthy"));

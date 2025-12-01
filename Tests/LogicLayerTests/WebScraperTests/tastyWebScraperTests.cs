@@ -12,16 +12,22 @@ using Tests.Fixtures;
 namespace Tests.LogicLayerTests.WebScraperTests;
 
 [Collection("Web Scraper collection")]
-public partial class TastyWebScraperTests(WebScraperFixture webScraperFixture) : IClassFixture<WebScraperFixture>, IAsyncLifetime
+public partial class TastyWebScraperTests(WebScraperFixture webScraperFixture)
+    : IClassFixture<WebScraperFixture>,
+        IAsyncLifetime
 {
     private IDocument _document = default!;
     private WebScraperService scraper = default!;
+
     // mock FallbackHeuristics interface
     private readonly Mock<IFallbackHeuristics> mockFallbackHeuristics = new();
+
     // mock fallback heuristic extensions interface
     private readonly Mock<IHeuristicExtensions> mockHeuristicExtensions = new();
+
     // mock IngredientParseService interface
     private readonly Mock<IIngredientParseService> mockIngredientParseService = new();
+
     // initialize document and web scraper
     public async Task InitializeAsync()
     {
@@ -89,7 +95,8 @@ public partial class TastyWebScraperTests(WebScraperFixture webScraperFixture) :
 
         // initialize expected returns
         string recipeTitle = "Mushroom Stroganoff (Vegetarian)";
-        string recipeDescription = "This vegetarian Mushroom Stroganoff recipe is quick and easy to make in about 30 minutes, and it is perfectly comforting, hearty, savory, and delicious.  Feel free to serve over egg noodles, traditional pasta, quinoa, veggies, or whatever sounds delicious.";
+        string recipeDescription =
+            "This vegetarian Mushroom Stroganoff recipe is quick and easy to make in about 30 minutes, and it is perfectly comforting, hearty, savory, and delicious.  Feel free to serve over egg noodles, traditional pasta, quinoa, veggies, or whatever sounds delicious.";
         string recipePrep = "15 minutes";
         string recipeCook = "15 minutes";
         string recipeServings = "4 -6 1x";
@@ -97,7 +104,14 @@ public partial class TastyWebScraperTests(WebScraperFixture webScraperFixture) :
         string? tempUnit = null;
 
         // call BuildRecipeSummary
-        var actualReturn = scraper.BuildRecipeSummary(_document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
+        var actualReturn = scraper.BuildRecipeSummary(
+            _document,
+            titlePattern,
+            descriptionPattern,
+            prepTimePattern,
+            cookTimePattern,
+            servingsPattern
+        );
         string cleanedServings = WhitespaceRegex.Replace(actualReturn.Servings!, " ");
 
         // assert elements are as expected
@@ -121,41 +135,41 @@ public partial class TastyWebScraperTests(WebScraperFixture webScraperFixture) :
 
         // initialize expected result as string, convert to JSON
         string expectedJson = """
-        [
-            {
-                "Id": 0,
-                "RecipeId": 0,
-                "SectionId": null,
-                "SectionName": null,
-                "StepNumber": 1, 
-                "InstructionText": "Cook egg noodles al dente in boiling, generously-salted water according to package instructions. (For optimal timing, I recommend actually adding the egg noodles to the boiling water at the same time that the vegetable stock is added to the stroganoff.)"
-            },
-            {
-                "Id": 0,
-                "RecipeId": 0,
-                "SectionId": null,
-                "SectionName": null,
-                "StepNumber": 2,
-                "InstructionText": "Melt 1 tablespoon butter in a large sauté pan over medium-high heat.Add onions and sauté for 5 minutes, stirring occasionally. Add the remaining 2 tablespoons butter, garlic and mushrooms, and stir to combine. Continue sautéing for an additional 5-7 minutes, until the mushrooms are cooked and tender. Add the white wine, and deglaze the pan by using a wooden spoon to scrape the brown bits off the bottom of the pan. Let the sauce simmer for 3 minutes."
-            },
-            {
-                "Id": 0,
-                "RecipeId": 0,
-                "SectionId": null,
-                "SectionName": null,
-                "StepNumber": 3,
-                "InstructionText": "Meanwhile, in a separate bowl, whisk together the vegetable stock, Worcestershire and flour until smooth. Pour the vegetable stock mixture into the pan, along with the thyme, and stir to combine. Let the mixture simmer for an additional 5 minutes, stirring occasionally, until slightly thickened. Then, stir in the Greek yogurt (or sour cream) evenly into the sauce. Taste, and season with a generous pinch of two of salt and pepper as needed."
-            },
-            {
-                "Id": 0,
-                "RecipeId": 0,
-                "SectionId": null,
-                "SectionName": null,
-                "StepNumber": 4,
-                "InstructionText": "Serve immediately over the egg noodles, garnished with your desired toppings."
-            }
-        ]
-        """;
+            [
+                {
+                    "Id": 0,
+                    "RecipeId": 0,
+                    "SectionId": null,
+                    "SectionName": null,
+                    "StepNumber": 1, 
+                    "InstructionText": "Cook egg noodles al dente in boiling, generously-salted water according to package instructions. (For optimal timing, I recommend actually adding the egg noodles to the boiling water at the same time that the vegetable stock is added to the stroganoff.)"
+                },
+                {
+                    "Id": 0,
+                    "RecipeId": 0,
+                    "SectionId": null,
+                    "SectionName": null,
+                    "StepNumber": 2,
+                    "InstructionText": "Melt 1 tablespoon butter in a large sauté pan over medium-high heat.Add onions and sauté for 5 minutes, stirring occasionally. Add the remaining 2 tablespoons butter, garlic and mushrooms, and stir to combine. Continue sautéing for an additional 5-7 minutes, until the mushrooms are cooked and tender. Add the white wine, and deglaze the pan by using a wooden spoon to scrape the brown bits off the bottom of the pan. Let the sauce simmer for 3 minutes."
+                },
+                {
+                    "Id": 0,
+                    "RecipeId": 0,
+                    "SectionId": null,
+                    "SectionName": null,
+                    "StepNumber": 3,
+                    "InstructionText": "Meanwhile, in a separate bowl, whisk together the vegetable stock, Worcestershire and flour until smooth. Pour the vegetable stock mixture into the pan, along with the thyme, and stir to combine. Let the mixture simmer for an additional 5 minutes, stirring occasionally, until slightly thickened. Then, stir in the Greek yogurt (or sour cream) evenly into the sauce. Taste, and season with a generous pinch of two of salt and pepper as needed."
+                },
+                {
+                    "Id": 0,
+                    "RecipeId": 0,
+                    "SectionId": null,
+                    "SectionName": null,
+                    "StepNumber": 4,
+                    "InstructionText": "Serve immediately over the egg noodles, garnished with your desired toppings."
+                }
+            ]
+            """;
         JToken expectedToken = JToken.Parse(expectedJson);
 
         // call BuildRecipeSummary
@@ -185,7 +199,7 @@ public partial class TastyWebScraperTests(WebScraperFixture webScraperFixture) :
         string expectedRecipeType = "Main";
         string expectedCuisine = "Italian";
 
-        // Meal and Dietary rely on fallback heuristics, and for isolation 
+        // Meal and Dietary rely on fallback heuristics, and for isolation
         // purposes will not be tested in this context
 
         // call BuildRecipeTags
@@ -196,5 +210,8 @@ public partial class TastyWebScraperTests(WebScraperFixture webScraperFixture) :
         Assert.Equal(expectedCuisine, actualReturn.Cuisine);
     }
 
-    private static readonly Regex WhitespaceRegex = new(@"\s{2,}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex WhitespaceRegex = new(
+        @"\s{2,}",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase
+    );
 }

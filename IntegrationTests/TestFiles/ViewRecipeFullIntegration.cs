@@ -1,15 +1,18 @@
-using IntegrationTests.Fixtures;
-using savorfolio_backend.Models.DTOs;
-using Tests.Helpers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Http.Json;
+using IntegrationTests.Fixtures;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using savorfolio_backend.Models.DTOs;
+using Tests.Helpers;
 
 namespace IntegrationTests.TestFiles;
 
 [Collection("Integration Test Server")]
-public class ViewRecipeFullTests(DatabaseFixture databaseFixture, TestServerFixture testServerFixture) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
+public class ViewRecipeFullTests(
+    DatabaseFixture databaseFixture,
+    TestServerFixture testServerFixture
+) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
 {
     private readonly DatabaseFixture _databaseFixture = databaseFixture;
     private readonly HttpClient _client = testServerFixture.HttpClient;
@@ -18,12 +21,15 @@ public class ViewRecipeFullTests(DatabaseFixture databaseFixture, TestServerFixt
 
     static ViewRecipeFullTests()
     {
-        string viewRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeDTO.json");
-        string viewRecipeSectionsFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeSectionsDTO.json");
+        string viewRecipeFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/ViewRecipeDTO.json"
+        );
+        string viewRecipeSectionsFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/ViewRecipeSectionsDTO.json"
+        );
         _expectedViewRecipe = JObject.Parse(File.ReadAllText(viewRecipeFilePath));
         _expectedViewRecipeSections = JObject.Parse(File.ReadAllText(viewRecipeSectionsFilePath));
     }
-
 
     [Fact]
     public async Task ViewRecipesTest_NoSections()

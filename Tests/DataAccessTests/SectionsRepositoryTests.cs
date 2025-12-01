@@ -10,7 +10,8 @@ using Tests.Helpers;
 namespace Tests.DataAccessTests;
 
 [Collection("SQLite test database Collection")]
-public class SectionsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixture<SqliteDbFixture>
+public class SectionsRepositoryTests(SqliteDbFixture sqliteDbFixture)
+    : IClassFixture<SqliteDbFixture>
 {
     private static readonly Mock<ISectionsRepository> mockSectionsRepo = new();
     private readonly SectionsRepository _repository = new(sqliteDbFixture.Context);
@@ -20,8 +21,12 @@ public class SectionsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFi
 
     static SectionsRepositoryTests()
     {
-        string viewRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeSectionsDTO.json");
-        string addRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipeSections.json");
+        string viewRecipeFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/ViewRecipeSectionsDTO.json"
+        );
+        string addRecipeFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/AddRecipeSections.json"
+        );
 
         _expectedViewRecipeSections = JObject.Parse(File.ReadAllText(viewRecipeFilePath));
         _expectedAddRecipeSections = JObject.Parse(File.ReadAllText(addRecipeFilePath));
@@ -33,24 +38,28 @@ public class SectionsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFi
         // initialize the recipe DTO to add to the database
         var addRecipeDTO = _expectedAddRecipeSections["recipeSummary"]?.ToObject<RecipeDTO>();
         // initialize the list of ingredient DTOs to add to the table
-        var sectionsList = _expectedAddRecipeSections["recipeSections"]?.ToObject<List<SectionDTO>>();
+        var sectionsList = _expectedAddRecipeSections["recipeSections"]
+            ?.ToObject<List<SectionDTO>>();
 
         // initialize the number of records expected to be added to the table: 3
         int expectedRecordCount = 3;
         // initialize the expected list <SectionDTO> return
         List<SectionDTO> expectedSections = [];
-        for(int i = 0; i < sectionsList!.Count; i++)
+        for (int i = 0; i < sectionsList!.Count; i++)
         {
-            expectedSections.Add(new SectionDTO
-            {
-                Id = i + 4,
-                RecipeId = 4,
-                SectionName = sectionsList[i].SectionName,
-                SortOrder = sectionsList[i].SortOrder
-            });
+            expectedSections.Add(
+                new SectionDTO
+                {
+                    Id = i + 4,
+                    RecipeId = 4,
+                    SectionName = sectionsList[i].SectionName,
+                    SortOrder = sectionsList[i].SortOrder,
+                }
+            );
         }
         // mock the return of the dependent function GetSectionsByRecipeAsync
-        mockSectionsRepo.Setup(r => r.GetSectionsByRecipeAsync(It.IsAny<int>()))
+        mockSectionsRepo
+            .Setup(r => r.GetSectionsByRecipeAsync(It.IsAny<int>()))
             .ReturnsAsync(expectedSections);
         // convert expected result into JSON
         var expectedJson = JsonConvert.SerializeObject(expectedSections);
@@ -59,7 +68,10 @@ public class SectionsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFi
         // call AddNewRecipeAsync with the DTO -- this is necessary to avoid foreign key violations
         var recipeId = await _recipeRepository.AddNewRecipeAsync(addRecipeDTO!);
         // call AddNewRecipeSectionsAsync with the sections list and recipe ID
-        (int records, var sections) = await _repository.AddNewRecipeSectionsAsync(sectionsList!, recipeId);
+        (int records, var sections) = await _repository.AddNewRecipeSectionsAsync(
+            sectionsList!,
+            recipeId
+        );
 
         // Convert sections result to JSON Token
         var actualJson = JsonConvert.SerializeObject(sections);
@@ -70,14 +82,15 @@ public class SectionsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFi
         // assert the expected list of section DTOs is equal to the returned list
         Assert.True(JToken.DeepEquals(expectedSectionsToken, actualToken));
     }
-    
+
     [Fact]
     public async Task GetSectionsByRecipeAsync_Test()
     {
         // initialize test recipe ID
         int recipeId = 3;
         // initialize expected sections as a list of DTOs for case matching
-        var expectedSectionsDTO = _expectedViewRecipeSections["RecipeSections"]?.ToObject<List<SectionDTO>>();
+        var expectedSectionsDTO = _expectedViewRecipeSections["RecipeSections"]
+            ?.ToObject<List<SectionDTO>>();
         // convert to JSON
         var expectedJson = JsonConvert.SerializeObject(expectedSectionsDTO);
         JToken expectedSectionsToken = JToken.Parse(expectedJson);

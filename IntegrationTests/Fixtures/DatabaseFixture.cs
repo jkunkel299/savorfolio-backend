@@ -1,9 +1,9 @@
+using System.Text.Json;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using savorfolio_backend.Data;
 using Tests.Helpers;
-using System.Text.Json;
 
 namespace IntegrationTests.Fixtures;
 
@@ -16,8 +16,11 @@ public class DatabaseFixture : IDisposable
     {
         // Add connection string from environment variables
         Env.Load();
-        ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DATABASE_CONNECTION")
-            ?? throw new InvalidOperationException("ConnectionStrings__DATABASE_CONNECTION not found in .env");
+        ConnectionString =
+            Environment.GetEnvironmentVariable("ConnectionStrings__DATABASE_CONNECTION")
+            ?? throw new InvalidOperationException(
+                "ConnectionStrings__DATABASE_CONNECTION not found in .env"
+            );
 
         // Configure TestDbContext
         var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -26,7 +29,7 @@ public class DatabaseFixture : IDisposable
 
         Context = new AppDbContext(options);
 
-        // Reset and seed database when fixture is created 
+        // Reset and seed database when fixture is created
         ResetDatabase().Wait();
         SeedDatabase().Wait();
     }
@@ -37,13 +40,16 @@ public class DatabaseFixture : IDisposable
         await conn.OpenAsync();
 
         // truncate recipes, ingredients, instructions, and tags tables
-        using var cmd = new NpgsqlCommand(@"
+        using var cmd = new NpgsqlCommand(
+            @"
             TRUNCATE TABLE ""Recipe"" RESTART IDENTITY CASCADE;
             TRUNCATE TABLE ""Recipe_Sections"" RESTART IDENTITY CASCADE;
             TRUNCATE TABLE ""Ingredient_Lists"" RESTART IDENTITY CASCADE;
             TRUNCATE TABLE ""Instructions"" RESTART IDENTITY CASCADE;
             TRUNCATE TABLE ""Recipe_Tags"" RESTART IDENTITY CASCADE;
-        ", conn);
+        ",
+            conn
+        );
         await cmd.ExecuteNonQueryAsync();
     }
 
@@ -76,27 +82,46 @@ public class DatabaseFixture : IDisposable
         // load records into Recipes table
         foreach (var recipe in recipes)
         {
-            using var insertCmd = new NpgsqlCommand(@"
+            using var insertCmd = new NpgsqlCommand(
+                @"
                 INSERT INTO ""Recipe"" (name, servings, cook_time, prep_time, bake_temp, temp_unit, description) 
                 VALUES (@name, @servings, @cook_time, @prep_time, @bake_temp, @temp_unit, @description)",
-            conn);
+                conn
+            );
             insertCmd.Parameters.AddWithValue("@name", recipe.Name);
             insertCmd.Parameters.AddWithValue("@servings", recipe.Servings ?? (object)DBNull.Value);
-            insertCmd.Parameters.AddWithValue("@cook_time", recipe.CookTime ?? (object)DBNull.Value);
-            insertCmd.Parameters.AddWithValue("@prep_time", recipe.PrepTime ?? (object)DBNull.Value);
-            insertCmd.Parameters.AddWithValue("@bake_temp", recipe.BakeTemp ?? (object)DBNull.Value);
-            insertCmd.Parameters.AddWithValue("@temp_unit", recipe.Temp_unit ?? (object)DBNull.Value);
-            insertCmd.Parameters.AddWithValue("@description", recipe.Description ?? (object)DBNull.Value);
+            insertCmd.Parameters.AddWithValue(
+                "@cook_time",
+                recipe.CookTime ?? (object)DBNull.Value
+            );
+            insertCmd.Parameters.AddWithValue(
+                "@prep_time",
+                recipe.PrepTime ?? (object)DBNull.Value
+            );
+            insertCmd.Parameters.AddWithValue(
+                "@bake_temp",
+                recipe.BakeTemp ?? (object)DBNull.Value
+            );
+            insertCmd.Parameters.AddWithValue(
+                "@temp_unit",
+                recipe.Temp_unit ?? (object)DBNull.Value
+            );
+            insertCmd.Parameters.AddWithValue(
+                "@description",
+                recipe.Description ?? (object)DBNull.Value
+            );
             await insertCmd.ExecuteNonQueryAsync();
         }
 
         // load records into Recipe_Sections table
         foreach (var section in sections)
         {
-            using var insertCmd = new NpgsqlCommand(@"
+            using var insertCmd = new NpgsqlCommand(
+                @"
                 INSERT INTO ""Recipe_Sections"" (recipe_id, section_name, sort_order)
                 VALUES (@recipe_id, @section_name, @sort_order)",
-            conn);
+                conn
+            );
             insertCmd.Parameters.AddWithValue("@recipe_id", section.RecipeId);
             insertCmd.Parameters.AddWithValue("@section_name", section.SectionName);
             insertCmd.Parameters.AddWithValue("@sort_order", section.SortOrder);
@@ -106,10 +131,12 @@ public class DatabaseFixture : IDisposable
         // load records into Ingredient_Lists table
         foreach (var ing in ingList)
         {
-            using var insertCmd = new NpgsqlCommand(@"
+            using var insertCmd = new NpgsqlCommand(
+                @"
                 INSERT INTO ""Ingredient_Lists"" (recipe_id, section_id, quantity, unit_id, ingredient_id, ingredient_order, qualifier) 
                 VALUES (@recipe_id, @section_id, @quantity, @unit_id, @ingredient_id, @ingredient_order, @qualifier)",
-            conn);
+                conn
+            );
             // insertCmd.Parameters.AddWithValue("@id", ing.Id);
             insertCmd.Parameters.AddWithValue("@recipe_id", ing.RecipeId);
             insertCmd.Parameters.AddWithValue("@section_id", ing.SectionId ?? (object)DBNull.Value);
@@ -124,10 +151,12 @@ public class DatabaseFixture : IDisposable
         // load records into Instructions table
         foreach (var ins in instructions)
         {
-            using var insertCmd = new NpgsqlCommand(@"
+            using var insertCmd = new NpgsqlCommand(
+                @"
                 INSERT INTO ""Instructions"" (recipe_id, section_id, step_number, instruction_text) 
                 VALUES (@recipe_id, @section_id, @step_number, @instruction_text)",
-            conn);
+                conn
+            );
             // insertCmd.Parameters.AddWithValue("@id", ins.Id);
             insertCmd.Parameters.AddWithValue("@recipe_id", ins.RecipeId);
             insertCmd.Parameters.AddWithValue("@section_id", ins.SectionId ?? (object)DBNull.Value);
@@ -139,10 +168,12 @@ public class DatabaseFixture : IDisposable
         // load records into Recipe_Tags table
         foreach (var tag in recipeTags)
         {
-            using var insertCmd = new NpgsqlCommand(@"
+            using var insertCmd = new NpgsqlCommand(
+                @"
                 INSERT INTO ""Recipe_Tags"" (recipe_id, type_tag, meal_tag, cuisine_tag, dietary_tag) 
                 VALUES (@recipe_id, @type_tag, @meal_tag, @cuisine_tag, @dietary_tag)",
-            conn);
+                conn
+            );
             insertCmd.Parameters.AddWithValue("@recipe_id", tag.RecipeId);
             insertCmd.Parameters.AddWithValue("@type_tag", tag.Recipe_type ?? (object)DBNull.Value);
             insertCmd.Parameters.AddWithValue("@meal_tag", tag.Meal ?? (object)DBNull.Value);

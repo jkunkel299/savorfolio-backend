@@ -1,9 +1,9 @@
-using savorfolio_backend.DataAccess;
-using Tests.Fixtures;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using savorfolio_backend.DataAccess;
 using savorfolio_backend.Models.DTOs;
-using Microsoft.VisualBasic;
+using Tests.Fixtures;
 using Tests.Helpers;
 
 namespace Tests.DataAccessTests;
@@ -18,16 +18,21 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
 
     static RecipeRepositoryTests()
     {
-        string recipeFilteringFilePath = TestFileHelper.GetProjectPath("ExpectedData/RecipeDTOs.json");
-        string viewRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeDTO.json");
+        string recipeFilteringFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/RecipeDTOs.json"
+        );
+        string viewRecipeFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/ViewRecipeDTO.json"
+        );
         string addRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipe.json");
 
-        _expectedFilteredRecipes = [.. JsonToList.JsonFileToList<RecipeDTO>(recipeFilteringFilePath).OrderBy(r => r.Id)];
+        _expectedFilteredRecipes =
+        [
+            .. JsonToList.JsonFileToList<RecipeDTO>(recipeFilteringFilePath).OrderBy(r => r.Id),
+        ];
         _expectedViewRecipe = JObject.Parse(File.ReadAllText(viewRecipeFilePath));
         _expectedAddRecipe = JObject.Parse(File.ReadAllText(addRecipeFilePath));
     }
-
-
 
     [Fact]
     public async Task RecipeSearchEmpty()
@@ -52,8 +57,6 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
         Assert.True(JToken.DeepEquals(expectedToken, actualToken));
     }
 
-
-
     [Theory]
     // include chicken
     [InlineData(new int[] { 143 })]
@@ -66,15 +69,15 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
     public async Task RecipeSearchIncludeIngredients(int[] includeIngredients)
     {
         // initialize filter to include ingredients in test case
-        var request = new RecipeFilterRequestDTO
-        {
-            IncludeIngredients = [.. includeIngredients]
-        };
+        var request = new RecipeFilterRequestDTO { IncludeIngredients = [.. includeIngredients] };
 
         // manipulate _expectedRecipes to get appropriate expected
         var recipesExpected = _expectedFilteredRecipes
-            .Where(r => request.IncludeIngredients.All(ingId =>
-                r.Ingredients.Any(ri => ri.IngredientId == ingId)))
+            .Where(r =>
+                request.IncludeIngredients.All(ingId =>
+                    r.Ingredients.Any(ri => ri.IngredientId == ingId)
+                )
+            )
             .OrderBy(r => r.Id)
             .ToList();
         string expectedJson = JsonConvert.SerializeObject(recipesExpected);
@@ -91,8 +94,6 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
         Assert.True(JToken.DeepEquals(expectedToken, actualToken));
     }
 
-
-
     [Theory]
     // exclude chicken
     [InlineData(new int[] { 143 })]
@@ -105,17 +106,15 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
     public async Task RecipeSearchExcludeIngredients(int[] excludeIngredients)
     {
         // initialize filter to include ingredients in test case
-        var request = new RecipeFilterRequestDTO
-        {
-            ExcludeIngredients = [.. excludeIngredients]
-        };
+        var request = new RecipeFilterRequestDTO { ExcludeIngredients = [.. excludeIngredients] };
 
         var ingredientIds = request.ExcludeIngredients;
 
         // manipulate _expectedRecipes to get appropriate expected
         var recipesExpected = _expectedFilteredRecipes
-            .Where(r => !ingredientIds.All(ingId =>
-                r.Ingredients.Any(ri => ri.IngredientId == ingId)))
+            .Where(r =>
+                !ingredientIds.All(ingId => r.Ingredients.Any(ri => ri.IngredientId == ingId))
+            )
             .OrderBy(r => r.Id)
             .ToList();
         // initialize convert expected result string to JSON
@@ -132,8 +131,6 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
         // Assert equal
         Assert.True(JToken.DeepEquals(expectedToken, actualToken));
     }
-
-
 
     [Fact]
     public async Task ReturnRecipeById()
@@ -155,8 +152,6 @@ public class RecipeRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixt
         // Assert equal
         Assert.True(JToken.DeepEquals(expectedRecipe, actualToken));
     }
-
-
 
     [Fact]
     public async Task AddNewRecipeTest()

@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc.Testing;
 using DotNetEnv;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using savorfolio_backend.Data;
 using Microsoft.Extensions.DependencyInjection;
+using savorfolio_backend.Data;
 
 namespace IntegrationTests.Fixtures;
 
@@ -15,25 +15,28 @@ public class TestServerFixture : IDisposable
     public TestServerFixture()
     {
         Env.Load();
-        ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DATABASE_CONNECTION")
-            ?? throw new InvalidOperationException("ConnectionStrings__DATABASE_CONNECTION not found in .env");
+        ConnectionString =
+            Environment.GetEnvironmentVariable("ConnectionStrings__DATABASE_CONNECTION")
+            ?? throw new InvalidOperationException(
+                "ConnectionStrings__DATABASE_CONNECTION not found in .env"
+            );
 
-        _factory = new WebApplicationFactory<Program>()
-            .WithWebHostBuilder(builder =>
+        _factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
+        {
+            builder.ConfigureServices(services =>
             {
-                builder.ConfigureServices(services =>
+                // Remove the production DbContext registration
+                var descriptor = services.SingleOrDefault(d =>
+                    d.ServiceType == typeof(DbContextOptions<AppDbContext>)
+                );
+                if (descriptor != null)
                 {
-                    // Remove the production DbContext registration
-                    var descriptor = services.SingleOrDefault(
-                        d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
-                    if (descriptor != null)
-                    {
-                        services.Remove(descriptor);
-                    }
+                    services.Remove(descriptor);
+                }
 
-                    services.AddDbContext<AppDbContext>(options => options.UseNpgsql(ConnectionString));
-                });
+                services.AddDbContext<AppDbContext>(options => options.UseNpgsql(ConnectionString));
             });
+        });
         HttpClient = _factory.CreateClient();
     }
 

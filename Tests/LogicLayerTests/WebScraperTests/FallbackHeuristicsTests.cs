@@ -23,7 +23,7 @@ public class FallbackHeuristicsTests
         mockHeuristicExtensions = new Mock<IHeuristicExtensions>();
         _fallback = new(mockHeuristicExtensions.Object);
     }
-    
+
     #region Title
     [Theory]
     [InlineData( // Includes a title matching the Title Regex
@@ -94,7 +94,10 @@ public class FallbackHeuristicsTests
         </body></html>",
         ""
     )]
-    public async Task ExtractDescription_ReturnsExpectedAsync(string html, string expectedDescription)
+    public async Task ExtractDescription_ReturnsExpectedAsync(
+        string html,
+        string expectedDescription
+    )
     {
         // use AngleSharp to build a DOM from the HTML snippet
         var config = Configuration.Default.WithDefaultLoader();
@@ -114,7 +117,8 @@ public class FallbackHeuristicsTests
     public async Task ExtractTime_CallsFunctionsAsync()
     {
         // initialize HTML snippet
-        string html = @"<!DOCTYPE html>
+        string html =
+            @"<!DOCTYPE html>
         <html><body>
             <h1 class='recipe-title'>Cinnamon Chocolate Babka Muffins</h1>
             <div>Prep Time: 3 hours 30 minutes</div>
@@ -126,14 +130,18 @@ public class FallbackHeuristicsTests
         var document = await context.OpenAsync(req => req.Content(html));
 
         // set up return for GetBestMatch (dependent function)
-        mockHeuristicExtensions.Setup(r => r.GetBestMatch(It.IsAny<IEnumerable<IElement>>(), It.IsAny<string>()))
+        mockHeuristicExtensions
+            .Setup(r => r.GetBestMatch(It.IsAny<IEnumerable<IElement>>(), It.IsAny<string>()))
             .Returns("3 hours 30 minutes");
 
         // call ExtractTimeNearLabel on a mocked document
         _ = _fallback.ExtractTimeNearLabel(document, "prep time");
 
         // assert the mocked function was called once
-        mockHeuristicExtensions.Verify(f => f.GetBestMatch(It.IsAny<IEnumerable<IElement>>(), It.IsAny<string>()), Times.AtMostOnce);
+        mockHeuristicExtensions.Verify(
+            f => f.GetBestMatch(It.IsAny<IEnumerable<IElement>>(), It.IsAny<string>()),
+            Times.AtMostOnce
+        );
     }
 
     [Theory]
@@ -177,7 +185,12 @@ public class FallbackHeuristicsTests
         "",
         ""
     )]
-    public async Task ExtractTimeNearLabel_ReturnsExpectedAsync(string html, string label, string bestMatch, string expected)
+    public async Task ExtractTimeNearLabel_ReturnsExpectedAsync(
+        string html,
+        string label,
+        string bestMatch,
+        string expected
+    )
     {
         // use AngleSharp to build a DOM from the HTML snippet
         var config = Configuration.Default.WithDefaultLoader();
@@ -185,7 +198,8 @@ public class FallbackHeuristicsTests
         var document = await context.OpenAsync(req => req.Content(html));
 
         // set up return for GetBestMatch (dependent function)
-        mockHeuristicExtensions.Setup(r => r.GetBestMatch(It.IsAny<IEnumerable<IElement>>(), It.IsAny<string>()))
+        mockHeuristicExtensions
+            .Setup(r => r.GetBestMatch(It.IsAny<IEnumerable<IElement>>(), It.IsAny<string>()))
             .Returns(bestMatch);
 
         // call ExtractTimeNearLabel on the generated document
@@ -201,7 +215,8 @@ public class FallbackHeuristicsTests
     public async Task ExtractServings_CallsFunctionsAsync()
     {
         // initialize HTML snippet
-        string html = @"<!DOCTYPE html>
+        string html =
+            @"<!DOCTYPE html>
         <html><body>
             <h1 class='recipe-title'>Cinnamon Chocolate Babka Muffins</h1>
             <div>Prep Time: 3 hours 30 minutes</div>
@@ -213,16 +228,20 @@ public class FallbackHeuristicsTests
         var document = await context.OpenAsync(req => req.Content(html));
 
         // set up return for GetBestMatch (dependent function)
-        mockHeuristicExtensions.Setup(r => r.GetBestMatch(It.IsAny<IEnumerable<IElement>>(), It.IsAny<string>()))
+        mockHeuristicExtensions
+            .Setup(r => r.GetBestMatch(It.IsAny<IEnumerable<IElement>>(), It.IsAny<string>()))
             .Returns(It.IsAny<string>());
 
         // call ExtractServings on a mocked document
         _ = _fallback.ExtractServings(document);
 
         // assert the mocked function was called once
-        mockHeuristicExtensions.Verify(f => f.GetBestMatch(It.IsAny<IEnumerable<IElement>>(), It.IsAny<string>()), Times.AtMostOnce);
+        mockHeuristicExtensions.Verify(
+            f => f.GetBestMatch(It.IsAny<IEnumerable<IElement>>(), It.IsAny<string>()),
+            Times.AtMostOnce
+        );
     }
-    
+
     [Theory]
     [InlineData( // "servings"
         @"<!DOCTYPE html>
@@ -269,7 +288,11 @@ public class FallbackHeuristicsTests
         "",
         ""
     )]
-    public async Task ExtractServings_ReturnsExpectedAsync(string html, string bestMatch, string expected)
+    public async Task ExtractServings_ReturnsExpectedAsync(
+        string html,
+        string bestMatch,
+        string expected
+    )
     {
         // use AngleSharp to build a DOM from the HTML snippet
         var config = Configuration.Default.WithDefaultLoader();
@@ -277,7 +300,8 @@ public class FallbackHeuristicsTests
         var document = await context.OpenAsync(req => req.Content(html));
 
         // set up return for GetBestMatch (dependent function)
-        mockHeuristicExtensions.Setup(r => r.GetBestMatch(It.IsAny<IEnumerable<IElement>>(), It.IsAny<string>()))
+        mockHeuristicExtensions
+            .Setup(r => r.GetBestMatch(It.IsAny<IEnumerable<IElement>>(), It.IsAny<string>()))
             .Returns(bestMatch);
 
         // call ExtractServings on the generated document
@@ -293,7 +317,8 @@ public class FallbackHeuristicsTests
     public async Task ExtractTags_CallsFunctionsAsync()
     {
         // initialize HTML snippet
-        string html = @"<!DOCTYPE html>
+        string html =
+            @"<!DOCTYPE html>
         <html><body>
             <h1 class='recipe-title'>Cinnamon Chocolate Babka Muffins</h1>
             <div>Cuisine: American</div>
@@ -307,13 +332,16 @@ public class FallbackHeuristicsTests
         var document = await context.OpenAsync(req => req.Content(html));
 
         // set up return for MatchEnum<RecipeTypeTag> (dependent function)
-        mockHeuristicExtensions.Setup(r => r.MatchEnum<RecipeTypeTag>(document))
+        mockHeuristicExtensions
+            .Setup(r => r.MatchEnum<RecipeTypeTag>(document))
             .Returns(It.IsAny<string>());
         // set up return for MatchEnum<CuisineTag> (dependent function)
-        mockHeuristicExtensions.Setup(r => r.MatchEnum<CuisineTag>(document))
+        mockHeuristicExtensions
+            .Setup(r => r.MatchEnum<CuisineTag>(document))
             .Returns(It.IsAny<string>());
         // set up return for MatchEnum<MealTag> (dependent function)
-        mockHeuristicExtensions.Setup(r => r.MatchEnum<MealTag>(document))
+        mockHeuristicExtensions
+            .Setup(r => r.MatchEnum<MealTag>(document))
             .Returns(It.IsAny<string>());
 
         // call ExtractTags on a mocked document
@@ -329,7 +357,8 @@ public class FallbackHeuristicsTests
     public async Task ExtractTags_ReturnsEmptyAsync()
     {
         // initialize empty HTML
-        string html = @"<!DOCTYPE html>
+        string html =
+            @"<!DOCTYPE html>
         <html><head>
         </head></html>";
         // initialize expected return
@@ -344,13 +373,16 @@ public class FallbackHeuristicsTests
         var document = await context.OpenAsync(req => req.Content(html));
 
         // set up return for MatchEnum<RecipeTypeTag> (dependent function)
-        mockHeuristicExtensions.Setup(r => r.MatchEnum<RecipeTypeTag>(document))
+        mockHeuristicExtensions
+            .Setup(r => r.MatchEnum<RecipeTypeTag>(document))
             .Returns(It.IsAny<string>());
         // set up return for MatchEnum<CuisineTag> (dependent function)
-        mockHeuristicExtensions.Setup(r => r.MatchEnum<CuisineTag>(document))
+        mockHeuristicExtensions
+            .Setup(r => r.MatchEnum<CuisineTag>(document))
             .Returns(It.IsAny<string>());
         // set up return for MatchEnum<MealTag> (dependent function)
-        mockHeuristicExtensions.Setup(r => r.MatchEnum<MealTag>(document))
+        mockHeuristicExtensions
+            .Setup(r => r.MatchEnum<MealTag>(document))
             .Returns(It.IsAny<string>());
 
         // call ExtractTags on the empty document
@@ -367,7 +399,8 @@ public class FallbackHeuristicsTests
     public async Task ExtractTags_CompilesDTO()
     {
         // initialize HTML snippet
-        string html = @"<!DOCTYPE html>
+        string html =
+            @"<!DOCTYPE html>
         <html><body>
             <h1 class='recipe-title'>Cinnamon Chocolate Babka Muffins</h1>
             <div>Cuisine: American</div>
@@ -379,7 +412,7 @@ public class FallbackHeuristicsTests
         {
             Recipe_type = "Side",
             Cuisine = "American",
-            Meal = "Breakfast"
+            Meal = "Breakfast",
         };
         // convert to JSON
         var expectedJson = JsonConvert.SerializeObject(expectedReturn);
@@ -391,13 +424,16 @@ public class FallbackHeuristicsTests
         var document = await context.OpenAsync(req => req.Content(html));
 
         // set up return for MatchEnum<RecipeTypeTag> (dependent function)
-        mockHeuristicExtensions.Setup(r => r.MatchEnum<RecipeTypeTag>(It.IsAny<IDocument>()))
+        mockHeuristicExtensions
+            .Setup(r => r.MatchEnum<RecipeTypeTag>(It.IsAny<IDocument>()))
             .Returns("Side");
         // set up return for MatchEnum<CuisineTag> (dependent function)
-        mockHeuristicExtensions.Setup(r => r.MatchEnum<CuisineTag>(It.IsAny<IDocument>()))
+        mockHeuristicExtensions
+            .Setup(r => r.MatchEnum<CuisineTag>(It.IsAny<IDocument>()))
             .Returns("American");
         // set up return for MatchEnum<MealTag> (dependent function)
-        mockHeuristicExtensions.Setup(r => r.MatchEnum<MealTag>(It.IsAny<IDocument>()))
+        mockHeuristicExtensions
+            .Setup(r => r.MatchEnum<MealTag>(It.IsAny<IDocument>()))
             .Returns("Breakfast");
 
         // call ExtractTags
@@ -413,8 +449,14 @@ public class FallbackHeuristicsTests
 
     #region Instructions
     [Theory]
-    [MemberData(nameof(FallbackInstructionData.InstructionTestCases), MemberType = typeof(FallbackInstructionData))]
-    public async Task ExtractInstructions_ReturnsExpected(string html, InstructionDTO[] expectedArray)
+    [MemberData(
+        nameof(FallbackInstructionData.InstructionTestCases),
+        MemberType = typeof(FallbackInstructionData)
+    )]
+    public async Task ExtractInstructions_ReturnsExpected(
+        string html,
+        InstructionDTO[] expectedArray
+    )
     {
         var expectedReturn = expectedArray.ToList();
         // use AngleSharp to build a DOM from the HTML snippet
@@ -434,6 +476,6 @@ public class FallbackHeuristicsTests
 
         // assert actual return equal to expected
         Assert.Equal(expectedToken, actualToken);
-    }    
+    }
     #endregion
 }

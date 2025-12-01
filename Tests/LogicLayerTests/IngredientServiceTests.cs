@@ -1,6 +1,6 @@
 using Moq;
-using savorfolio_backend.LogicLayer;
 using savorfolio_backend.Interfaces;
+using savorfolio_backend.LogicLayer;
 
 namespace Tests.LogicLayerTests;
 

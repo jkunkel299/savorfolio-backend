@@ -12,19 +12,29 @@ public class TagsControllerTests()
 
     static TagsControllerTests()
     {
-        string mealTagsFilePath = TestFileHelper.GetProjectPath("ExpectedData/Enums/MealTypeEnum.json");
-        string recipeTypeTagsFilePath = TestFileHelper.GetProjectPath("ExpectedData/Enums/RecipeTypeEnum.json");
-        string cuisineTagsFilePath = TestFileHelper.GetProjectPath("ExpectedData/Enums/CuisineEnum.json");
-        string dietaryTagsFilePath = TestFileHelper.GetProjectPath("ExpectedData/Enums/DietaryEnum.json");
+        string mealTagsFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/Enums/MealTypeEnum.json"
+        );
+        string recipeTypeTagsFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/Enums/RecipeTypeEnum.json"
+        );
+        string cuisineTagsFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/Enums/CuisineEnum.json"
+        );
+        string dietaryTagsFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/Enums/DietaryEnum.json"
+        );
 
-
-        _expectedMealTags = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(mealTagsFilePath)) ?? [];
-        _expectedRecipeTypeTags = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(recipeTypeTagsFilePath)) ?? [];
-        _expectedCuisineTags = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(cuisineTagsFilePath)) ?? [];
-        _expectedDietaryTags = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(dietaryTagsFilePath)) ?? [];
+        _expectedMealTags =
+            JsonConvert.DeserializeObject<string[]>(File.ReadAllText(mealTagsFilePath)) ?? [];
+        _expectedRecipeTypeTags =
+            JsonConvert.DeserializeObject<string[]>(File.ReadAllText(recipeTypeTagsFilePath)) ?? [];
+        _expectedCuisineTags =
+            JsonConvert.DeserializeObject<string[]>(File.ReadAllText(cuisineTagsFilePath)) ?? [];
+        _expectedDietaryTags =
+            JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(dietaryTagsFilePath))
+            ?? [];
     }
-
-
 
     // tests the meal tags endpoint
     [Fact]
@@ -42,8 +52,6 @@ public class TagsControllerTests()
         Assert.Equal(_expectedMealTags, actualValues);
     }
 
-
-
     // tests the recipe type tags endpoint
     [Fact]
     public void GetRecipeTypeTagsTest()
@@ -59,8 +67,6 @@ public class TagsControllerTests()
         // assert result.ok value is expected
         Assert.Equal(_expectedRecipeTypeTags, actualValues);
     }
-
-
 
     // tests the cuisine tags endpoint
     [Fact]
@@ -78,8 +84,6 @@ public class TagsControllerTests()
         Assert.Equal(_expectedCuisineTags, actualValues);
     }
 
-
-
     // tests the dietary tags endpoint
     [Fact]
     public void GetDietaryTagsTest()
@@ -88,7 +92,9 @@ public class TagsControllerTests()
         var result = TagsEndpointsHelper.InvokeGetDietaryTagsEndpoint();
 
         // assert result.ok type
-        var okResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.Ok<List<string>>>(result);
+        var okResult = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.Ok<List<string>>>(
+            result
+        );
         // get content/value from HTTP result
         var actualValues = okResult.Value;
 

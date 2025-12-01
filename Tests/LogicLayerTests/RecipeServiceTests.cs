@@ -1,7 +1,7 @@
 using Moq;
-using savorfolio_backend.Models.DTOs;
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.LogicLayer;
+using savorfolio_backend.Models.DTOs;
 
 namespace Tests.LogicLayerTests;
 
@@ -31,10 +31,7 @@ public class RecipeServiceTests()
     public async Task RecipeServiceIncludeIngredients()
     {
         // initialize filter to include ingredients in test case
-        var request = new RecipeFilterRequestDTO
-        {
-            IncludeIngredients = [143, 2]
-        };
+        var request = new RecipeFilterRequestDTO { IncludeIngredients = [143, 2] };
 
         // mock recipe repository interface
         var mockDependency = new Mock<IRecipeRepository>();
@@ -47,16 +44,13 @@ public class RecipeServiceTests()
         // assert mocked function called once
         mockDependency.Verify(d => d.ReturnRecipesFiltered(request), Times.AtMostOnce);
     }
-    
+
     // test for business logic function with filter to exclude ingredients
     [Fact]
     public async Task RecipeServiceExcludeIngredients()
     {
         // initialize filter to exclude ingredients in test case
-        var request = new RecipeFilterRequestDTO
-        {
-            ExcludeIngredients = [143,2]
-        };
+        var request = new RecipeFilterRequestDTO { ExcludeIngredients = [143, 2] };
 
         // mock recipe repository interface
         var mockDependency = new Mock<IRecipeRepository>();

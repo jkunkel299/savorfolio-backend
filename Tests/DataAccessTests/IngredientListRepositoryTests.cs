@@ -1,15 +1,16 @@
-using savorfolio_backend.DataAccess;
-using Tests.Fixtures;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using savorfolio_backend.DataAccess;
 using savorfolio_backend.Models.DTOs;
-using Microsoft.VisualBasic;
+using Tests.Fixtures;
 using Tests.Helpers;
 
 namespace Tests.DataAccessTests;
 
 [Collection("SQLite test database Collection")]
-public class IngredientListRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixture<SqliteDbFixture>
+public class IngredientListRepositoryTests(SqliteDbFixture sqliteDbFixture)
+    : IClassFixture<SqliteDbFixture>
 {
     private readonly IngListRepository _repository = new(sqliteDbFixture.Context);
     private readonly RecipeRepository _recipeRepository = new(sqliteDbFixture.Context);
@@ -18,14 +19,14 @@ public class IngredientListRepositoryTests(SqliteDbFixture sqliteDbFixture) : IC
 
     static IngredientListRepositoryTests()
     {
-        string viewRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeDTO.json");
+        string viewRecipeFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/ViewRecipeDTO.json"
+        );
         string addRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipe.json");
 
         _expectedViewRecipe = JObject.Parse(File.ReadAllText(viewRecipeFilePath));
         _expectedAddRecipe = JObject.Parse(File.ReadAllText(addRecipeFilePath));
     }
-
-
 
     [Fact]
     public async Task GetIngredientsByIdTest()
@@ -33,7 +34,8 @@ public class IngredientListRepositoryTests(SqliteDbFixture sqliteDbFixture) : IC
         // initialize test recipe ID
         int recipeId = 2;
         // initialize expected ingredient list as DTOs for case matching
-        var expectedIngListDTO = _expectedViewRecipe["Ingredients"]?.ToObject<List<IngredientListDTO>>();
+        var expectedIngListDTO = _expectedViewRecipe["Ingredients"]
+            ?.ToObject<List<IngredientListDTO>>();
         // convert to JSON
         var expectedJson = JsonConvert.SerializeObject(expectedIngListDTO);
         JToken expectedIngList = JToken.Parse(expectedJson);
@@ -47,8 +49,6 @@ public class IngredientListRepositoryTests(SqliteDbFixture sqliteDbFixture) : IC
         // Assert equal
         Assert.True(JToken.DeepEquals(expectedIngList, actualToken));
     }
-
-
 
     [Fact]
     public async Task AddNewIngredients()

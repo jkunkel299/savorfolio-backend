@@ -1,32 +1,32 @@
-using savorfolio_backend.DataAccess;
-using Tests.Fixtures;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using savorfolio_backend.DataAccess;
 using savorfolio_backend.Models.DTOs;
-using Microsoft.VisualBasic;
+using Tests.Fixtures;
 using Tests.Helpers;
 
 namespace Tests.DataAccessTests;
 
 [Collection("SQLite test database Collection")]
-public class IntructionsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixture<SqliteDbFixture>
+public class IntructionsRepositoryTests(SqliteDbFixture sqliteDbFixture)
+    : IClassFixture<SqliteDbFixture>
 {
     private readonly InstructionsRepository _repository = new(sqliteDbFixture.Context);
     private readonly RecipeRepository _recipeRepository = new(sqliteDbFixture.Context);
     private static readonly JObject _expectedViewRecipe;
-    
     private static readonly JObject _expectedAddRecipe;
 
     static IntructionsRepositoryTests()
     {
-        string viewRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeDTO.json");
+        string viewRecipeFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/ViewRecipeDTO.json"
+        );
         string addRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipe.json");
 
         _expectedViewRecipe = JObject.Parse(File.ReadAllText(viewRecipeFilePath));
         _expectedAddRecipe = JObject.Parse(File.ReadAllText(addRecipeFilePath));
     }
-
-
 
     [Fact]
     public async Task GetInstructionsByIdTest()

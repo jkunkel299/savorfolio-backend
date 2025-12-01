@@ -1,9 +1,9 @@
-using savorfolio_backend.DataAccess;
-using Tests.Fixtures;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using savorfolio_backend.DataAccess;
 using savorfolio_backend.Models.DTOs;
-using Microsoft.VisualBasic;
+using Tests.Fixtures;
 using Tests.Helpers;
 
 namespace Tests.DataAccessTests;
@@ -18,14 +18,14 @@ public class TagsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixtur
 
     static TagsRepositoryTests()
     {
-        string viewRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeDTO.json");
+        string viewRecipeFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/ViewRecipeDTO.json"
+        );
         string addRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipe.json");
 
         _expectedViewRecipe = JObject.Parse(File.ReadAllText(viewRecipeFilePath));
         _expectedAddRecipe = JObject.Parse(File.ReadAllText(addRecipeFilePath));
     }
-
-
 
     [Fact]
     public void GetTagsByRecipeTest()
@@ -47,8 +47,6 @@ public class TagsRepositoryTests(SqliteDbFixture sqliteDbFixture) : IClassFixtur
         // Assert equal
         Assert.True(JToken.DeepEquals(expectedTags, actualToken));
     }
-
-
 
     [Fact]
     public async Task AddTagsTest()
