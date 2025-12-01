@@ -23,7 +23,7 @@ public class AuthManager(IUserRepository userRepository, IAuthService authServic
         {
             result.Success = false;
             result.Message = "A user with that Email already exists.";
-            result.Data = Results.Ok();
+            // result.Data = Results.Ok();
             return result;
         }
 

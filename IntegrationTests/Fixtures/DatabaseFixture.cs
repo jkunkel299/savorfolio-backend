@@ -47,6 +47,8 @@ public class DatabaseFixture : IDisposable
             TRUNCATE TABLE ""Ingredient_Lists"" RESTART IDENTITY CASCADE;
             TRUNCATE TABLE ""Instructions"" RESTART IDENTITY CASCADE;
             TRUNCATE TABLE ""Recipe_Tags"" RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE ""User_Recipes"" RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE ""User"" RESTART IDENTIFY CASCADE;
         ",
             conn
         );
@@ -64,6 +66,8 @@ public class DatabaseFixture : IDisposable
         string ingListFilePath = TestFileHelper.GetProjectPath("SeedData/Ingredient_Lists.json");
         string insListFilePath = TestFileHelper.GetProjectPath("SeedData/Instructions.json");
         string tagsFilePath = TestFileHelper.GetProjectPath("SeedData/RecipeTags.json");
+        string usersFilePath = TestFileHelper.GetProjectPath("SeedData/Users.json");
+        string userRecipesFilePath = TestFileHelper.GetProjectPath("SeedData/UserRecipes.json");
 
         // read data from files
         string recipesJson = await File.ReadAllTextAsync(recipeFilePath);
@@ -71,6 +75,8 @@ public class DatabaseFixture : IDisposable
         string ingListJson = await File.ReadAllTextAsync(ingListFilePath);
         string instructJson = await File.ReadAllTextAsync(insListFilePath);
         string recipeTagsJson = await File.ReadAllTextAsync(tagsFilePath);
+        string usersJson = await File.ReadAllTextAsync(usersFilePath);
+        string userRecipesJson = await File.ReadAllTextAsync(userRecipesFilePath);
 
         // convert to seed data objects
         var recipes = JsonSerializer.Deserialize<List<RecipeSeed>>(recipesJson)!;
@@ -78,6 +84,8 @@ public class DatabaseFixture : IDisposable
         var ingList = JsonSerializer.Deserialize<List<IngredientListSeed>>(ingListJson)!;
         var instructions = JsonSerializer.Deserialize<List<InstructionSeed>>(instructJson)!;
         var recipeTags = JsonSerializer.Deserialize<List<RecipeTagsSeed>>(recipeTagsJson)!;
+        var users = JsonSerializer.Deserialize<List<UserSeed>>(usersJson)!;
+        var userRecipes = JsonSerializer.Deserialize<List<UserRecipeSeed>>(userRecipesJson)!;
 
         // load records into Recipes table
         foreach (var recipe in recipes)
@@ -110,6 +118,21 @@ public class DatabaseFixture : IDisposable
                 "@description",
                 recipe.Description ?? (object)DBNull.Value
             );
+            await insertCmd.ExecuteNonQueryAsync();
+        }
+
+        // load records into User table
+        foreach (var user in users)
+        {
+            using var insertCmd = new NpgsqlCommand(
+                @"
+                INSERT INTO ""User"" (email, password_hash, password_salt) 
+                VALUES (@email, @password_hash, @password_salt)",
+                conn
+            );
+            insertCmd.Parameters.AddWithValue("@email", user.Email);
+            insertCmd.Parameters.AddWithValue("@password_hash", user.PasswordHash);
+            insertCmd.Parameters.AddWithValue("@password_salt", user.PasswordSalt);
             await insertCmd.ExecuteNonQueryAsync();
         }
 
@@ -181,6 +204,23 @@ public class DatabaseFixture : IDisposable
             insertCmd.Parameters.AddWithValue("@dietary_tag", tag.Dietary);
             await insertCmd.ExecuteNonQueryAsync();
         }
+
+        // load records into User_Recipes table
+        foreach (var userRecipe in userRecipes)
+        {
+            using var insertCmd = new NpgsqlCommand(
+                @"
+                INSERT INTO ""User_Recipes"" (user_id, recipe_id) 
+                VALUES (@user_id, @recipe_id)",
+                conn
+            );
+            insertCmd.Parameters.AddWithValue("@user_id", userRecipe.UserId);
+            insertCmd.Parameters.AddWithValue(
+                "@recipe_id",
+                userRecipe.RecipeId ?? (object)DBNull.Value
+            );
+            await insertCmd.ExecuteNonQueryAsync();
+        }
     }
 
     public void Dispose() //async ValueTask DisposeAsync
@@ -238,5 +278,19 @@ public class DatabaseFixture : IDisposable
         public string? Recipe_type { get; set; }
         public string? Cuisine { get; set; }
         public List<string> Dietary { get; set; } = [];
+    }
+
+    private class UserSeed
+    {
+        public int Id { get; set; }
+        public string Email { get; set; } = null!;
+        public string PasswordHash { get; set; } = null!;
+        public string PasswordSalt { get; set; } = null!;
+    }
+
+    private class UserRecipeSeed
+    {
+        public int UserId { get; set; }
+        public int? RecipeId { get; set; }
     }
 }

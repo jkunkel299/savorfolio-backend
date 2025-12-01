@@ -100,7 +100,7 @@ public class InMemoryDbSeeder
 
         var sectionLists = JsonSerializer.Deserialize<List<RecipeSection>>(json, JsonOptions) ?? [];
 
-        // Clear existing intruction list items
+        // Clear existing section list items
         var existing = context.RecipeSections.AsQueryable().ToList();
         if (existing.Count != 0)
         {
@@ -254,6 +254,31 @@ public class InMemoryDbSeeder
         }
 
         context.RecipeTags.AddRange(items);
+        context.SaveChanges();
+    }
+
+    public static void SeedUserRecipesFromJson(AppDbContext context, string userRecipesFilePath)
+    {
+        if (!File.Exists(userRecipesFilePath))
+            throw new FileNotFoundException($"Seed file not found: {userRecipesFilePath}");
+
+        var json = File.ReadAllText(userRecipesFilePath);
+        if (string.IsNullOrWhiteSpace(json))
+            return;
+
+        var items = JsonSerializer.Deserialize<List<UserRecipe>>(json, JsonOptions);
+        if (items == null || items.Count == 0)
+            return;
+
+        // Remove existing rows
+        var existing = context.UserRecipes.AsQueryable().ToList();
+        if (existing.Count != 0)
+        {
+            context.UserRecipes.RemoveRange(existing);
+            context.SaveChanges();
+        }
+
+        context.UserRecipes.AddRange(items);
         context.SaveChanges();
     }
 }
