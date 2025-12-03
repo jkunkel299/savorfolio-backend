@@ -3,17 +3,18 @@ namespace Tests.TestData;
 public class IngredientFallbackData
 {
     private static readonly string[] ingredients =
-        [
-            "1 1/2 teaspoons instant yeast (SAF Gold instant yeast suggested)",
-            "2 1/4 cups (270 grams) all purpose flour",
-            "1/2 teaspoon salt",
-            "1/2 cup (113.5 grams) whole milk",
-        ];
+    [
+        "1 1/2 teaspoons instant yeast (SAF Gold instant yeast suggested)",
+        "2 1/4 cups (270 grams) all purpose flour",
+        "1/2 teaspoon salt",
+        "1/2 cup (113.5 grams) whole milk",
+    ];
 
-    public static TheoryData<string, string[]> IngredientFallbackTestCases() => new()
-    {
+    public static TheoryData<string, string[]> IngredientFallbackTestCases() =>
+        new()
         {
-            @"<!DOCTYPE html>
+            {
+                @"<!DOCTYPE html>
             <html><body>
                 <h1 class='recipe-title'>Cinnamon Chocolate Babka Muffins</h1>
                 <h2>Ingredients</h2>
@@ -24,10 +25,10 @@ public class IngredientFallbackData
                     <li class='ingredient-4'>1/2 cup (113.5 grams) whole milk</li>
                 </ul>
             </body></html>",
-            ingredients
-        },
-        {
-            @"<!DOCTYPE html>
+                ingredients
+            },
+            {
+                @"<!DOCTYPE html>
             <html><body>
                 <h1 class='recipe-title'>Cinnamon Chocolate Babka Muffins</h1>
                 <h2>Ingredients</h2>
@@ -38,10 +39,10 @@ public class IngredientFallbackData
                     <li>1/2 cup (113.5 grams) whole milk</li>
                 </ul>
             </body></html>",
-            ingredients
-        },
-        {
-            @"<!DOCTYPE html>
+                ingredients
+            },
+            {
+                @"<!DOCTYPE html>
             <html><body>
                 <h1 class='recipe-title'>Cinnamon Chocolate Babka Muffins</h1>
                 <ul>
@@ -51,14 +52,14 @@ public class IngredientFallbackData
                     <li>1/2 cup (113.5 grams) whole milk</li>
                 </ul>
             </body></html>",
-            ingredients
-        },
-        {
-            @"<!DOCTYPE html>
+                ingredients
+            },
+            {
+                @"<!DOCTYPE html>
             <html><body>
                 <h1 class='recipe-title'>Cinnamon Chocolate Babka Muffins</h1>
             </body></html>",
-            ["Could not find ingredients"]
-        }
-    };
+                ["Could not find ingredients"]
+            },
+        };
 }

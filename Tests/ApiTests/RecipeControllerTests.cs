@@ -2,11 +2,13 @@ using Moq;
 using savorfolio_backend.Interfaces;
 using savorfolio_backend.Models.DTOs;
 using Tests.Helpers;
+using Tests.TestData;
 
 namespace Tests.ApiTests;
 
 public class RecipeControllerTests()
 {
+    #region Empty search
     // test for MapRecipeSearch controller function without filter body
     [Fact]
     public async Task RecipeControllerTestEmpty()
@@ -23,7 +25,9 @@ public class RecipeControllerTests()
         // assert mocked function called once
         mockDependency.Verify(d => d.SearchRecipesAsync(request), Times.Once);
     }
+    #endregion
 
+    #region Include Ingredients
     // test for MapRecipeSearch controller function with filter to include ingredients
     [Fact]
     public async Task RecipeControllerTestIncludeIngredients()
@@ -40,8 +44,10 @@ public class RecipeControllerTests()
         // assert mocked function called once
         mockDependency.Verify(d => d.SearchRecipesAsync(request), Times.Once);
     }
+    #endregion
 
-    // test for MapRecipeSearch controller function with filter to include ingredients
+    #region Exclude Ingredients
+    // test for MapRecipeSearch controller function with filter to exclude ingredients
     [Fact]
     public async Task RecipeControllerTestExcludeIngredients()
     {
@@ -57,7 +63,52 @@ public class RecipeControllerTests()
         // assert mocked function called once
         mockDependency.Verify(d => d.SearchRecipesAsync(request), Times.Once);
     }
+    #endregion
 
+    #region Category Filtering
+    // test for MapRecipeSearch controller function with category filtering
+    [Theory]
+    [MemberData(
+        nameof(CategoryFilterData.CategoryFilterTestCases),
+        MemberType = typeof(CategoryFilterData)
+    )]
+    public async Task RecipeSearchCategoryTags(RecipeFilterRequestDTO request)
+    {
+        // mock recipe service interface
+        var mockDependency = new Mock<IRecipeService>();
+
+        // call endpoint
+        _ = await RecipeEndpointsHelper.InvokeRecipeSearchEndpoint(request, mockDependency.Object);
+
+        // assert mocked function called once
+        mockDependency.Verify(d => d.SearchRecipesAsync(request), Times.Once);
+    }
+    #endregion
+
+    #region Multiple Filters
+    // test for MapRecipeSearch controller function with multiple simultaneous filters
+    [Fact]
+    public async Task RecipeControllerTestMultipleFilters()
+    {
+        // initialize filter to exclude semi-sweet chocolate chips and dietary restriction=Nut-Free
+        var request = new RecipeFilterRequestDTO
+        {
+            ExcludeIngredients = [38],
+            Dietary = ["Nut-Free"],
+        };
+
+        // mock recipe service interface
+        var mockDependency = new Mock<IRecipeService>();
+
+        // call endpoint
+        _ = await RecipeEndpointsHelper.InvokeRecipeSearchEndpoint(request, mockDependency.Object);
+
+        // assert mocked function called once
+        mockDependency.Verify(d => d.SearchRecipesAsync(request), Times.Once);
+    }
+    #endregion
+
+    #region Get Recipe By ID
     // test MapRecipeById controller function
     [Fact]
     public async Task RecipeControllerGetRecipeById()
@@ -77,4 +128,5 @@ public class RecipeControllerTests()
         // assert mocked function called once
         mockViewRecipeService.Verify(d => d.CompileRecipeAsync(recipeId), Times.Once);
     }
+    #endregion
 }

@@ -21,7 +21,6 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
             .Select(r => new RecipeDTO
             {
                 Id = r.Id,
-                UserId = r.UserRecipe!.UserId,
                 Name = r.Name,
                 Servings = r.Servings,
                 CookTime = r.CookTime,
@@ -138,7 +137,6 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
         var result = query.Select(r => new RecipeDTO
         {
             Id = r.Id,
-            UserId = r.UserRecipe!.UserId,
             Name = r.Name,
             Servings = r.Servings,
             CookTime = r.CookTime,
