@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using savorfolio_backend.Interfaces;
-using savorfolio_backend.Models;
+using savorfolio_backend.Models.DTOs;
 
 namespace savorfolio_backend.LogicLayer;
 
@@ -38,7 +38,7 @@ public class AuthService() : IAuthService
     }
 
     // Generate Cookies
-    public async Task GenerateCookies(User user, HttpContext context)
+    public async Task GenerateCookies(UserDTO user, HttpContext context)
     {
         var claims = new List<Claim>
         {

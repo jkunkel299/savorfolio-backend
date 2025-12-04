@@ -7,5 +7,5 @@ public interface IAuthService
 {
     (string hash, string salt) CreatePasswordHash(string password);
     bool VerifyPassword(string password, string storedHash, string storedSalt);
-    Task GenerateCookies(User user, HttpContext context);
+    Task GenerateCookies(UserDTO user, HttpContext context);
 }

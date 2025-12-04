@@ -37,7 +37,7 @@ public class AddRecipeServiceTests()
     {
         string addRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipe.json");
         string addRecipeSectionsFilePath = TestFileHelper.GetProjectPath(
-            "ExpectedData/AddRecipe.json"
+            "ExpectedData/AddRecipeSections.json"
         );
         _expectedAddRecipe = JObject.Parse(File.ReadAllText(addRecipeFilePath));
         _expectedAddRecipeSections = JObject.Parse(File.ReadAllText(addRecipeSectionsFilePath));
@@ -67,6 +67,9 @@ public class AddRecipeServiceTests()
         mockRecipeRepo
             .Setup(r => r.AddNewRecipeAsync(It.IsAny<RecipeDTO>()))
             .ReturnsAsync(recipeId);
+        mockUserRepo
+            .Setup(r => r.AddUserRecipeAsync(It.IsAny<int>(), It.IsAny<int>()))
+            .ReturnsAsync(1);
         mockSectionsRepo
             .Setup(r => r.AddNewRecipeSectionsAsync(It.IsAny<List<SectionDTO>>(), recipeId))
             .ReturnsAsync((0, sections));
@@ -83,6 +86,11 @@ public class AddRecipeServiceTests()
 
         // assert mocked recipe repo function called once
         mockRecipeRepo.Verify(d => d.AddNewRecipeAsync(It.IsAny<RecipeDTO>()), Times.AtMostOnce);
+        // assert mocked user repo function called once
+        mockUserRepo.Verify(
+            d => d.AddUserRecipeAsync(It.IsAny<int>(), It.IsAny<int>()),
+            Times.AtMostOnce
+        );
         // assert mocked sections repo function called once
         mockSectionsRepo.Verify(
             d => d.AddNewRecipeSectionsAsync(It.IsAny<List<SectionDTO>>(), recipeId),
@@ -120,6 +128,7 @@ public class AddRecipeServiceTests()
         mockRecipeRepo
             .Setup(r => r.AddNewRecipeAsync(It.IsAny<RecipeDTO>()))
             .ReturnsAsync(recipeId);
+        mockUserRepo.Setup(r => r.AddUserRecipeAsync(It.IsAny<int>(), recipeId)).ReturnsAsync(1);
         mockIngListRepo
             .Setup(r => r.AddNewRecipeIng(It.IsAny<List<IngredientListDTO>>(), recipeId, sections))
             .Returns(1);
@@ -151,6 +160,7 @@ public class AddRecipeServiceTests()
         mockRecipeRepo
             .Setup(r => r.AddNewRecipeAsync(It.IsAny<RecipeDTO>()))
             .ReturnsAsync(recipeId);
+        mockUserRepo.Setup(r => r.AddUserRecipeAsync(It.IsAny<int>(), recipeId)).ReturnsAsync(1);
         mockSectionsRepo
             .Setup(r => r.AddNewRecipeSectionsAsync(It.IsAny<List<SectionDTO>>(), recipeId))
             .ReturnsAsync(sectionReturn);
@@ -173,11 +183,12 @@ public class AddRecipeServiceTests()
         Assert.True(result.Success);
     }
 
-    // test that AddRecipeManually returns an unsuccessful operation if the ingredients, instructions, or tags records added = 0
+    // test that AddRecipeManually returns an unsuccessful operation if the ingredients, instructions, tags, or userRecipe records added = 0
     [Theory]
-    [InlineData(new int[] { 0, 1, 1 })]
-    [InlineData(new int[] { 1, 0, 1 })]
-    [InlineData(new int[] { 1, 1, 0 })]
+    [InlineData(new int[] { 0, 1, 1, 1 })]
+    [InlineData(new int[] { 1, 0, 1, 1 })]
+    [InlineData(new int[] { 1, 1, 0, 1 })]
+    [InlineData(new int[] { 1, 1, 1, 0 })]
     public async Task AddRecipeManually_Failure_NoSections(int[] returnValues)
     {
         // initialize newRecipeContent
@@ -191,6 +202,9 @@ public class AddRecipeServiceTests()
         mockRecipeRepo
             .Setup(r => r.AddNewRecipeAsync(It.IsAny<RecipeDTO>()))
             .ReturnsAsync(recipeId);
+        mockUserRepo
+            .Setup(r => r.AddUserRecipeAsync(It.IsAny<int>(), It.IsAny<int>()))
+            .ReturnsAsync(returnValues[3]);
         mockIngListRepo
             .Setup(r => r.AddNewRecipeIng(It.IsAny<List<IngredientListDTO>>(), recipeId, sections))
             .Returns(returnValues[0]);
@@ -223,6 +237,9 @@ public class AddRecipeServiceTests()
         mockRecipeRepo
             .Setup(r => r.AddNewRecipeAsync(It.IsAny<RecipeDTO>()))
             .ReturnsAsync(recipeId);
+        mockUserRepo
+            .Setup(r => r.AddUserRecipeAsync(It.IsAny<int>(), It.IsAny<int>()))
+            .ReturnsAsync(1);
         mockSectionsRepo
             .Setup(r => r.AddNewRecipeSectionsAsync(It.IsAny<List<SectionDTO>>(), recipeId))
             .ReturnsAsync(sectionReturn);

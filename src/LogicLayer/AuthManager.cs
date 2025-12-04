@@ -65,7 +65,14 @@ public class AuthManager(IUserRepository userRepository, IAuthService authServic
             };
         }
 
-        await _authService.GenerateCookies(user, context);
+        UserDTO userDTO = new()
+        {
+            Email = user.Email,
+            PasswordHash = user.PasswordHash,
+            PasswordSalt = user.PasswordSalt,
+        };
+
+        await _authService.GenerateCookies(userDTO, context);
 
         return new OperationResult<IResult>
         {
