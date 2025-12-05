@@ -12,7 +12,7 @@ namespace IntegrationTests.TestFiles;
 public class WebScraperIntegrationTests(TestServerFixture testServerFixture)
     : IClassFixture<TestServerFixture>
 {
-    private readonly HttpClient _client = testServerFixture.HttpClient;
+    private readonly HttpClient _client = testServerFixture.AuthenticatedClient;
 
     [Theory]
     [MemberData(

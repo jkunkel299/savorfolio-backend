@@ -11,29 +11,33 @@ namespace Tests.LogicLayerTests.AuthTests;
 public class AuthManagerTests
 {
     //mock user repository interface
-    private static readonly Mock<IUserRepository> mockUserRepo = new();
+    private readonly Mock<IUserRepository> mockUserRepo;
 
     // mock auth service interface
-    private static readonly Mock<IAuthService> mockAuthService = new();
+    private readonly Mock<IAuthService> mockAuthService;
 
     // mock AuthManager
-    private static readonly AuthManager authManager;
+    private readonly AuthManager authManager;
 
     // mock HttpContext
-    private static readonly DefaultHttpContext httpContext = new();
+    private readonly DefaultHttpContext httpContext;
 
     // set default user DTO
-    private static readonly UserDTO userDTO = new()
-    {
-        Id = 1,
-        Email = "capstoneUser@savorfolio.com",
-        PasswordHash = "fakehash",
-        PasswordSalt = "fakesalt",
-    };
+    private readonly UserDTO userDTO;
 
-    static AuthManagerTests()
+    public AuthManagerTests()
     {
-        authManager = new(mockUserRepo.Object, mockAuthService.Object);
+        mockUserRepo = new Mock<IUserRepository>();
+        mockAuthService = new Mock<IAuthService>();
+        authManager = new AuthManager(mockUserRepo.Object, mockAuthService.Object);
+        httpContext = new DefaultHttpContext();
+        userDTO = new UserDTO
+        {
+            Id = 1,
+            Email = "capstoneUser@savorfolio.com",
+            PasswordHash = Convert.ToBase64String(new byte[32]),
+            PasswordSalt = Convert.ToBase64String(new byte[32]),
+        };
     }
 
     #region Register
@@ -50,28 +54,25 @@ public class AuthManagerTests
 
         // set the return values for dependent functions
         mockUserRepo
-            .Setup(u => u.GetByEmailAsync(It.IsAny<string>()))
+            .Setup(u => u.GetByEmailAsync(userRegister.Email))
             .ReturnsAsync((UserDTO?)null);
         mockAuthService
-            .Setup(u => u.CreatePasswordHash(It.IsAny<string>()))
+            .Setup(u => u.CreatePasswordHash(userRegister.Password))
             .Returns((It.IsAny<string>(), It.IsAny<string>()));
         mockUserRepo
-            .Setup(u =>
-                u.AddUserAsync(It.IsAny<UserRegisterDTO>(), It.IsAny<string>(), It.IsAny<string>())
-            )
+            .Setup(u => u.AddUserAsync(userRegister, It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(It.IsAny<int>());
 
         // call RegisterUserAsync
         _ = await authManager.RegisterUserAsync(userRegister);
 
         // assert GetByEmailAsync called once
-        mockUserRepo.Verify(d => d.GetByEmailAsync(It.IsAny<string>()), Times.AtMostOnce);
+        mockUserRepo.Verify(d => d.GetByEmailAsync(userRegister.Email), Times.AtMostOnce);
         // assert CreatePasswordHash called once
-        mockAuthService.Verify(d => d.CreatePasswordHash(It.IsAny<string>()), Times.AtMostOnce);
+        mockAuthService.Verify(d => d.CreatePasswordHash(userRegister.Password), Times.AtMostOnce);
         // assert AddUserAsync called once
         mockUserRepo.Verify(
-            d =>
-                d.AddUserAsync(It.IsAny<UserRegisterDTO>(), It.IsAny<string>(), It.IsAny<string>()),
+            d => d.AddUserAsync(userRegister, It.IsAny<string>(), It.IsAny<string>()),
             Times.AtMostOnce
         );
     }
@@ -160,7 +161,7 @@ public class AuthManagerTests
         };
 
         // set return values for dependent functions
-        mockUserRepo.Setup(u => u.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(userDTO);
+        mockUserRepo.Setup(u => u.GetByEmailAsync(userLogin.Email)).ReturnsAsync(userDTO);
         mockAuthService
             .Setup(u =>
                 u.VerifyPassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
@@ -171,17 +172,14 @@ public class AuthManagerTests
         _ = await authManager.LoginUserAsync(userLogin, httpContext);
 
         // assert GetByEmailAsync called once
-        mockUserRepo.Verify(d => d.GetByEmailAsync(It.IsAny<string>()), Times.AtMostOnce);
+        mockUserRepo.Verify(d => d.GetByEmailAsync(userLogin.Email), Times.AtMostOnce);
         // assert VerifyPassword called once
         mockAuthService.Verify(
             d => d.VerifyPassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),
             Times.AtMostOnce
         );
         // assert GenerateCookies called once
-        mockAuthService.Verify(
-            d => d.GenerateCookies(It.IsAny<UserDTO>(), httpContext),
-            Times.AtMostOnce
-        );
+        mockAuthService.Verify(d => d.GenerateCookies(userDTO, httpContext), Times.AtMostOnce);
     }
 
     // test for login returning success

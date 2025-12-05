@@ -96,7 +96,7 @@ public partial class TastyWebScraperTests(WebScraperFixture webScraperFixture)
         // initialize expected returns
         string recipeTitle = "Mushroom Stroganoff (Vegetarian)";
         string recipeDescription =
-            "This vegetarian Mushroom Stroganoff recipe is quick and easy to make in about 30 minutes, and it is perfectly comforting, hearty, savory, and delicious.  Feel free to serve over egg noodles, traditional pasta, quinoa, veggies, or whatever sounds delicious.";
+            "This vegetarian Mushroom Stroganoff recipe is quick and easy to make in about 30 minutes, and it is perfectly comforting, hearty, savory, and delicious. Feel free to serve over egg noodles, traditional pasta, quinoa, veggies, or whatever sounds delicious.";
         string recipePrep = "15 minutes";
         string recipeCook = "15 minutes";
         string recipeServings = "4 -6 1x";

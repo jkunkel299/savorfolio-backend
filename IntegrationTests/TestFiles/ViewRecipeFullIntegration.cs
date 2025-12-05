@@ -15,7 +15,7 @@ public class ViewRecipeFullTests(
 ) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
 {
     private readonly DatabaseFixture _databaseFixture = databaseFixture;
-    private readonly HttpClient _client = testServerFixture.HttpClient;
+    private readonly HttpClient _client = testServerFixture.AuthenticatedClient;
     private static readonly JObject _expectedViewRecipe;
     private static readonly JObject _expectedViewRecipeSections;
 

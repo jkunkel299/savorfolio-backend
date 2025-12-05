@@ -13,7 +13,7 @@ public class AddRecipeFullTests(
 ) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
 {
     private readonly DatabaseFixture _databaseFixture = databaseFixture;
-    private readonly HttpClient _client = testServerFixture.HttpClient;
+    private readonly HttpClient _client = testServerFixture.AuthenticatedClient;
     private static readonly JObject _expectedAddRecipe;
     private static readonly JObject _expectedAddRecipeSections;
 

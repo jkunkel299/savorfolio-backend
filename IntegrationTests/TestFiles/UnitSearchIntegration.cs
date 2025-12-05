@@ -15,7 +15,7 @@ public class UnitSearchIntegrationTests(
 ) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
 {
     private readonly DatabaseFixture _databaseFixture = databaseFixture;
-    private readonly HttpClient _client = testServerFixture.HttpClient;
+    private readonly HttpClient _client = testServerFixture.AuthenticatedClient;
 
     [Fact]
     public async Task UnitSearchDatabase()

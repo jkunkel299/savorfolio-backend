@@ -78,9 +78,18 @@ public class InMemoryDbSeeder
                 if (matchedType != null)
                 {
                     v.TypeId = matchedType.Id;
+
+                    // Only assign navigation property for In-Memory
+                    if (context.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
+                    {
+                        v.Type = matchedType;
+                    }
+                    else
+                    {
+                        // Drop navigation property for SQL provider to avoid duplicate inserts
+                        v.Type = null;
+                    }
                 }
-                // drop the navigation object to avoid EF trying to insert duplicates
-                v.Type = null;
             }
         }
 

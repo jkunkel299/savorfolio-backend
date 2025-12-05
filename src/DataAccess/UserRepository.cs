@@ -19,6 +19,7 @@ public class UserRepository(AppDbContext context) : IUserRepository
             .Users.Where(u => u.Email == email)
             .Select(u => new UserDTO
             {
+                Id = u.Id,
                 Email = u.Email,
                 PasswordHash = u.PasswordHash,
                 PasswordSalt = u.PasswordSalt,

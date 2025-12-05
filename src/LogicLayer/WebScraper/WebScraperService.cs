@@ -568,4 +568,9 @@ public class WebScraperService(
         return recipeTags;
     }
     #endregion
+
+    private static readonly Regex WhitespaceRegex = new(
+        @"\s{2,}",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase
+    );
 }

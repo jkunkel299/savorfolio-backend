@@ -15,7 +15,7 @@ public class IngredientSearchIntegrationTests(
 ) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
 {
     private readonly DatabaseFixture _databaseFixture = databaseFixture;
-    private readonly HttpClient _client = testServerFixture.HttpClient;
+    private readonly HttpClient _client = testServerFixture.AuthenticatedClient;
 
     [Fact]
     public async Task IngredientSearchDatabase()
@@ -34,15 +34,22 @@ public class IngredientSearchIntegrationTests(
                     "IngredientCategory": "Protein"
                 },
                 {
-                    "Id": 145,
-                    "Name": "chicken thigh",
+                    "Id": 20,
+                    "Name": "chicken stock",
+                    "PluralName": null,
+                    "TypeId": 4,
+                    "IngredientCategory": "Broth & Stock"
+                },
+                {
+                    "Id": 144,
+                    "Name": "chicken breast",
                     "PluralName": null,
                     "TypeId": 7,
                     "IngredientCategory": "Protein"
                 },
                 {
-                    "Id": 144,
-                    "Name": "chicken breast",
+                    "Id": 145,
+                    "Name": "chicken thigh",
                     "PluralName": null,
                     "TypeId": 7,
                     "IngredientCategory": "Protein"
@@ -55,8 +62,8 @@ public class IngredientSearchIntegrationTests(
                     "IngredientCategory": "Broth & Stock"
                 },
                 {
-                    "Id": 20,
-                    "Name": "chicken stock",
+                    "Id": 287,
+                    "Name": "chicken stock base",
                     "PluralName": null,
                     "TypeId": 4,
                     "IngredientCategory": "Broth & Stock"
@@ -99,15 +106,22 @@ public class IngredientSearchIntegrationTests(
                     "IngredientCategory": "Protein"
                 },
                 {
-                    "Id": 145,
-                    "Name": "chicken thigh",
+                    "Id": 20,
+                    "Name": "chicken stock",
+                    "PluralName": null,
+                    "TypeId": 4,
+                    "IngredientCategory": "Broth & Stock"
+                },
+                {
+                    "Id": 144,
+                    "Name": "chicken breast",
                     "PluralName": null,
                     "TypeId": 7,
                     "IngredientCategory": "Protein"
                 },
                 {
-                    "Id": 144,
-                    "Name": "chicken breast",
+                    "Id": 145,
+                    "Name": "chicken thigh",
                     "PluralName": null,
                     "TypeId": 7,
                     "IngredientCategory": "Protein"
@@ -120,8 +134,8 @@ public class IngredientSearchIntegrationTests(
                     "IngredientCategory": "Broth & Stock"
                 },
                 {
-                    "Id": 20,
-                    "Name": "chicken stock",
+                    "Id": 287,
+                    "Name": "chicken stock base",
                     "PluralName": null,
                     "TypeId": 4,
                     "IngredientCategory": "Broth & Stock"

@@ -67,6 +67,7 @@ public class AuthManager(IUserRepository userRepository, IAuthService authServic
 
         UserDTO userDTO = new()
         {
+            Id = user.Id,
             Email = user.Email,
             PasswordHash = user.PasswordHash,
             PasswordSalt = user.PasswordSalt,

@@ -7,34 +7,51 @@ using Tests.Helpers;
 
 namespace Tests.LogicLayerTests;
 
-public class AddRecipeServiceTests()
+public class AddRecipeServiceTests
 {
-    private static readonly JObject _expectedAddRecipe;
-    private static readonly JObject _expectedAddRecipeSections;
+    private readonly JObject _expectedAddRecipe;
+    private readonly JObject _expectedAddRecipeSections;
 
     // mock recipe repository interface
-    private static readonly Mock<IRecipeRepository> mockRecipeRepo = new();
+    private readonly Mock<IRecipeRepository> mockRecipeRepo;
 
     // mock ingredient list repository interface
-    private static readonly Mock<IIngListRepository> mockIngListRepo = new();
+    private readonly Mock<IIngListRepository> mockIngListRepo;
 
     // mock instructions repository interface
-    private static readonly Mock<IInstructionsRepository> mockInstructionsRepo = new();
+    private readonly Mock<IInstructionsRepository> mockInstructionsRepo;
 
     // mock tags repository interface
-    private static readonly Mock<ITagsRepository> mockTagsRepo = new();
+    private readonly Mock<ITagsRepository> mockTagsRepo;
 
     // mock sections repository interface
-    private static readonly Mock<ISectionsRepository> mockSectionsRepo = new();
+    private readonly Mock<ISectionsRepository> mockSectionsRepo;
 
     //mock user repository interface
-    private static readonly Mock<IUserRepository> mockUserRepo = new();
+    private readonly Mock<IUserRepository> mockUserRepo;
 
     // mock AddRecipeService
-    private static readonly AddRecipeService addRecipeService;
+    private readonly AddRecipeService addRecipeService;
 
-    static AddRecipeServiceTests()
+    public AddRecipeServiceTests()
     {
+        // mock recipe repository interface
+        mockRecipeRepo = new Mock<IRecipeRepository>();
+
+        // mock ingredient list repository interface
+        mockIngListRepo = new Mock<IIngListRepository>();
+
+        // mock instructions repository interface
+        mockInstructionsRepo = new Mock<IInstructionsRepository>();
+
+        // mock tags repository interface
+        mockTagsRepo = new Mock<ITagsRepository>();
+
+        // mock sections repository interface
+        mockSectionsRepo = new Mock<ISectionsRepository>();
+
+        //mock user repository interface
+        mockUserRepo = new Mock<IUserRepository>();
         string addRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/AddRecipe.json");
         string addRecipeSectionsFilePath = TestFileHelper.GetProjectPath(
             "ExpectedData/AddRecipeSections.json"
@@ -239,7 +256,7 @@ public class AddRecipeServiceTests()
             .ReturnsAsync(recipeId);
         mockUserRepo
             .Setup(r => r.AddUserRecipeAsync(It.IsAny<int>(), It.IsAny<int>()))
-            .ReturnsAsync(1);
+            .ReturnsAsync(0);
         mockSectionsRepo
             .Setup(r => r.AddNewRecipeSectionsAsync(It.IsAny<List<SectionDTO>>(), recipeId))
             .ReturnsAsync(sectionReturn);

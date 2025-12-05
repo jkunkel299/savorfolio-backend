@@ -21,7 +21,7 @@ public static class AuthEndpoints
                 }
                 else
                 {
-                    return Results.Problem(result.Message);
+                    return Results.BadRequest(result.Message);
                 }
             }
         );
@@ -51,7 +51,7 @@ public static class AuthEndpoints
             {
                 context.Response.Cookies.Delete("auth_token");
                 await context.SignOutAsync();
-                return Results.Ok(new { message = "logged out" });
+                return Results.Ok("logged out");
             }
         );
     }

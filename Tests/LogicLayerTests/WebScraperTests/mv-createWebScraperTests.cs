@@ -125,7 +125,7 @@ public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture
         Assert.Equal(recipeDescription, actualReturn.Description);
         Assert.Equal(recipePrep, actualReturn.PrepTime);
         Assert.Equal(recipeCook, actualReturn.CookTime);
-        Assert.Equal(recipeServings, cleanedServings);
+        Assert.Equal(recipeServings, actualReturn.Servings);
         Assert.Equal(bakeTemp, actualReturn.BakeTemp);
         Assert.Equal(tempUnit, actualReturn.Temp_unit);
     }

@@ -48,7 +48,7 @@ public class DatabaseFixture : IDisposable
             TRUNCATE TABLE ""Instructions"" RESTART IDENTITY CASCADE;
             TRUNCATE TABLE ""Recipe_Tags"" RESTART IDENTITY CASCADE;
             TRUNCATE TABLE ""User_Recipes"" RESTART IDENTITY CASCADE;
-            TRUNCATE TABLE ""User"" RESTART IDENTIFY CASCADE;
+            TRUNCATE TABLE ""User"" RESTART IDENTITY CASCADE;
         ",
             conn
         );

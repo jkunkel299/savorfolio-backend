@@ -13,29 +13,28 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
 
     public async Task<List<IngredientVariantDTO>> SearchByNameAsync(string searchTerm)
     {
-        var query =
-            from i in _context.IngredientVariants
-            join t in _context.IngredientTypes on i.TypeId equals t.Id // explicit join to avoid null deference
-            select new IngredientVariantDTO
+        searchTerm = searchTerm.ToLower();
+        var query = _context
+            .IngredientVariants.Include(i => i.Type)
+            .Where(i => i.Name.Contains(searchTerm))
+            .Select(i => new IngredientVariantDTO
             {
                 Id = i.Id,
                 Name = i.Name,
                 TypeId = i.TypeId,
-                IngredientCategory = t.Name,
+                IngredientCategory = i.Type!.Name,
                 PluralName = i.PluralName!,
-            };
+            });
 
         if (_context.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
         {
             // fallback for testing
             query = query
-                .Where(i => i.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                .Where(i => i.Name.Contains(searchTerm))
                 .OrderByDescending(i =>
                     i.Name == searchTerm ? 3
-                    : i.Name.StartsWith(searchTerm + ",", StringComparison.OrdinalIgnoreCase)
-                    || i.Name.StartsWith(searchTerm + " ", StringComparison.OrdinalIgnoreCase)
-                        ? 2
-                    : i.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ? 1
+                    : i.Name.StartsWith(searchTerm + ",") || i.Name.StartsWith(searchTerm + " ") ? 2
+                    : i.Name.Contains(searchTerm) ? 1
                     : 0
                 );
         }

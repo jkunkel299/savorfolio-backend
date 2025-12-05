@@ -12,7 +12,7 @@ public class UnitDbFixture : IDisposable
     public UnitDbFixture()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("UnitTestsDb")
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .EnableSensitiveDataLogging()
             .Options;
 
