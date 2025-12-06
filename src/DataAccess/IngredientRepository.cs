@@ -14,17 +14,7 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
     public async Task<List<IngredientVariantDTO>> SearchByNameAsync(string searchTerm)
     {
         searchTerm = searchTerm.ToLower();
-        var query = _context
-            .IngredientVariants.Include(i => i.Type)
-            .Where(i => i.Name.Contains(searchTerm))
-            .Select(i => new IngredientVariantDTO
-            {
-                Id = i.Id,
-                Name = i.Name,
-                TypeId = i.TypeId,
-                IngredientCategory = i.Type!.Name,
-                PluralName = i.PluralName!,
-            });
+        var query = _context.IngredientVariants.Include(i => i.Type).AsQueryable();
 
         if (_context.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
         {
@@ -56,7 +46,17 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
         }
         ;
 
-        return await query.Take(10).ToListAsync();
+        return await query
+            .Select(i => new IngredientVariantDTO
+            {
+                Id = i.Id,
+                Name = i.Name,
+                TypeId = i.TypeId,
+                IngredientCategory = i.Type!.Name,
+                PluralName = i.PluralName!,
+            })
+            .Take(10)
+            .ToListAsync();
     }
 
     public async Task<List<string>> IngredientSearchReturnStringAsync(string? searchTerm)
