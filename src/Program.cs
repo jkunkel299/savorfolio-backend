@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:5173", "https://main.d2od7y484mzt98.amplifyapp.com")
+                .WithOrigins("http://localhost:5173", "https://main.d2od7y484mzt98.amplifyapp.com/")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials();
