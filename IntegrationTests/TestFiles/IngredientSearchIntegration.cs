@@ -1,18 +1,21 @@
+using System.Net;
+using System.Net.Http.Json;
 using IntegrationTests.Fixtures;
-using savorfolio_backend.DataAccess;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Net.Http.Json;
+using savorfolio_backend.DataAccess;
 using savorfolio_backend.Models.DTOs;
-using System.Net;
 
 namespace IntegrationTests.TestFiles;
 
 [Collection("Integration Test Server")]
-public class IngredientSearchIntegrationTests(DatabaseFixture databaseFixture, TestServerFixture testServerFixture) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
+public class IngredientSearchIntegrationTests(
+    DatabaseFixture databaseFixture,
+    TestServerFixture testServerFixture
+) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
 {
     private readonly DatabaseFixture _databaseFixture = databaseFixture;
-    private readonly HttpClient _client = testServerFixture.HttpClient;
+    private readonly HttpClient _client = testServerFixture.AuthenticatedClient;
 
     [Fact]
     public async Task IngredientSearchDatabase()
@@ -22,44 +25,51 @@ public class IngredientSearchIntegrationTests(DatabaseFixture databaseFixture, T
 
         // initialize expected result as string, convert to JSON
         string expectedJson = """
-        [
-            {
-                "Id": 143,
-                "Name": "chicken",
-                "PluralName": null,
-                "TypeId": 7,
-                "IngredientCategory": "Protein"
-            },
-            {
-                "Id": 145,
-                "Name": "chicken thigh",
-                "PluralName": null,
-                "TypeId": 7,
-                "IngredientCategory": "Protein"
-            },
-            {
-                "Id": 144,
-                "Name": "chicken breast",
-                "PluralName": null,
-                "TypeId": 7,
-                "IngredientCategory": "Protein"
-            },
-            {
-                "Id": 251,
-                "Name": "chicken broth",
-                "PluralName": null,
-                "TypeId": 4,
-                "IngredientCategory": "Broth & Stock"
-            },
-            {
-                "Id": 20,
-                "Name": "chicken stock",
-                "PluralName": null,
-                "TypeId": 4,
-                "IngredientCategory": "Broth & Stock"
-            }
-        ]
-        """;
+            [
+                {
+                    "Id": 143,
+                    "Name": "chicken",
+                    "PluralName": null,
+                    "TypeId": 7,
+                    "IngredientCategory": "Protein"
+                },
+                {
+                    "Id": 20,
+                    "Name": "chicken stock",
+                    "PluralName": null,
+                    "TypeId": 4,
+                    "IngredientCategory": "Broth & Stock"
+                },
+                {
+                    "Id": 144,
+                    "Name": "chicken breast",
+                    "PluralName": null,
+                    "TypeId": 7,
+                    "IngredientCategory": "Protein"
+                },
+                {
+                    "Id": 145,
+                    "Name": "chicken thigh",
+                    "PluralName": null,
+                    "TypeId": 7,
+                    "IngredientCategory": "Protein"
+                },
+                {
+                    "Id": 251,
+                    "Name": "chicken broth",
+                    "PluralName": null,
+                    "TypeId": 4,
+                    "IngredientCategory": "Broth & Stock"
+                },
+                {
+                    "Id": 287,
+                    "Name": "chicken stock base",
+                    "PluralName": null,
+                    "TypeId": 4,
+                    "IngredientCategory": "Broth & Stock"
+                }
+            ]
+            """;
         JToken expectedToken = JToken.Parse(expectedJson);
 
         // Ensure connection to the Database
@@ -87,44 +97,51 @@ public class IngredientSearchIntegrationTests(DatabaseFixture databaseFixture, T
 
         // initialize expected result as string, convert to JSON
         string expectedJson = """
-        [
-            {
-                "Id": 143,
-                "Name": "chicken",
-                "PluralName": null,
-                "TypeId": 7,
-                "IngredientCategory": "Protein"
-            },
-            {
-                "Id": 145,
-                "Name": "chicken thigh",
-                "PluralName": null,
-                "TypeId": 7,
-                "IngredientCategory": "Protein"
-            },
-            {
-                "Id": 144,
-                "Name": "chicken breast",
-                "PluralName": null,
-                "TypeId": 7,
-                "IngredientCategory": "Protein"
-            },
-            {
-                "Id": 251,
-                "Name": "chicken broth",
-                "PluralName": null,
-                "TypeId": 4,
-                "IngredientCategory": "Broth & Stock"
-            },
-            {
-                "Id": 20,
-                "Name": "chicken stock",
-                "PluralName": null,
-                "TypeId": 4,
-                "IngredientCategory": "Broth & Stock"
-            }
-        ]
-        """;
+            [
+                {
+                    "Id": 143,
+                    "Name": "chicken",
+                    "PluralName": null,
+                    "TypeId": 7,
+                    "IngredientCategory": "Protein"
+                },
+                {
+                    "Id": 20,
+                    "Name": "chicken stock",
+                    "PluralName": null,
+                    "TypeId": 4,
+                    "IngredientCategory": "Broth & Stock"
+                },
+                {
+                    "Id": 144,
+                    "Name": "chicken breast",
+                    "PluralName": null,
+                    "TypeId": 7,
+                    "IngredientCategory": "Protein"
+                },
+                {
+                    "Id": 145,
+                    "Name": "chicken thigh",
+                    "PluralName": null,
+                    "TypeId": 7,
+                    "IngredientCategory": "Protein"
+                },
+                {
+                    "Id": 251,
+                    "Name": "chicken broth",
+                    "PluralName": null,
+                    "TypeId": 4,
+                    "IngredientCategory": "Broth & Stock"
+                },
+                {
+                    "Id": 287,
+                    "Name": "chicken stock base",
+                    "PluralName": null,
+                    "TypeId": 4,
+                    "IngredientCategory": "Broth & Stock"
+                }
+            ]
+            """;
         JToken expectedToken = JToken.Parse(expectedJson);
 
         var response = await _client.GetAsync(url);

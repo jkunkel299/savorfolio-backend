@@ -1,9 +1,9 @@
-using Moq;
-using savorfolio_backend.Interfaces;
 using FluentAssertions;
-using Tests.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Moq;
+using savorfolio_backend.Interfaces;
+using Tests.Helpers;
 
 namespace Tests.ApiTests;
 
@@ -38,7 +38,10 @@ public class UnitsControllerTests()
         var mockDependency = new Mock<IUnitsService>();
 
         // call endpoint
-        IResult result = await UnitsEndpointsHelper.InvokeSearchEndpoint(searchTerm, mockDependency.Object);
+        IResult result = await UnitsEndpointsHelper.InvokeSearchEndpoint(
+            searchTerm,
+            mockDependency.Object
+        );
 
         // check result is BadRequest<string>
         Assert.IsType<BadRequest<string>>(result);

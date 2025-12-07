@@ -47,7 +47,7 @@ public class WebScraperFixture : IDisposable
 
         return newDoc;
     }
-    
+
     public static async Task<IDocument> FixtureHtmlAsync(string htmlContent)
     {
         var config = Configuration.Default;
@@ -57,7 +57,6 @@ public class WebScraperFixture : IDisposable
         return document;
     }
 
-    
     public void Dispose()
     {
         _documentCache.Clear();

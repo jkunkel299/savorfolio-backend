@@ -13,7 +13,8 @@ public class WebScraperControllerTests()
         // mock web scraper service interface
         var mockWebScraperService = new Mock<IWebScraperService>();
         // set up return
-        mockWebScraperService.Setup(r => r.RunScraperAsync(It.IsAny<string>()))
+        mockWebScraperService
+            .Setup(r => r.RunScraperAsync(It.IsAny<string>()))
             .ReturnsAsync(It.IsAny<DraftRecipeDTO>());
         // call mocked API endpoint
         var result = await RecipeEndpointsHelper.InvokeRecipeScrapeEndpoint(

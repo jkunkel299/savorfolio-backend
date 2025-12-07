@@ -1,18 +1,21 @@
+using System.Net;
+using System.Net.Http.Json;
 using IntegrationTests.Fixtures;
-using savorfolio_backend.DataAccess;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Net.Http.Json;
+using savorfolio_backend.DataAccess;
 using savorfolio_backend.Models.DTOs;
-using System.Net;
 
 namespace IntegrationTests.TestFiles;
 
 [Collection("Integration Test Server")]
-public class UnitSearchIntegrationTests(DatabaseFixture databaseFixture, TestServerFixture testServerFixture) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
+public class UnitSearchIntegrationTests(
+    DatabaseFixture databaseFixture,
+    TestServerFixture testServerFixture
+) : IClassFixture<DatabaseFixture>, IClassFixture<TestServerFixture>
 {
     private readonly DatabaseFixture _databaseFixture = databaseFixture;
-    private readonly HttpClient _client = testServerFixture.HttpClient;
+    private readonly HttpClient _client = testServerFixture.AuthenticatedClient;
 
     [Fact]
     public async Task UnitSearchDatabase()
@@ -25,21 +28,21 @@ public class UnitSearchIntegrationTests(DatabaseFixture databaseFixture, TestSer
 
         // initialize expected result as string, convert to JSON
         string expectedJson = """
-        [
-            {
-                "Id": 37,
-                "Name": "to taste",
-                "Abbreviation": "to taste",
-                "PluralName": null
-            },
-            {
-                "Id": 2,
-                "Name": "tablespoon",
-                "Abbreviation": "tbsp",
-                "PluralName": "tablespoons"
-            }
-        ]
-        """;
+            [
+                {
+                    "Id": 37,
+                    "Name": "to taste",
+                    "Abbreviation": "to taste",
+                    "PluralName": null
+                },
+                {
+                    "Id": 2,
+                    "Name": "tablespoon",
+                    "Abbreviation": "tbsp",
+                    "PluralName": "tablespoons"
+                }
+            ]
+            """;
         JToken expectedToken = JToken.Parse(expectedJson);
 
         // instantiate repository
@@ -56,8 +59,6 @@ public class UnitSearchIntegrationTests(DatabaseFixture databaseFixture, TestSer
         Assert.True(JToken.DeepEquals(expectedToken, actualToken));
     }
 
-
-
     [Fact]
     public async Task UnitSearchFullIntegration()
     {
@@ -68,21 +69,21 @@ public class UnitSearchIntegrationTests(DatabaseFixture databaseFixture, TestSer
 
         // initialize expected result as string, convert to JSON
         string expectedJson = """
-        [
-            {
-                "Id": 37,
-                "Name": "to taste",
-                "Abbreviation": "to taste",
-                "PluralName": null
-            },
-            {
-                "Id": 2,
-                "Name": "tablespoon",
-                "Abbreviation": "tbsp",
-                "PluralName": "tablespoons"
-            }
-        ]
-        """;
+            [
+                {
+                    "Id": 37,
+                    "Name": "to taste",
+                    "Abbreviation": "to taste",
+                    "PluralName": null
+                },
+                {
+                    "Id": 2,
+                    "Name": "tablespoon",
+                    "Abbreviation": "tbsp",
+                    "PluralName": "tablespoons"
+                }
+            ]
+            """;
         JToken expectedToken = JToken.Parse(expectedJson);
 
         // invoke API endpoint

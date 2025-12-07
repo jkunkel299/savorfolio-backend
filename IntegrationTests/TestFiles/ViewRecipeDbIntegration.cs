@@ -1,10 +1,10 @@
+using System.Threading.Tasks;
 using IntegrationTests.Fixtures;
-using savorfolio_backend.Models.DTOs;
-using Tests.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using savorfolio_backend.DataAccess;
-using System.Threading.Tasks;
+using savorfolio_backend.Models.DTOs;
+using Tests.Helpers;
 
 namespace IntegrationTests.TestFiles;
 
@@ -17,13 +17,15 @@ public class ViewRecipeDbTests(DatabaseFixture databaseFixture) : IClassFixture<
 
     static ViewRecipeDbTests()
     {
-        string viewRecipeFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeDTO.json");
-        string viewRecipeSectionsFilePath = TestFileHelper.GetProjectPath("ExpectedData/ViewRecipeSectionsDTO.json");
+        string viewRecipeFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/ViewRecipeDTO.json"
+        );
+        string viewRecipeSectionsFilePath = TestFileHelper.GetProjectPath(
+            "ExpectedData/ViewRecipeSectionsDTO.json"
+        );
         _expectedViewRecipe = JObject.Parse(File.ReadAllText(viewRecipeFilePath));
         _expectedViewRecipeSections = JObject.Parse(File.ReadAllText(viewRecipeSectionsFilePath));
     }
-
-
 
     [Fact]
     public async Task DbReturnRecipeById()
@@ -52,8 +54,6 @@ public class ViewRecipeDbTests(DatabaseFixture databaseFixture) : IClassFixture<
         Assert.True(JToken.DeepEquals(expectedRecipe, actualToken));
     }
 
-
-
     [Fact]
     public async Task DbGetIngredientsById()
     {
@@ -66,7 +66,8 @@ public class ViewRecipeDbTests(DatabaseFixture databaseFixture) : IClassFixture<
         var ingListRepository = new IngListRepository(_databaseFixture.Context);
 
         // initialize expected ingredient list as DTOs for case matching
-        var expectedIngListDTO = _expectedViewRecipe["Ingredients"]?.ToObject<List<IngredientListDTO>>();
+        var expectedIngListDTO = _expectedViewRecipe["Ingredients"]
+            ?.ToObject<List<IngredientListDTO>>();
         // convert to JSON
         var expectedJson = JsonConvert.SerializeObject(expectedIngListDTO);
         JToken expectedIngList = JToken.Parse(expectedJson);
@@ -80,8 +81,6 @@ public class ViewRecipeDbTests(DatabaseFixture databaseFixture) : IClassFixture<
         // Assert equal
         Assert.True(JToken.DeepEquals(expectedIngList, actualToken));
     }
-
-
 
     [Fact]
     public async Task DbGetInstructionsById()
@@ -110,8 +109,6 @@ public class ViewRecipeDbTests(DatabaseFixture databaseFixture) : IClassFixture<
         Assert.True(JToken.DeepEquals(expectedInsList, actualToken));
     }
 
-
-
     [Fact]
     public void DbGetTagsById()
     {
@@ -139,8 +136,6 @@ public class ViewRecipeDbTests(DatabaseFixture databaseFixture) : IClassFixture<
         Assert.True(JToken.DeepEquals(expectedTags, actualToken));
     }
 
-
-
     [Fact]
     public async Task DbGetSectionsById()
     {
@@ -153,7 +148,8 @@ public class ViewRecipeDbTests(DatabaseFixture databaseFixture) : IClassFixture<
         var sectionsRepository = new SectionsRepository(_databaseFixture.Context);
 
         // initialize expected tags as a SectionDTO for case matching
-        var expectedSectionsDTO = _expectedViewRecipeSections["RecipeSections"]?.ToObject<List<SectionDTO>>();
+        var expectedSectionsDTO = _expectedViewRecipeSections["RecipeSections"]
+            ?.ToObject<List<SectionDTO>>();
         // convert to JSON
         var expectedJson = JsonConvert.SerializeObject(expectedSectionsDTO);
         JToken expectedSections = JToken.Parse(expectedJson);

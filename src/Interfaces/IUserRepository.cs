@@ -6,7 +6,7 @@ namespace savorfolio_backend.Interfaces;
 public interface IUserRepository
 {
     // Task<User?> GetByUsernameAsync(string username);
-    Task<User?> GetByEmailAsync(string email);
+    Task<UserDTO?> GetByEmailAsync(string email);
     Task<int> AddUserAsync(
         UserRegisterDTO userRegister,
         string password_hash,

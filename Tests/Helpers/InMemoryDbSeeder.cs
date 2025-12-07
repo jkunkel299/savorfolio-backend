@@ -1,21 +1,26 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using savorfolio_backend.Data;
 using savorfolio_backend.Models;
 using savorfolio_backend.Models.DTOs;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Tests.Helpers;
 
 public class InMemoryDbSeeder
 {
-    private static JsonSerializerOptions JsonOptions => new()
-    {
-        PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false) }
-    };
+    private static JsonSerializerOptions JsonOptions =>
+        new()
+        {
+            PropertyNameCaseInsensitive = true,
+            Converters =
+            {
+                new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false),
+            },
+        };
 
     // Generic seeder for simple entity lists
-    public static void SeedFromJson<T>(AppDbContext context, string filePath) where T : class
+    public static void SeedFromJson<T>(AppDbContext context, string filePath)
+        where T : class
     {
         if (!File.Exists(filePath))
             throw new FileNotFoundException($"Seed file not found: {filePath}");
@@ -48,7 +53,8 @@ public class InMemoryDbSeeder
             throw new FileNotFoundException($"Seed file not found: {variantFilePath}");
 
         var json = File.ReadAllText(variantFilePath);
-        if (string.IsNullOrWhiteSpace(json)) return;
+        if (string.IsNullOrWhiteSpace(json))
+            return;
 
         var variants = JsonSerializer.Deserialize<List<IngredientVariant>>(json, JsonOptions) ?? [];
 
@@ -66,13 +72,24 @@ public class InMemoryDbSeeder
             if (v.Type != null)
             {
                 // attempt to find by name first
-                var matchedType = context.IngredientTypes.FirstOrDefault(t => t.Name == v.Type.Name);
+                var matchedType = context.IngredientTypes.FirstOrDefault(t =>
+                    t.Name == v.Type.Name
+                );
                 if (matchedType != null)
                 {
                     v.TypeId = matchedType.Id;
+
+                    // Only assign navigation property for In-Memory
+                    if (context.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
+                    {
+                        v.Type = matchedType;
+                    }
+                    else
+                    {
+                        // Drop navigation property for SQL provider to avoid duplicate inserts
+                        v.Type = null;
+                    }
                 }
-                // drop the navigation object to avoid EF trying to insert duplicates
-                v.Type = null;
             }
         }
 
@@ -87,11 +104,12 @@ public class InMemoryDbSeeder
             throw new FileNotFoundException($"Seed file not found: {sectionFilePath}");
 
         var json = File.ReadAllText(sectionFilePath);
-        if (string.IsNullOrWhiteSpace(json)) return;
+        if (string.IsNullOrWhiteSpace(json))
+            return;
 
         var sectionLists = JsonSerializer.Deserialize<List<RecipeSection>>(json, JsonOptions) ?? [];
 
-        // Clear existing intruction list items
+        // Clear existing section list items
         var existing = context.RecipeSections.AsQueryable().ToList();
         if (existing.Count != 0)
         {
@@ -124,9 +142,11 @@ public class InMemoryDbSeeder
             throw new FileNotFoundException($"Seed file not found: {ingListFilePath}");
 
         var json = File.ReadAllText(ingListFilePath);
-        if (string.IsNullOrWhiteSpace(json)) return;
+        if (string.IsNullOrWhiteSpace(json))
+            return;
 
-        var ingredientLists = JsonSerializer.Deserialize<List<IngredientList>>(json, JsonOptions) ?? [];
+        var ingredientLists =
+            JsonSerializer.Deserialize<List<IngredientList>>(json, JsonOptions) ?? [];
 
         // Clear existing ingredient list items
         var existing = context.IngredientLists.AsQueryable().ToList();
@@ -170,9 +190,11 @@ public class InMemoryDbSeeder
             throw new FileNotFoundException($"Seed file not found: {insListFilePath}");
 
         var json = File.ReadAllText(insListFilePath);
-        if (string.IsNullOrWhiteSpace(json)) return;
+        if (string.IsNullOrWhiteSpace(json))
+            return;
 
-        var intructionLists = JsonSerializer.Deserialize<List<Instruction>>(json, JsonOptions) ?? [];
+        var intructionLists =
+            JsonSerializer.Deserialize<List<Instruction>>(json, JsonOptions) ?? [];
 
         // Clear existing intruction list items
         var existing = context.Instructions.AsQueryable().ToList();
@@ -231,7 +253,7 @@ public class InMemoryDbSeeder
                 item.Dietary = [.. item.Dietary.Select(t => t.Trim())];
             }
         }
-        
+
         // Remove existing rows
         var existing = context.RecipeTags.AsQueryable().ToList();
         if (existing.Count != 0)
@@ -241,6 +263,31 @@ public class InMemoryDbSeeder
         }
 
         context.RecipeTags.AddRange(items);
+        context.SaveChanges();
+    }
+
+    public static void SeedUserRecipesFromJson(AppDbContext context, string userRecipesFilePath)
+    {
+        if (!File.Exists(userRecipesFilePath))
+            throw new FileNotFoundException($"Seed file not found: {userRecipesFilePath}");
+
+        var json = File.ReadAllText(userRecipesFilePath);
+        if (string.IsNullOrWhiteSpace(json))
+            return;
+
+        var items = JsonSerializer.Deserialize<List<UserRecipe>>(json, JsonOptions);
+        if (items == null || items.Count == 0)
+            return;
+
+        // Remove existing rows
+        var existing = context.UserRecipes.AsQueryable().ToList();
+        if (existing.Count != 0)
+        {
+            context.UserRecipes.RemoveRange(existing);
+            context.SaveChanges();
+        }
+
+        context.UserRecipes.AddRange(items);
         context.SaveChanges();
     }
 }

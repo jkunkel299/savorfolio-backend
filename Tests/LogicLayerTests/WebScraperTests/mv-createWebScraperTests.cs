@@ -11,16 +11,22 @@ using Tests.Fixtures;
 namespace Tests.LogicLayerTests.WebScraperTests;
 
 [Collection("Web Scraper collection")]
-public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture) : IClassFixture<WebScraperFixture>, IAsyncLifetime
+public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture)
+    : IClassFixture<WebScraperFixture>,
+        IAsyncLifetime
 {
     private IDocument _document = default!;
     private WebScraperService scraper = default!;
+
     // mock FallbackHeuristics interface
     private readonly Mock<IFallbackHeuristics> mockFallbackHeuristics = new();
+
     // mock fallback heuristic extensions interface
     private readonly Mock<IHeuristicExtensions> mockHeuristicExtensions = new();
+
     // mock IngredientParseService interface
     private readonly Mock<IIngredientParseService> mockIngredientParseService = new();
+
     // initialize document and web scraper
     public async Task InitializeAsync()
     {
@@ -88,21 +94,30 @@ public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture
 
         // initialize expected returns
         string recipeTitle = "BEST Jiffy Cornbread With Creamed Corn";
-        string recipeDescription = "7-ingredient Creamed Corn Cornbread is a staple Southern side dish. Jiffy Cornbread with Creamed Corn is full of flavor, so easy to make, and will become an instant family favorite.";
+        string recipeDescription =
+            "7-ingredient Creamed Corn Cornbread is a staple Southern side dish. Jiffy Cornbread with Creamed Corn is full of flavor, so easy to make, and will become an instant family favorite.";
         string recipePrep = "5 minutes";
         string recipeCook = "40 minutes";
         string recipeServings = "16";
         int? bakeTemp = 400;
         string tempUnit = "F";
 
-        // bake temp and temp unit rely on fallback heuristics, and for isolation 
+        // bake temp and temp unit rely on fallback heuristics, and for isolation
         // purposes the ExtractBakeTemp returns must be mocked
         var tupleExtractBakeTemp = (bakeTemp, tempUnit);
-        mockFallbackHeuristics.Setup(r => r.ExtractBakeTemp(_document))
+        mockFallbackHeuristics
+            .Setup(r => r.ExtractBakeTemp(_document))
             .Returns(tupleExtractBakeTemp);
 
         // call BuildRecipeSummary
-        var actualReturn = scraper.BuildRecipeSummary(_document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
+        var actualReturn = scraper.BuildRecipeSummary(
+            _document,
+            titlePattern,
+            descriptionPattern,
+            prepTimePattern,
+            cookTimePattern,
+            servingsPattern
+        );
         string cleanedServings = WhitespaceRegex.Replace(actualReturn.Servings!, " ");
 
         // assert elements are as expected
@@ -110,7 +125,7 @@ public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture
         Assert.Equal(recipeDescription, actualReturn.Description);
         Assert.Equal(recipePrep, actualReturn.PrepTime);
         Assert.Equal(recipeCook, actualReturn.CookTime);
-        Assert.Equal(recipeServings, cleanedServings);
+        Assert.Equal(recipeServings, actualReturn.Servings);
         Assert.Equal(bakeTemp, actualReturn.BakeTemp);
         Assert.Equal(tempUnit, actualReturn.Temp_unit);
     }
@@ -126,33 +141,33 @@ public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture
 
         // initialize expected result as string, convert to JSON
         string expectedJson = """
-        [
-            {
-                "Id": 0,
-                "RecipeId": 0,
-                "SectionId": null,
-                "SectionName": null,
-                "StepNumber": 1, 
-                "InstructionText": "Preheat the oven to 400 F (204 C), and lightly grease an 8 x 8 baking dish with cooking spray."
-            },
-            {
-                "Id": 0,
-                "RecipeId": 0,
-                "SectionId": null,
-                "SectionName": null,
-                "StepNumber": 2,
-                "InstructionText": "In a large mixing bowl, whisk the eggs and oil together, then whisk in the milk and honey (make sure to give the honey a good mixing to combine well). Add in the cream style corn and sour cream, and mix to combine. Stir the Jiffy Corn Muffin Mix into the liquid until just combined (don't over mix it). "
-            },
-            {
-                "Id": 0,
-                "RecipeId": 0,
-                "SectionId": null,
-                "SectionName": null,
-                "StepNumber": 3,
-                "InstructionText": "Pour the batter into the greased baking dish and bake for 40 - 45 minutes. Check the cornbread after 40 minutes. To test if it’s ready, insert a toothpick into the center. If the toothpick comes out clean, it's done. If it comes out a bit wet, put in for a few more minutes. "
-            }
-        ]
-        """;
+            [
+                {
+                    "Id": 0,
+                    "RecipeId": 0,
+                    "SectionId": null,
+                    "SectionName": null,
+                    "StepNumber": 1, 
+                    "InstructionText": "Preheat the oven to 400 F (204 C), and lightly grease an 8 x 8 baking dish with cooking spray."
+                },
+                {
+                    "Id": 0,
+                    "RecipeId": 0,
+                    "SectionId": null,
+                    "SectionName": null,
+                    "StepNumber": 2,
+                    "InstructionText": "In a large mixing bowl, whisk the eggs and oil together, then whisk in the milk and honey (make sure to give the honey a good mixing to combine well). Add in the cream style corn and sour cream, and mix to combine. Stir the Jiffy Corn Muffin Mix into the liquid until just combined (don't over mix it). "
+                },
+                {
+                    "Id": 0,
+                    "RecipeId": 0,
+                    "SectionId": null,
+                    "SectionName": null,
+                    "StepNumber": 3,
+                    "InstructionText": "Pour the batter into the greased baking dish and bake for 40 - 45 minutes. Check the cornbread after 40 minutes. To test if it’s ready, insert a toothpick into the center. If the toothpick comes out clean, it's done. If it comes out a bit wet, put in for a few more minutes. "
+                }
+            ]
+            """;
         JToken expectedToken = JToken.Parse(expectedJson);
 
         // call BuildRecipeSummary
@@ -182,7 +197,7 @@ public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture
         string expectedRecipeType = "Side";
         string expectedCuisine = "American";
 
-        // Meal and Dietary rely on fallback heuristics, and for isolation 
+        // Meal and Dietary rely on fallback heuristics, and for isolation
         // purposes will not be tested in this context
 
         // call BuildRecipeTags
@@ -193,5 +208,8 @@ public partial class MvCreateWebScraperTests(WebScraperFixture webScraperFixture
         Assert.Equal(expectedCuisine, actualReturn.Cuisine);
     }
 
-    private static readonly Regex WhitespaceRegex = new(@"\s{2,}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex WhitespaceRegex = new(
+        @"\s{2,}",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase
+    );
 }

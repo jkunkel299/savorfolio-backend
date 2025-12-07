@@ -1,8 +1,9 @@
 using System.Text;
 using DotNetEnv;
-// using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-// using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using savorfolio_backend.API;
 using savorfolio_backend.Data;
 using savorfolio_backend.DataAccess;
@@ -17,10 +18,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
-        "AllowAll",
+        "AllowFrontend",
         policy =>
         {
-            policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            policy
+                .WithOrigins("http://localhost:5173", "https://main.d2od7y484mzt98.amplifyapp.com")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
         }
     );
 });
@@ -95,47 +100,62 @@ builder.Services.AddScoped<IIngredientParseService, IngredientParseService>();
 // user services
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-// builder.Services.AddScoped<IAuthManager, AuthManager>();
-// builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthManager, AuthManager>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // initialize environment JWT variables
-// var jwtKey = Environment.GetEnvironmentVariable("Jwt__Key");
-// var jwtIssuer = Environment.GetEnvironmentVariable("Jwt__Issuer");
-// var jwtAudience = Environment.GetEnvironmentVariable("Jwt__Audience");
+var jwtKey = Environment.GetEnvironmentVariable("Jwt__Key");
+var jwtIssuer = Environment.GetEnvironmentVariable("Jwt__Issuer");
+var jwtAudience = Environment.GetEnvironmentVariable("Jwt__Audience");
 
-// var jwtSettings = new JwtSettings
-// {
-//     Key = jwtKey!,
-//     Issuer = jwtIssuer!,
-//     Audience = jwtAudience!,
-// };
-// builder.Services.AddSingleton(jwtSettings);
+var jwtSettings = new JwtSettings
+{
+    Key = jwtKey!,
+    Issuer = jwtIssuer!,
+    Audience = jwtAudience!,
+};
+builder.Services.AddSingleton(jwtSettings);
 
-// builder
-//     .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//     .AddJwtBearer(options =>
-//     {
-//         options.TokenValidationParameters = new TokenValidationParameters
-//         {
-//             ValidateIssuer = false,
-//             ValidateAudience = false,
-//             ValidateLifetime = false,
-//             ValidateIssuerSigningKey = false,
-//             NameClaimType = "id",
-//             ValidIssuer = jwtIssuer,
-//             ValidAudience = jwtAudience,
-//             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey!)),
-//         };
-//     });
+builder
+    .Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/api/auth/login";
+        options.AccessDeniedPath = "/api/auth/denied";
 
-// builder.Services.AddAuthorization();
+        options.Cookie.HttpOnly = true;
+        // options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // HTTPS only
+        // options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Events.OnRedirectToLogin = ctx =>
+        {
+            ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            return Task.CompletedTask;
+        };
+
+        options.Events.OnRedirectToAccessDenied = ctx =>
+        {
+            ctx.Response.StatusCode = StatusCodes.Status403Forbidden;
+            return Task.CompletedTask;
+        };
+    });
+
+builder
+    .Services.AddAuthorizationBuilder()
+    .AddPolicy(
+        "cookies",
+        policy =>
+        {
+            policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+            policy.RequireAuthenticatedUser();
+        }
+    );
 
 var app = builder.Build();
 
-app.UseCors("AllowAll");
+app.UseCors("AllowFrontend");
 
-// app.UseAuthentication();
-// app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 // search for ingredients
 app.MapIngredientApi();
@@ -156,13 +176,16 @@ app.MapRecipeById();
 app.MapRecipeSearch();
 
 // add a new recipe manually
-app.MapManualRecipe();
+app.MapRecipeForm();
 
 // scrape recipe
-app.MapDraftRecipe();
+app.MapScrapeRecipe();
 
-// // user auth
-// app.MapAuthEndpoints();
+// user auth
+app.MapRegister();
+app.MapLogIn();
+app.MapLogOut();
+app.MapFetchUser();
 
 // add health endpoint for E2E testing with Playwright
 app.MapGet("/health", () => Results.Ok("healthy"));

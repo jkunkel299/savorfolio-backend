@@ -4,10 +4,11 @@ namespace Tests.TestData;
 
 public class FallbackInstructionData
 {
-    public static TheoryData<string, InstructionDTO[]> InstructionTestCases() => new()
-    {
+    public static TheoryData<string, InstructionDTO[]> InstructionTestCases() =>
+        new()
         {
-            @"<!DOCTYPE html>
+            {
+                @"<!DOCTYPE html>
             <html><body>
                 <h1 class='recipe-title'>Cinnamon Chocolate Babka Muffins</h1>
                 <h2>Instructions:</h2>
@@ -16,14 +17,24 @@ public class FallbackInstructionData
                     <li class='instruction-2'>On low speed, beat in the milk, sugar, egg, and vanilla extract. Mix just until the dough comes together, another 2-3 minutes.</li>
                 </ol>
             </body></html>",
-            new InstructionDTO[]
+                new InstructionDTO[]
+                {
+                    new()
+                    {
+                        StepNumber = 1,
+                        InstructionText =
+                            "Prepare the dough. In the bowl of a stand mixer or a large mixing bowl, combine the yeast, flour, and salt and mix until combined.",
+                    },
+                    new()
+                    {
+                        StepNumber = 2,
+                        InstructionText =
+                            "On low speed, beat in the milk, sugar, egg, and vanilla extract. Mix just until the dough comes together, another 2-3 minutes.",
+                    },
+                }
+            },
             {
-                new() { StepNumber = 1, InstructionText = "Prepare the dough. In the bowl of a stand mixer or a large mixing bowl, combine the yeast, flour, and salt and mix until combined." },
-                new() { StepNumber = 2, InstructionText = "On low speed, beat in the milk, sugar, egg, and vanilla extract. Mix just until the dough comes together, another 2-3 minutes." }
-            }
-        },
-        {
-            @"<!DOCTYPE html>
+                @"<!DOCTYPE html>
             <html><body>
                 <h1 class='recipe-title'>Cinnamon Chocolate Babka Muffins</h1>
                 <h2>Instructions:</h2>
@@ -32,14 +43,24 @@ public class FallbackInstructionData
                     <li>On low speed, beat in the milk, sugar, egg, and vanilla extract. Mix just until the dough comes together, another 2-3 minutes.</li>
                 </ol>
             </body></html>",
-            new InstructionDTO[]
+                new InstructionDTO[]
+                {
+                    new()
+                    {
+                        StepNumber = 1,
+                        InstructionText =
+                            "Prepare the dough. In the bowl of a stand mixer or a large mixing bowl, combine the yeast, flour, and salt and mix until combined.",
+                    },
+                    new()
+                    {
+                        StepNumber = 2,
+                        InstructionText =
+                            "On low speed, beat in the milk, sugar, egg, and vanilla extract. Mix just until the dough comes together, another 2-3 minutes.",
+                    },
+                }
+            },
             {
-                new() { StepNumber = 1, InstructionText = "Prepare the dough. In the bowl of a stand mixer or a large mixing bowl, combine the yeast, flour, and salt and mix until combined." },
-                new() { StepNumber = 2, InstructionText = "On low speed, beat in the milk, sugar, egg, and vanilla extract. Mix just until the dough comes together, another 2-3 minutes." }
-            }
-        },
-        {
-            @"<!DOCTYPE html>
+                @"<!DOCTYPE html>
             <html><body>
                 <h1 class='recipe-title'>Cinnamon Chocolate Babka Muffins</h1>
                 <h2>Directions:</h2>
@@ -48,14 +69,24 @@ public class FallbackInstructionData
                     <li>On low speed, beat in the milk, sugar, egg, and vanilla extract. Mix just until the dough comes together, another 2-3 minutes.</li>
                 </ol>
             </body></html>",
-            new InstructionDTO[]
+                new InstructionDTO[]
+                {
+                    new()
+                    {
+                        StepNumber = 1,
+                        InstructionText =
+                            "Prepare the dough. In the bowl of a stand mixer or a large mixing bowl, combine the yeast, flour, and salt and mix until combined.",
+                    },
+                    new()
+                    {
+                        StepNumber = 2,
+                        InstructionText =
+                            "On low speed, beat in the milk, sugar, egg, and vanilla extract. Mix just until the dough comes together, another 2-3 minutes.",
+                    },
+                }
+            },
             {
-                new() { StepNumber = 1, InstructionText = "Prepare the dough. In the bowl of a stand mixer or a large mixing bowl, combine the yeast, flour, and salt and mix until combined." },
-                new() { StepNumber = 2, InstructionText = "On low speed, beat in the milk, sugar, egg, and vanilla extract. Mix just until the dough comes together, another 2-3 minutes." }
-            }
-        },
-        {
-            @"<!DOCTYPE html>
+                @"<!DOCTYPE html>
             <html><body>
                 <h1 class='recipe-title'>Cinnamon Chocolate Babka Muffins</h1>
                 <ol>
@@ -63,12 +94,21 @@ public class FallbackInstructionData
                     <li>On low speed, beat in the milk, sugar, egg, and vanilla extract. Mix just until the dough comes together, another 2-3 minutes.</li>
                 </ol>
             </body></html>",
-            new InstructionDTO[]
-            {
-                new() { StepNumber = 1, InstructionText = "Prepare the dough. In the bowl of a stand mixer or a large mixing bowl, combine the yeast, flour, and salt and mix until combined." },
-                new() { StepNumber = 2, InstructionText = "On low speed, beat in the milk, sugar, egg, and vanilla extract. Mix just until the dough comes together, another 2-3 minutes." }
-            }
-        }
-
-    };
+                new InstructionDTO[]
+                {
+                    new()
+                    {
+                        StepNumber = 1,
+                        InstructionText =
+                            "Prepare the dough. In the bowl of a stand mixer or a large mixing bowl, combine the yeast, flour, and salt and mix until combined.",
+                    },
+                    new()
+                    {
+                        StepNumber = 2,
+                        InstructionText =
+                            "On low speed, beat in the milk, sugar, egg, and vanilla extract. Mix just until the dough comes together, another 2-3 minutes.",
+                    },
+                }
+            },
+        };
 }

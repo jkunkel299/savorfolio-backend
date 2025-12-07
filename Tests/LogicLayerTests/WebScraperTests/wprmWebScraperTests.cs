@@ -11,16 +11,22 @@ using Tests.Fixtures;
 namespace Tests.LogicLayerTests.WebScraperTests;
 
 [Collection("Web Scraper collection")]
-public partial class WprmWebScraperTests(WebScraperFixture webScraperFixture) : IClassFixture<WebScraperFixture>, IAsyncLifetime
+public partial class WprmWebScraperTests(WebScraperFixture webScraperFixture)
+    : IClassFixture<WebScraperFixture>,
+        IAsyncLifetime
 {
     private IDocument _document = default!;
     private WebScraperService scraper = default!;
+
     // mock FallbackHeuristics interface
     private readonly Mock<IFallbackHeuristics> mockFallbackHeuristics = new();
+
     // mock fallback heuristic extensions interface
     private readonly Mock<IHeuristicExtensions> mockHeuristicExtensions = new();
+
     // mock IngredientParseService interface
     private readonly Mock<IIngredientParseService> mockIngredientParseService = new();
+
     // initialize document and web scraper
     public async Task InitializeAsync()
     {
@@ -88,21 +94,30 @@ public partial class WprmWebScraperTests(WebScraperFixture webScraperFixture) : 
 
         // initialize expected returns
         string recipeTitle = "Fall Chocolate Chip Spiced Cookie (Levain Bakery Fall Cookie)";
-        string recipeDescription = "Soft, chewy Fall cookie with dark brown sugar, molasses, cinnamon, ginger, cloves, nutmeg, and chocolate chips for the perfect Autumn cookie. This is the perfect Fall spiced chocolate chip cookie recipe!";
+        string recipeDescription =
+            "Soft, chewy Fall cookie with dark brown sugar, molasses, cinnamon, ginger, cloves, nutmeg, and chocolate chips for the perfect Autumn cookie. This is the perfect Fall spiced chocolate chip cookie recipe!";
         string recipePrep = "15 minutes";
         string recipeCook = "10 minutes";
         string recipeServings = "8";
         int bakeTemp = 400;
         string tempUnit = "F";
 
-        // bake temp and temp unit rely on fallback heuristics, and for isolation 
+        // bake temp and temp unit rely on fallback heuristics, and for isolation
         // purposes the ExtractBakeTemp returns must be mocked
         var tupleExtractBakeTemp = (bakeTemp, tempUnit);
-        mockFallbackHeuristics.Setup(r => r.ExtractBakeTemp(_document))
+        mockFallbackHeuristics
+            .Setup(r => r.ExtractBakeTemp(_document))
             .Returns(tupleExtractBakeTemp);
 
         // call BuildRecipeSummary
-        var actualReturn = scraper.BuildRecipeSummary(_document, titlePattern, descriptionPattern, prepTimePattern, cookTimePattern, servingsPattern);
+        var actualReturn = scraper.BuildRecipeSummary(
+            _document,
+            titlePattern,
+            descriptionPattern,
+            prepTimePattern,
+            cookTimePattern,
+            servingsPattern
+        );
 
         // assert elements are as expected
         Assert.Equal(recipeTitle, actualReturn.Name);
@@ -125,49 +140,49 @@ public partial class WprmWebScraperTests(WebScraperFixture webScraperFixture) : 
 
         // initialize expected result as string, convert to JSON
         string expectedJson = """
-        [
-            {
-                "Id": 0,
-                "RecipeId": 0,
-                "SectionId": null,
-                "SectionName": null,
-                "StepNumber": 1, 
-                "InstructionText": "Preheat oven to 400 degrees. In a large mixing bowl, beat butter, brown sugar, and sugar for 4 minutes until light and fluffy."
-            },
-            {
-                "Id": 0,
-                "RecipeId": 0,
-                "SectionId": null,
-                "SectionName": null,
-                "StepNumber": 2,
-                "InstructionText": "Add molasses and egg and mix for 1 minute longer."
-            },
-            {
-                "Id": 0,
-                "RecipeId": 0,
-                "SectionId": null,
-                "SectionName": null,
-                "StepNumber": 3,
-                "InstructionText": "Fold in flour, baking soda, cornstarch, salt, cinnamon, ginger, nutmeg, cloves, and chocolate chips."
-            },
-            {
-                "Id": 0,
-                "RecipeId": 0,
-                "SectionId": null,
-                "SectionName": null,
-                "StepNumber": 4,
-                "InstructionText": "Roll into 4-ounce, 5-ounce, or 6-ounce balls. Place on a parchment paper lined baking sheet. I prefer to use light-colored baking sheets."
-            },
-            {
-                "Id": 0,
-                "RecipeId": 0,
-                "SectionId": null,
-                "SectionName": null,
-                "StepNumber": 5,
-                "InstructionText": "Bake for 8-10 minutes. The cookies will still be slightly underdone when you remove them from the oven. Let the cookies sit for 10-15 minutes before moving them from the baking sheet."
-            }
-        ]
-        """;
+            [
+                {
+                    "Id": 0,
+                    "RecipeId": 0,
+                    "SectionId": null,
+                    "SectionName": null,
+                    "StepNumber": 1, 
+                    "InstructionText": "Preheat oven to 400 degrees. In a large mixing bowl, beat butter, brown sugar, and sugar for 4 minutes until light and fluffy."
+                },
+                {
+                    "Id": 0,
+                    "RecipeId": 0,
+                    "SectionId": null,
+                    "SectionName": null,
+                    "StepNumber": 2,
+                    "InstructionText": "Add molasses and egg and mix for 1 minute longer."
+                },
+                {
+                    "Id": 0,
+                    "RecipeId": 0,
+                    "SectionId": null,
+                    "SectionName": null,
+                    "StepNumber": 3,
+                    "InstructionText": "Fold in flour, baking soda, cornstarch, salt, cinnamon, ginger, nutmeg, cloves, and chocolate chips."
+                },
+                {
+                    "Id": 0,
+                    "RecipeId": 0,
+                    "SectionId": null,
+                    "SectionName": null,
+                    "StepNumber": 4,
+                    "InstructionText": "Roll into 4-ounce, 5-ounce, or 6-ounce balls. Place on a parchment paper lined baking sheet. I prefer to use light-colored baking sheets."
+                },
+                {
+                    "Id": 0,
+                    "RecipeId": 0,
+                    "SectionId": null,
+                    "SectionName": null,
+                    "StepNumber": 5,
+                    "InstructionText": "Bake for 8-10 minutes. The cookies will still be slightly underdone when you remove them from the oven. Let the cookies sit for 10-15 minutes before moving them from the baking sheet."
+                }
+            ]
+            """;
         JToken expectedToken = JToken.Parse(expectedJson);
 
         // call BuildRecipeSummary
@@ -197,11 +212,12 @@ public partial class WprmWebScraperTests(WebScraperFixture webScraperFixture) : 
         string expectedRecipeType = "Dessert";
         string expectedCuisine = "American";
 
-        // Meal and Dietary rely on fallback heuristics, and for isolation 
+        // Meal and Dietary rely on fallback heuristics, and for isolation
         // purposes this context will only test that they are called once each
         // However, due to change in the web scraper, dietary tags will be excluded.
         // set up returns for fallback functions called in BuildRecipeInstructions
-        mockHeuristicExtensions.Setup(r => r.MatchEnum<MealTag>(_document))
+        mockHeuristicExtensions
+            .Setup(r => r.MatchEnum<MealTag>(_document))
             .Returns(It.IsAny<string>());
         // mockFallbackHeuristics.Setup(r => r.ExtractDietaryTags(It.IsAny<string>()))
         //     .Returns(It.IsAny<List<string>>());

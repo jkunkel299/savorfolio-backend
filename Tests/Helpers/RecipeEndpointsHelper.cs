@@ -10,21 +10,30 @@ namespace Tests.Helpers;
 public static class RecipeEndpointsHelper
 {
     // replicates the API endpoint defined in RecipeEndpoints.MapRecipeSearch
-    public static async Task<IResult> InvokeRecipeSearchEndpoint(RecipeFilterRequestDTO filter, IRecipeService service)
+    public static async Task<IResult> InvokeRecipeSearchEndpoint(
+        RecipeFilterRequestDTO filter,
+        IRecipeService service
+    )
     {
         var results = await service.SearchRecipesAsync(filter);
         return Results.Ok(results);
     }
 
     // replicates the API endpoint defined in RecipeEndpoints.MapRecipeById
-    public static async Task<IResult> InvokeRecipeViewEndpoint(int recipeId, IViewRecipeService service)
+    public static async Task<IResult> InvokeRecipeViewEndpoint(
+        int recipeId,
+        IViewRecipeService service
+    )
     {
         var recipe = await service.CompileRecipeAsync(recipeId);
         return Results.Ok(recipe);
     }
 
     // replicates the API endpoint defined in AddRecipeEndpoints.MapManualRecipe
-    public static async Task<IResult> InvokeAddManualRecipeEndpoint(string jsonBody, IAddRecipeService service)
+    public static async Task<IResult> InvokeAddManualRecipeEndpoint(
+        string jsonBody,
+        IAddRecipeService service
+    )
     {
         JsonDocument newRecipeBody;
         try
@@ -50,7 +59,10 @@ public static class RecipeEndpointsHelper
     }
 
     // replicates the API endpoint defined in AddRecipeEndpoints.MapDraftRecipe
-    public static async Task<IResult> InvokeRecipeScrapeEndpoint(string url, IWebScraperService webScraperService)
+    public static async Task<IResult> InvokeRecipeScrapeEndpoint(
+        string url,
+        IWebScraperService webScraperService
+    )
     {
         DraftRecipeDTO results = await webScraperService.RunScraperAsync(url);
         return Results.Ok(results);

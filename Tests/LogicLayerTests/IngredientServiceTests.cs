@@ -1,13 +1,13 @@
 using Moq;
-using savorfolio_backend.LogicLayer;
 using savorfolio_backend.Interfaces;
+using savorfolio_backend.LogicLayer;
 
 namespace Tests.LogicLayerTests;
 
 public class IngredientServiceTests()
 {
     [Fact]
-    public async Task IngredientServiceTest1()
+    public async Task IngredientService_CallsSearchIngredientsAsync()
     {
         // initialize search term
         string searchTerm = "chicken";

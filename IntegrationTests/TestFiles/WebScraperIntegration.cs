@@ -9,12 +9,16 @@ using Tests.Helpers;
 namespace IntegrationTests.TestFiles;
 
 [Collection("Integration Test Server")]
-public class WebScraperIntegrationTests(TestServerFixture testServerFixture) : IClassFixture<TestServerFixture>
+public class WebScraperIntegrationTests(TestServerFixture testServerFixture)
+    : IClassFixture<TestServerFixture>
 {
-    private readonly HttpClient _client = testServerFixture.HttpClient;
+    private readonly HttpClient _client = testServerFixture.AuthenticatedClient;
 
     [Theory]
-    [MemberData(nameof(WebScraperIntegrationData.WebScraperTestCases), MemberType = typeof(WebScraperIntegrationData))]
+    [MemberData(
+        nameof(WebScraperIntegrationData.WebScraperTestCases),
+        MemberType = typeof(WebScraperIntegrationData)
+    )]
     public async Task WebScraper_ReturnsExpected(string url, string filePath)
     {
         // initialize document from filepath as JSON

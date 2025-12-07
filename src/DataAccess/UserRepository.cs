@@ -12,14 +12,19 @@ public class UserRepository(AppDbContext context) : IUserRepository
 {
     private readonly AppDbContext _context = context;
 
-    // public async Task<User?> GetByUsernameAsync(string username)
-    // {
-    //     return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
-    // }
-
-    public async Task<User?> GetByEmailAsync(string email)
+    public async Task<UserDTO?> GetByEmailAsync(string email)
     {
-        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        Console.WriteLine("Called UserRepo.GetByEmailAsync");
+        return await _context
+            .Users.Where(u => u.Email == email)
+            .Select(u => new UserDTO
+            {
+                Id = u.Id,
+                Email = u.Email,
+                PasswordHash = u.PasswordHash,
+                PasswordSalt = u.PasswordSalt,
+            })
+            .SingleOrDefaultAsync();
     }
 
     public async Task<int> AddUserAsync(
@@ -47,6 +52,7 @@ public class UserRepository(AppDbContext context) : IUserRepository
         var newUserRecipe = new UserRecipe { UserId = userId, RecipeId = recipeId };
         _context.UserRecipes.Add(newUserRecipe);
         int record = await _context.SaveChangesAsync();
+        Console.WriteLine($"Added {record} records to user recipe");
         return record;
     }
 }
