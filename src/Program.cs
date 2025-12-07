@@ -22,7 +22,11 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:5173", "https://main.d2od7y484mzt98.amplifyapp.com/")
+                .WithOrigins([
+                    "http://localhost:5173",
+                    "https://main.d2od7y484mzt98.amplifyapp.com/",
+                ])
+                .SetIsOriginAllowedToAllowWildcardSubdomains()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials();
@@ -124,8 +128,8 @@ builder
         options.AccessDeniedPath = "/api/auth/denied";
 
         options.Cookie.HttpOnly = true;
-        // options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // HTTPS only
-        // options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Cookie.SameSite = SameSiteMode.None;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         options.Events.OnRedirectToLogin = ctx =>
         {
             ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
