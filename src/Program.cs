@@ -1,7 +1,6 @@
 using System.Text;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using savorfolio_backend.API;
@@ -15,6 +14,12 @@ using savorfolio_backend.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var allowedOrigins = new[]
+{
+    "http://localhost:5173",
+    "https://main.d2od7y484mzt98.amplifyapp.com",
+};
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
@@ -22,13 +27,9 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins([
-                    "http://localhost:5173",
-                    "https://main.d2od7y484mzt98.amplifyapp.com/",
-                ])
-                .SetIsOriginAllowedToAllowWildcardSubdomains()
-                .AllowAnyMethod()
+                .SetIsOriginAllowed(origin => allowedOrigins.Contains(origin))
                 .AllowAnyHeader()
+                .AllowAnyMethod()
                 .AllowCredentials();
         }
     );
