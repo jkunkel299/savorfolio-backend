@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:5173")
+                .WithOrigins("http://localhost:5173", "https://main.d2od7y484mzt98.amplifyapp.com")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials();
@@ -115,23 +115,6 @@ var jwtSettings = new JwtSettings
     Audience = jwtAudience!,
 };
 builder.Services.AddSingleton(jwtSettings);
-
-// builder
-//     .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//     .AddJwtBearer(options =>
-//     {
-//         options.TokenValidationParameters = new TokenValidationParameters
-//         {
-//             ValidateIssuer = false,
-//             ValidateAudience = false,
-//             ValidateLifetime = false,
-//             ValidateIssuerSigningKey = false,
-//             NameClaimType = "id",
-//             ValidIssuer = jwtIssuer,
-//             ValidAudience = jwtAudience,
-//             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey!)),
-//         };
-//     });
 
 builder
     .Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
