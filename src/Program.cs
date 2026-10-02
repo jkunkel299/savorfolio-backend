@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 var allowedOrigins = new[]
 {
     "http://localhost:5173",
-    "savorfolio-frontend-production.up.railway.app",
+    "https://savorfolio-frontend-production.up.railway.app",
 };
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
