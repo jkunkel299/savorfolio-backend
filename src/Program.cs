@@ -20,6 +20,9 @@ var allowedOrigins = new[]
     "savorfolio-frontend-production.up.railway.app",
 };
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://*:{port}");
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
