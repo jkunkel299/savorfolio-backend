@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 var allowedOrigins = new[]
 {
     "http://localhost:5173",
-    "https://main.d2od7y484mzt98.amplifyapp.com",
+    "savorfolio-frontend-production.up.railway.app",
 };
 
 builder.Services.AddCors(options =>
