@@ -21,7 +21,7 @@ public class TagsRepository(AppDbContext context) : ITagsRepository
             Meal = recipeTags.Meal,
             Recipe_type = recipeTags.Recipe_type,
             Cuisine = recipeTags.Cuisine,
-            Dietary = [.. recipeTags.Dietary.Select(d => d.GetEnumMemberValue())],
+            Dietary = [.. recipeTags.Dietary.Select(d => d.GetEnumMemberValue()) ?? []],
         };
         _context.RecipeTags.Add(newTag);
 
