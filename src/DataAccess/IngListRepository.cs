@@ -12,6 +12,7 @@ public class IngListRepository(AppDbContext context) : IIngListRepository
 {
     private readonly AppDbContext _context = context;
 
+    // add new ingredient list records by recipe ID
     public int AddNewRecipeIng(
         List<IngredientListDTO> ingredientsData,
         int recipeId,
@@ -54,6 +55,7 @@ public class IngListRepository(AppDbContext context) : IIngListRepository
         return result;
     }
 
+    // get ingredients list for a recipe by recipe ID
     public Task<List<IngredientListDTO>> GetIngredientsByRecipeAsync(int recipeId)
     {
         var result = _context
@@ -79,4 +81,6 @@ public class IngListRepository(AppDbContext context) : IIngListRepository
 
         return result;
     }
+
+    // edit ingredients list for a recipe by recipe ID
 }
